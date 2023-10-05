@@ -4,11 +4,12 @@ import { useTheme } from '@mui/material/styles';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 
 interface INewBoardProps {
-  onSaveButtonClick: () => void;
+  onSaveButtonClick: (name: string) => void;
 }
 
 export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
   const [open, setOpen] = React.useState(false);
+  const [boardName, setBoardName] = React.useState('Моя доска');
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -21,7 +22,14 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
     setOpen(false);
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setBoardName(event.target.value)
+  }
 
+  // const handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
+  //   event.preventDefault()
+  //   console.log(event)
+  // }
 
   return (
     <div>
@@ -52,6 +60,8 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
               id="outlined-required"
               label="Моя доска"
               placeholder="Доска №1"
+              onChange={handleChange}
+              // onSubmit={handleSubmit}
             />
           </Box>
         </DialogContent>
@@ -59,7 +69,7 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
           <Button autoFocus onClick={handleClose}>
             Отмена
           </Button>
-          <Button onClick={() => {onSaveButtonClick(); setOpen(false);}} autoFocus>
+          <Button onClick={() => {onSaveButtonClick(boardName); setOpen(false);}} autoFocus>
             Сохранить
           </Button>
         </DialogActions>

@@ -1,11 +1,11 @@
 export type Board = {
-  id: string
+  id: number
   name: string
   tacksList?: TacksList
 }
 
 export type TacksList = {
-  id: string
+  id: number
   listName: string
   listSteps?: string[]
 }

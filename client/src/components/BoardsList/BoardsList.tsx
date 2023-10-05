@@ -1,8 +1,7 @@
-import * as React from 'react';
-import Stack from '@mui/material/Stack';
-import styles from './boardsList.module.css';
 import { Link } from 'react-router-dom';
 import { Board } from '../../type';
+import Stack from '@mui/material/Stack';
+import styles from './boardsList.module.css';
 
 interface IBoardsListProps {
   list: Board[];
