@@ -1,0 +1,13 @@
+.mainContentWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.boardWrapper {
+  width: 200px;
+}
+.boardsListWrapper {
+  width: 45%;
+  min-width: 400px;
+  /* height: 300px;
+  background-color: aqua; */
+}
