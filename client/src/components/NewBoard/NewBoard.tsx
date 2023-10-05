@@ -26,10 +26,10 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
     setBoardName(event.target.value)
   }
 
-  // const handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
-  //   event.preventDefault()
-  //   console.log(event)
-  // }
+  const handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
+    event.preventDefault()
+    console.log(event)
+  }
 
   return (
     <div>
@@ -61,7 +61,7 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
               label="Моя доска"
               placeholder="Доска №1"
               onChange={handleChange}
-              // onSubmit={handleSubmit}
+              onSubmit={handleSubmit}
             />
           </Box>
         </DialogContent>
