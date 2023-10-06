@@ -16,7 +16,7 @@ export const BoardsList = ({ list }: IBoardsListProps) => {
       spacing={1}
     >
       {
-        list && list.map((board: Board) => (
+        list?.map((board: Board) => (
           <Link className={styles.boardItem} key={board.id} to={`/boards/${board.id}`}>{board.name}</Link>
         ))
       }

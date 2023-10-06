@@ -1,10 +1,10 @@
 export type Board = {
   id: number
   name: string
-  tacksList?: TacksList
+  tasksList?: Task[]
 }
 
-export type TacksList = {
+export type Task = {
   id: number
   listName: string
   listSteps?: string[]

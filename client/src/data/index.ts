@@ -1,8 +1,8 @@
 export let bd = [
   {
-    id: '1',
+    id: 1,
     name: 'Проект',
-    tacksList: [
+    tasksList: [
       {
         id: 1,
         listName: 'Данные',
@@ -21,9 +21,9 @@ export let bd = [
     ] 
   },
   {
-    id: '2',
+    id: 2,
     name: 'Рабочее место',
-    tacksList: [
+    tasksList: [
       {
         id: 1,
         listName: 'Канцелярия',

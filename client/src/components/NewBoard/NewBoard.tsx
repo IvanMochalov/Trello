@@ -32,7 +32,7 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
   }
 
   return (
-    <div>
+    <>
       <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
         Новая доска
       </Button>
@@ -74,6 +74,6 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }

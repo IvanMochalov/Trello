@@ -1,21 +1,24 @@
-import React from 'react'
-import { Container, Box } from '@mui/material'
-import { Link, Outlet } from 'react-router-dom'
-import { Smile } from '../Smile'
-import styles from './layout.module.css'
+import React from 'react';
+import { Container, Box } from '@mui/material';
+import { Link, Outlet } from 'react-router-dom';
+import { Smile } from '../Smile';
+import { Board } from '../../type';
+import styles from './layout.module.css';
+import {bd} from '../../data';
 
 export const Layout = () => {
-  const [boardsList, setBoardsList] = React.useState(() => {
+  localStorage.setItem('boardsList', JSON.stringify(bd));
+  const [boardsList, setBoardsList] = React.useState<Board[]>(() => {
     const list = localStorage.getItem('boardsList')
     if (list && list !== 'undefined') {
       return JSON.parse(list)
     }
     return []
   });
-  
+
   const handleSaveBoard = (boardName: string) => {
-    setBoardsList([...boardsList, {id: parseInt(boardsList.at(-1)?.id ?? 0) + 1, name: boardName}])
-    localStorage.boardsList =  JSON.stringify([...boardsList, {id: parseInt(boardsList.at(-1)?.id ?? '0') + 1, name: boardName}]);
+    setBoardsList((prev) => [...prev, {id: (prev.at(-1)?.id ?? 0) + 1, name: boardName}]);
+    localStorage.boardsList =  JSON.stringify([...boardsList, {id: (boardsList.at(-1)?.id ?? 0) + 1, name: boardName}]);
   };
 
   return (
