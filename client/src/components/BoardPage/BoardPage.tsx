@@ -11,7 +11,6 @@ export const BoardPage = () => {
   const [boardsList]: [Board[]] = useOutletContext();
 
   const currentBoard = boardsList.find(board => board.id === parseInt(board_id || ''));
-  console.log(currentBoard)
 
   return (
     <Stack spacing={3} direction="column">

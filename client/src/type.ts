@@ -7,5 +7,10 @@ export type Board = {
 export type Task = {
   id: number
   listName: string
-  listSteps?: string[]
+  listSteps?: Step[]
+}
+
+export type Step = {
+  id: number
+  stepDescription: string
 }
