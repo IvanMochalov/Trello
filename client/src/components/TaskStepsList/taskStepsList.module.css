@@ -1,11 +1,11 @@
 .taskStepsListWrapper {
-  padding: 8px;
   border: 1px solid lightgray;
   border-radius: 4px;
+  background-color: white; 
 }
 .taskStepsListTitle {
-  margin: 0 0 10px;
-  padding: 0 0 5px;
+  margin: 0;
+  padding: 8px;
   color: #333;
   text-align: center;
   border-bottom: 1px solid lightgray;

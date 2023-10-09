@@ -7,7 +7,7 @@ import styles from './layout.module.css';
 import {bd} from '../../data';
 
 export const Layout = () => {
-  localStorage.setItem('boardsList', JSON.stringify(bd));
+  // localStorage.setItem('boardsList', JSON.stringify(bd));
   const [boardsList, setBoardsList] = React.useState<Board[]>(() => {
     const list = localStorage.getItem('boardsList')
     if (list && list !== 'undefined') {
@@ -17,9 +17,18 @@ export const Layout = () => {
   });
 
   const handleSaveBoard = (boardName: string) => {
-    setBoardsList((prev) => [...prev, {id: (prev.at(-1)?.id ?? 0) + 1, name: boardName}]);
-    localStorage.boardsList =  JSON.stringify([...boardsList, {id: (boardsList.at(-1)?.id ?? 0) + 1, name: boardName}]);
+    setBoardsList((prev) => {
+      const id = prev.reduce((sum, curr) => {
+        return curr.id > sum ? curr.id + 1 : sum + 1;
+      }, 0);
+      return [...prev, {id, name: boardName}]
+    });
   };
+
+  React.useEffect(() => {
+    console.log('useEffect')
+    localStorage.boardsList =  JSON.stringify([...boardsList]);
+  }, [boardsList])
 
   return (
     <React.Fragment>
