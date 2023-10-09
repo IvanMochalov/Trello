@@ -1,4 +1,4 @@
-export let bd = [
+export const bd = [
   {
     id: 1,
     name: 'Проект',

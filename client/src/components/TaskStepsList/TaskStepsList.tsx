@@ -33,9 +33,9 @@ export const TaskStepsList = ({ listId, listName, steps }: ITasksListProps) => {
             style={getListStyle(snapshot.isDraggingOver)}
             {...provided.droppableProps}
           >
-            {steps?.map((step: Step, index) => (
+            {/* {steps?.map((step: Step, index) => (
               <TaskStep key={step.id} stepId={step.id} text={step.stepDescription} index={index}/>
-            ))}
+            ))} */}
             {provided.placeholder}
           </Stack>
         )}

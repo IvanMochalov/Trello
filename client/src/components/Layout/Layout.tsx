@@ -4,31 +4,48 @@ import { Link, Outlet } from 'react-router-dom';
 import { Smile } from '../Smile';
 import { Board } from '../../type';
 import styles from './layout.module.css';
-import {bd} from '../../data';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import {initialData} from '../../data/source'
+import { DropResult } from 'react-beautiful-dnd';
 
 export const Layout = () => {
-  // localStorage.setItem('boardsList', JSON.stringify(bd));
-  const [boardsList, setBoardsList] = React.useState<Board[]>(() => {
-    const list = localStorage.getItem('boardsList')
-    if (list && list !== 'undefined') {
-      return JSON.parse(list)
-    }
-    return []
-  });
+  const [initialValue, setInitialValue] = useLocalStorage(initialData, 'boardsList')
 
-  const handleSaveBoard = (boardName: string) => {
-    setBoardsList((prev) => {
-      const id = prev.reduce((sum, curr) => {
-        return curr.id > sum ? curr.id + 1 : sum + 1;
-      }, 0);
-      return [...prev, {id, name: boardName}]
-    });
-  };
+  // const handleSaveBoard = (boardName: string) => {
+  //   setBoardsList((prev: Board[]) => {
+  //     const id = prev.reduce((sum, curr) => {
+  //       return curr.id > sum ? curr.id + 1 : sum + 1;
+  //     }, 0);
+  //     return [...prev, {id, name: boardName}]
+  //   });
+  // };
 
-  React.useEffect(() => {
-    console.log('useEffect')
-    localStorage.boardsList =  JSON.stringify([...boardsList]);
-  }, [boardsList])
+  // const handleDragEnd = (result: DropResult) => {
+  //   const { destination, source } = result;
+
+
+  //   // const currentBoard = boardsList.find((board: Board) => board.id === (board_id ));
+  //   // console.log('result', result)
+
+  //   if (!destination) {
+  //     return;
+  //   }
+
+  //   if (
+  //     destination.droppableId === source.droppableId &&
+  //     destination.index === source.index
+  //   ) {
+  //     return;
+  //   }
+
+  //   // const task = currentBoard.tasksList ? currentBoard.tasksList[Number(source.droppableId)-1] : null;
+  //   // const listSteps = task?.listSteps;
+  //   // const cutStep = listSteps?.splice(source.index, 1);
+  //   // cutStep && task?.listSteps?.splice(destination.index, 0, cutStep[0]);
+    
+  //   return result
+  // }
+  console.log(initialValue)
 
   return (
     <React.Fragment>
@@ -39,7 +56,11 @@ export const Layout = () => {
               <Smile />
             </Link>
           </div>
-          <Outlet context={[boardsList, handleSaveBoard]}/>
+          <Outlet context={[
+            initialValue,
+            // handleSaveBoard,
+            // handleDragEnd
+          ]}/>
         </Box>
       </Container>
     </React.Fragment>
