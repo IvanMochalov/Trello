@@ -10,8 +10,7 @@ export const BoardPage = () => {
 
   const [boardsList]: [Board[]] = useOutletContext();
 
-  const currentBoard = boardsList.find(board => board.id === parseInt(board_id || ''));
-  console.log(currentBoard)
+  const currentBoard = boardsList.find(board => board.id === parseInt((board_id || '')));
 
   return (
     <Stack spacing={3} direction="column">
@@ -21,7 +20,7 @@ export const BoardPage = () => {
         </div>
         <Button variant="outlined">Добавить список</Button>
       </Stack>
-      <BoardTasksList tasksList={currentBoard?.tasksList} />
+      <BoardTasksList boardId={parseInt(board_id || '')} tasksList={currentBoard?.tasksList} />
     </Stack>
   )
 }
