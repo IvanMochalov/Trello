@@ -1,53 +1,58 @@
-import { Task } from '../../type';
-import { Stack } from '@mui/material';
+import { TBoard, TInitialData } from '../../type';
 import { TaskStepsList } from '../TaskStepsList';
-import { DragDropContext } from 'react-beautiful-dnd';
-import type { OnDragEndResponder } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useOutletContext } from 'react-router';
+import styled from 'styled-components'
 
 interface IBoardTasksListProps {
-  tasksList?: Task[]
-  boardId: number
+  board: TBoard
 }
 
-export const BoardTasksList = ({ tasksList, boardId }: IBoardTasksListProps) => {
-  const [handleDragEnd]: [() => void] = useOutletContext();
+interface IContainer {
+  isDraggingOver?: boolean
+}
 
-  // const handleDragEnd = (result: DropResult) => {
-  //   const { destination, source } = result;
+const Container = styled.div<IContainer>`
+  display: flex;
+  margin: 0 -8px;
+  padding: 10px 0;
+  transition: background-color .2s ease-in-out;
+  background-color: ${(props) => props.isDraggingOver ? 'lightblue' : 'inherit'}
+`
 
-  //   // console.log('result', result)
-
-  //   if (!destination) {
-  //     return;
-  //   }
-
-  //   if (
-  //     destination.droppableId === source.droppableId &&
-  //     destination.index === source.index
-  //   ) {
-  //     return;
-  //   }
-
-  //   const task = tasksList ? tasksList[Number(source.droppableId)-1] : null;
-  //   const listSteps = task?.listSteps;
-  //   const cutStep = listSteps?.splice(source.index, 1);
-  //   cutStep && task?.listSteps?.splice(destination.index, 0, cutStep[0]);
-
-  //   console.log('listSteps', listSteps)
-    
-  //   return result
-  // }
+export const BoardTasksList = (
+    { board }: IBoardTasksListProps
+  ) => {
+    const [initialValue,,handleDragEnd]: [TInitialData, (boardName: string) => void, () => void] = useOutletContext();
+    // console.log('board.taskIds', board.taskIds)
 
   return (
-    <Stack spacing={2} direction="row">
-      <DragDropContext
-        onDragEnd={handleDragEnd}
+    <DragDropContext
+      onDragEnd={handleDragEnd}
+    >
+      <Droppable
+        droppableId="all-tasks"
+        direction="horizontal"
+        type="task"
       >
-        {/* {tasksList?.map((task: Task) => (
-          <TaskStepsList key={task.id} listId={task.id} listName={task.listName} steps={task.listSteps} />
-        ))} */}
-      </DragDropContext>
-    </Stack>
+        {(provided, snapshot) => (
+          <Container
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            isDraggingOver={snapshot.isDraggingOver}
+          >
+            {board.taskIds.map((taskId: string, index) => {
+              const task = initialValue.tasks[taskId];
+              // console.log('task',task)
+              
+              return (
+                <TaskStepsList key={task.id} task={task} index={index}/>
+              )
+            })}
+            {provided.placeholder}
+          </Container>
+        )}
+      </Droppable>
+    </DragDropContext>
   )
 }

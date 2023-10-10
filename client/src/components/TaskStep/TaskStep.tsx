@@ -1,36 +1,60 @@
-import React from 'react';
-import styles from './taskStep.module.css';
-import { Draggable, DraggableProvided, DraggableStateSnapshot } from 'react-beautiful-dnd';
-// import type { DraggableStyle } from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
+import { TStep } from '../../type';
+import styled from 'styled-components';
 
 interface ITaskStepProps {
+  step: TStep
   index: number
-  stepId: number
-  text: string
 }
 
-// const getItemStyle = (isDragging: boolean, draggableStyle?: DraggableStyle): Object => ({
-//   background: isDragging ? 'lightgreen' : '#e1f2ff',
-//   ...draggableStyle
-// });
+interface IContainer {
+  isDragging?: boolean
+  isDragDisabled?: boolean
+}
 
+const Container = styled.div<IContainer>`
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  padding: 8px;
+  margin-bottom: 5px;
+  background-color: ${(props) => 
+    props.isDragDisabled
+      ? 'darkgray '
+      : props.isDragging
+        ? 'lightgreen'
+        : 'white'};
+  transition: background-color .2s ease-in-out;
 
-export const TaskStep = ({ stepId, text, index }: ITaskStepProps) => {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  }
+`;
+
+export const TaskStep = ({ step, index }: ITaskStepProps) => {
+
   return (
-    <Draggable draggableId={stepId.toString()} index={index}>
-      {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
-        <div
-          className={styles.taskStepWrapper}
+    <Draggable
+      draggableId={step.id}
+      index={index}
+      // index={step.position}
+    >
+      {(provided, snapshot) => (
+        <Container
+          ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          // style={getItemStyle(
-          //   provided.draggableStyle,
-          //   snapshot.isDragging
-          // )}
+          aria-roledescription="Press space bar to lift the step of task"
         >
-          {text}
-        </div>
+          {step.content}
+        </Container>
       )}
     </Draggable>
   )

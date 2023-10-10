@@ -2,12 +2,11 @@ import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
+import { useOutletContext } from 'react-router-dom';
+import { TInitialData } from '../../type';
 
-interface INewBoardProps {
-  onSaveButtonClick: (name: string) => void;
-}
-
-export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
+export const NewBoard = () => {
+  const [,handleSaveBoard]: [TInitialData, (boardName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
   const [boardName, setBoardName] = React.useState('Моя доска');
 
@@ -69,7 +68,7 @@ export const NewBoard = ({ onSaveButtonClick }: INewBoardProps) => {
           <Button autoFocus onClick={handleClose}>
             Отмена
           </Button>
-          <Button onClick={() => {onSaveButtonClick(boardName); setOpen(false);}} autoFocus>
+          <Button onClick={() => {handleSaveBoard(boardName); setOpen(false);}} autoFocus>
             Сохранить
           </Button>
         </DialogActions>

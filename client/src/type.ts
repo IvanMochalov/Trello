@@ -1,46 +1,32 @@
-// export type Board = {
-//   id: number
-//   name: string
-//   tasksList?: Task[]
-// }
-
-// export type Task = {
-//   id: number
-//   listName: string
-//   listSteps?: Step[]
-// }
-
-// export type Step = {
-//   id: number
-//   stepDescription: string
-// }
-
-export interface Step {
+export type TStep = {
   id: string
   content: string
+  position: number
 }
 
-export interface Task {
+export type TTask = {
   id: string
   title: string
   stepIds: string[]
+  position: number
 }
 
-export interface Board {
+export type TBoard = {
   id: string
   title: string
-  stepIds: string[]
+  taskIds: string[]
+  position: number
 }
 
-export interface initialData {
+export type TInitialData = {
   boardOrder: string[]
   boards: {
-    [key: string]: Board
-  }
-  tasks: {
-    [key: string]: Task
+    [key: string]: TBoard
   }
   steps: {
-    [key: string]: Step
+    [key: string]: TStep
+  }
+  tasks: {
+    [key: string]: TTask
   }
 }
