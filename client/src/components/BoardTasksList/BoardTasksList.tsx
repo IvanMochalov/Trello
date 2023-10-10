@@ -2,14 +2,14 @@ import { TBoard, TInitialData } from '../../type';
 import { TaskStepsList } from '../TaskStepsList';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useOutletContext } from 'react-router';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 interface IBoardTasksListProps {
   board: TBoard
 }
 
 interface IContainer {
-  isDraggingOver?: boolean
+  isdraggingover?: boolean
 }
 
 const Container = styled.div<IContainer>`
@@ -17,14 +17,13 @@ const Container = styled.div<IContainer>`
   margin: 0 -8px;
   padding: 10px 0;
   transition: background-color .2s ease-in-out;
-  background-color: ${(props) => props.isDraggingOver ? 'lightblue' : 'inherit'}
+  background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'}
 `
 
 export const BoardTasksList = (
     { board }: IBoardTasksListProps
   ) => {
     const [initialValue,,handleDragEnd]: [TInitialData, (boardName: string) => void, () => void] = useOutletContext();
-    // console.log('board.taskIds', board.taskIds)
 
   return (
     <DragDropContext
@@ -39,14 +38,17 @@ export const BoardTasksList = (
           <Container
             {...provided.droppableProps}
             ref={provided.innerRef}
-            isDraggingOver={snapshot.isDraggingOver}
+            isdraggingover={snapshot.isDraggingOver}
           >
             {board.taskIds.map((taskId: string, index) => {
               const task = initialValue.tasks[taskId];
-              // console.log('task',task)
               
               return (
-                <TaskStepsList key={task.id} task={task} index={index}/>
+                <TaskStepsList
+                  key={task.id}
+                  task={task}
+                  index={index}
+                />
               )
             })}
             {provided.placeholder}

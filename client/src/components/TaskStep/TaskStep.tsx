@@ -8,8 +8,8 @@ interface ITaskStepProps {
 }
 
 interface IContainer {
-  isDragging?: boolean
-  isDragDisabled?: boolean
+  isdragging?: boolean
+  isdraggingover?: boolean
 }
 
 const Container = styled.div<IContainer>`
@@ -18,9 +18,9 @@ const Container = styled.div<IContainer>`
   padding: 8px;
   margin-bottom: 5px;
   background-color: ${(props) => 
-    props.isDragDisabled
+    props.isdraggingover
       ? 'darkgray '
-      : props.isDragging
+      : props.isdragging
         ? 'lightgreen'
         : 'white'};
   transition: background-color .2s ease-in-out;
@@ -48,10 +48,9 @@ export const TaskStep = ({ step, index }: ITaskStepProps) => {
       {(provided, snapshot) => (
         <Container
           ref={provided.innerRef}
-          isDragging={snapshot.isDragging}
+          isdragging={snapshot.isDragging}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          aria-roledescription="Press space bar to lift the step of task"
         >
           {step.content}
         </Container>

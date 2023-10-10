@@ -29,8 +29,8 @@ export const Layout = () => {
     const { destination, source, draggableId, type } = result;
     console.log(result)
 
-    // const step = initialValue.steps[draggableId]
-    // console.log(step)
+    const step = initialValue.steps[draggableId]
+    console.log(step)
 
     if (!destination) {
       return;

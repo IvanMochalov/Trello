@@ -9,11 +9,11 @@ interface ITasksListProps {
   index: number
 }
 interface ITitle {
-  isDragging?: boolean
+  isdragging?: boolean
 }
 
 interface ITaskStepsListWrapper {
-  isDraggingOver?: boolean
+  isdraggingover?: boolean
 }
 
 const Container = styled.div`
@@ -32,7 +32,7 @@ const Title = styled.h3<ITitle>`
   text-align: center;
   border-bottom: 1px solid lightgray;
   transition: background-color .2s ease-in-out;
-  background-color: ${(props) => props.isDragging ? 'lightgreen' : 'white'};
+  background-color: ${(props) => props.isdragging ? 'lightgreen' : 'white'};
 `
 
 const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
@@ -43,14 +43,18 @@ const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
   min-height: 100px;
   height: 100%;
   transition: background-color .2s ease-in-out;
-  background-color: ${(props) => props.isDraggingOver ? 'lightblue' : 'white'}
+  background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'white'}
 `
 
 export const TaskStepsList = ({ task, index }: ITasksListProps) => {
   const [initialValue]: [TInitialData] = useOutletContext();
 
   return (
-    <Draggable draggableId={task.id} index={index}>
+    <Draggable
+      draggableId={task.id}
+      index={index}
+      // index={task.position}
+    >
       {(provided, snapshot) => (
         <Container
           {...provided.draggableProps}
@@ -58,7 +62,7 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
         >
           <Title
             {...provided.dragHandleProps}
-            isDragging={snapshot.isDragging}
+            isdragging={snapshot.isDragging}
           >
             {task.title}
           </Title>
@@ -71,13 +75,17 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
               <TaskStepsListWrapper
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                isDraggingOver={snapshot.isDraggingOver}
+                isdraggingover={snapshot.isDraggingOver}
               >
                 {task.stepIds.map((stepId: string, index) => {
                   const step = initialValue.steps[stepId];
                   
                   return (
-                    <TaskStep key={step.id} step={step} index={index}/>
+                    <TaskStep
+                      key={step.id}
+                      step={step}
+                      index={index}
+                    />
                   )
                 })}
                 {provided.placeholder}

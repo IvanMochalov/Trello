@@ -3,7 +3,12 @@ import { TInitialData } from '../../type';
 import { Button, Stack } from '@mui/material';
 import { BoardTasksList } from '../BoardTasksList/BoardTasksList';
 import styles from './boardPage.module.css';
-import styled from 'styled-components'
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export const BoardPage = () => {
   const [initialData]: [TInitialData] = useOutletContext();
@@ -12,11 +17,6 @@ export const BoardPage = () => {
   
   const currentBoard = initialData.boards[board_id || ''];
 
-  const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-  `
-  
   return (
     <Container>
       <Stack spacing={1} direction="row" sx={{ marginBottom: '20px' }}>
