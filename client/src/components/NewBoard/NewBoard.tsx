@@ -34,6 +34,7 @@ export const NewBoard = () => {
       return;
     }
     handleSaveBoard(boardName.trim());
+    setBoardName('');
     setOpen(false);
   }
 

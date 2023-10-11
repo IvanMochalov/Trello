@@ -33,6 +33,7 @@ export const NewTask = () => {
       return;
     }
     handleSaveTask(taskName.trim());
+    setTaskName('');
     setOpen(false);
   }
 
