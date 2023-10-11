@@ -3,8 +3,9 @@ import { TaskStep } from '../TaskStep';
 import { Draggable } from 'react-beautiful-dnd';
 import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
 import { useOutletContext } from 'react-router-dom';
-import styled from 'styled-components';
 import { NewStep } from '../NewStep';
+import { Tooltip } from '@mui/material'
+import styled from 'styled-components';
 
 interface ITasksListProps {
   task: TTask
@@ -91,12 +92,14 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Title
-            {...provided.dragHandleProps}
-            isdragging={snapshot.isDragging}
-          >
-            {task.title}
-          </Title>
+          <Tooltip title="Dragg and drop" placement="top">
+            <Title
+              {...provided.dragHandleProps}
+              isdragging={snapshot.isDragging}
+            >
+              {task.title}
+            </Title>
+          </Tooltip>
           <NewStep currTask={task} />
           <StrictModeDroppable
             droppableId={task.id}

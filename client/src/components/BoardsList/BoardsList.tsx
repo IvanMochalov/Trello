@@ -2,6 +2,7 @@ import { Link, useOutletContext } from 'react-router-dom';
 import { TInitialData } from '../../type';
 import Stack from '@mui/material/Stack';
 import styles from './boardsList.module.css';
+import { Tooltip } from '@mui/material'
 
 export const BoardsList = () => {
   const [initialValue]: [TInitialData] = useOutletContext();
@@ -18,7 +19,9 @@ export const BoardsList = () => {
         const board = initialValue.boards[boardId];
         
         return (
-          <Link className={styles.boardItem} key={board.id} to={`/boards/${board.id}`}>{board.title}</Link>
+          <Tooltip title={`Go to ${board.title}`} placement="left">
+            <Link className={styles.boardItem} key={board.id} to={`/boards/${board.id}`}>{board.title}</Link>
+          </Tooltip>
         )
       })}
     </Stack>

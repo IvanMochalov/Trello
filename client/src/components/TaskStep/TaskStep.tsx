@@ -1,6 +1,7 @@
 import { Draggable } from 'react-beautiful-dnd';
 import { TStep } from '../../type';
 import styled from 'styled-components';
+import { Tooltip } from '@mui/material'
 
 interface ITaskStepProps {
   step: TStep
@@ -54,14 +55,16 @@ export const TaskStep = ({ step, index }: ITaskStepProps) => {
       // index={step.position}
     >
       {(provided, snapshot) => (
-        <Container
-          ref={provided.innerRef}
-          isdragging={snapshot.isDragging}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          {step.content}
-        </Container>
+        <Tooltip title="Dragg and drop" placement="right">
+          <Container
+            ref={provided.innerRef}
+            isdragging={snapshot.isDragging}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            {step.content}
+          </Container>
+        </Tooltip>
       )}
     </Draggable>
   )

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormControl } from '@mui/base';
-import { OutlinedInput } from '@mui/material';
+import { OutlinedInput, Tooltip } from '@mui/material';
 import styled from 'styled-components';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
 import { TInitialData, TTask } from '../../type';
@@ -79,12 +79,14 @@ export const NewStep = ({ currTask }: INewStep) => {
           />
         </FormControl>
         {stepName && (
-          <Button
-            type="submit"
-            form={formStepId}
-          >
-            <ArrowCircleRightOutlinedIcon sx={{cursor: 'pointer'}}/>
-          </Button>
+          <Tooltip title="Create new Step" placement="left-start">
+            <Button
+              type="submit"
+              form={formStepId}
+            >
+              <ArrowCircleRightOutlinedIcon sx={{cursor: 'pointer'}}/>
+            </Button>
+          </Tooltip>
         )}
       </Form>
     </Container>

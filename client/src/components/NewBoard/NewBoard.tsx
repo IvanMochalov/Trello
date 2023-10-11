@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useOutletContext } from 'react-router-dom';
@@ -40,9 +40,11 @@ export const NewBoard = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
-        Новая доска
-      </Button>
+      <Tooltip title="Create new Board" placement="right">
+        <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
+          Новая доска
+        </Button>
+      </Tooltip>
       <Dialog
         fullScreen={fullScreen}
         open={open}
