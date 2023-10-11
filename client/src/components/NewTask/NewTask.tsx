@@ -7,7 +7,10 @@ import { TInitialData } from '../../type';
 export const NewTask = () => {
   const [,,,handleSaveTask]: [TInitialData, () => void, (boardName: string) => void, (taskName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
-  const [taskName, setTaskName] = React.useState('Мой список');
+
+  const [taskName, setTaskName] = React.useState('');
+
+  const formTaskId = React.useId();
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -25,9 +28,11 @@ export const NewTask = () => {
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(event)
-    handleSaveTask(taskName);
+    event.preventDefault();
+    if (taskName === '') {
+      return;
+    }
+    handleSaveTask(taskName.trim());
     setOpen(false);
   }
 
@@ -52,7 +57,7 @@ export const NewTask = () => {
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
           >
-            <form id="form-task" noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <form id={formTaskId} noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl>
                 <OutlinedInput placeholder="Список №1" onChange={handleChange}/>
               </FormControl>
@@ -65,8 +70,7 @@ export const NewTask = () => {
           </Button>
           <Button
             type="submit"
-            form="form-task"
-            autoFocus
+            form={formTaskId}
           >
             Сохранить
           </Button>

@@ -4,11 +4,13 @@ import { Draggable } from 'react-beautiful-dnd';
 import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
+import { NewStep } from '../NewStep';
 
 interface ITasksListProps {
   task: TTask
   index: number
 }
+
 interface ITitle {
   isdragging?: boolean
 }
@@ -22,18 +24,19 @@ const Container = styled.div`
   border: 1px solid lightgray;
   border-radius: 4px;
   background-color: white;
-  width: calc((100% - (3 * 15px))/4);
+  width: calc((100% - (4 * 16px))/4);
   min-height: 150px;
   min-width: 150px;
   display: flex;
   flex-direction: column;
+  margin: 8px;
 
-  &:not(:nth-child(4n-3)) {
-    margin-left: 15px;
-  }
-  &:not(:nth-child(-n+4)) {
-    margin-top: 15px;
-  }
+  // &:not(:nth-child(4n-3)) {
+  //   margin-left: 15px;
+  // }
+  // &:not(:nth-child(-n+4)) {
+  //   margin-top: 15px;
+  // }
 `
 const Title = styled.h3<ITitle>`
   margin: 0;
@@ -51,7 +54,6 @@ const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
   flex-direction: column;
   padding: 8px;
   flexGrow: 1;
-  // min-height: 100px;
   height: 100%;
   transition: background-color .2s ease-in-out;
   background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'white'}
@@ -77,6 +79,7 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
           >
             {task.title}
           </Title>
+          <NewStep currTask={task} />
           <StrictModeDroppable
             droppableId={task.id}
             type="step"

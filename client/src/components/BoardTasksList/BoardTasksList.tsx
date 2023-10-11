@@ -16,7 +16,7 @@ interface IContainer {
 const Container = styled.div<IContainer>`
   display: flex;
   flex-wrap: wrap;
-  padding: 10px 0;
+  margin: -8px -8px;
   transition: background-color .2s ease-in-out;
   background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'}
 `
