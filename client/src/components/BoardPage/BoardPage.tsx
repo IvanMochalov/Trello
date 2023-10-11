@@ -20,15 +20,22 @@ export const BoardPage = () => {
 
   return (
     <Container>
-      <Stack spacing={1} direction="row" sx={{ marginBottom: '20px' }}>
-        <div className={styles.boardTitleBox}>
-          {currentBoard.title}
-        </div>
-        <div className={styles.buttonWrapper}>
-          <NewTask board={currentBoard}/>
-        </div>
-      </Stack>
-      <BoardTasksList board={currentBoard}/>
+      {currentBoard === undefined ?
+        <p>board not found</p>
+        : (
+          <>
+            <Stack spacing={1} direction="row" sx={{ marginBottom: '20px' }}>
+              <div className={styles.boardTitleBox}>
+                {currentBoard.title}
+              </div>
+              <div className={styles.buttonWrapper}>
+                <NewTask />
+              </div>
+            </Stack>
+            <BoardTasksList board={currentBoard}/>
+          </>
+        )
+      }
     </Container>
   )
 }

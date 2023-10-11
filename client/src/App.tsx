@@ -10,6 +10,7 @@ const App: React.FC = () => {
 				<Route index element={<MainContent />} />
 				<Route path='/boards/:board_id' element={<BoardPage />} />
 			</Route>
+			<Route path='*' element={<p>not found</p>}/>
 		</Routes>
 	)
 }

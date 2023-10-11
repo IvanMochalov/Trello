@@ -2,13 +2,9 @@ import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useOutletContext } from 'react-router-dom';
-import { TBoard, TInitialData } from '../../type';
+import { TInitialData } from '../../type';
 
-interface INewTask {
-  board: TBoard
-}
-
-export const NewTask = ({ board }: INewTask) => {
+export const NewTask = () => {
   const [,,,handleSaveTask]: [TInitialData, () => void, (boardName: string) => void, (taskName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
   const [taskName, setTaskName] = React.useState('Мой список');
@@ -51,14 +47,12 @@ export const NewTask = ({ board }: INewTask) => {
         </DialogTitle>
         <DialogContent>
           <Box
-            component="form"
+            component="div"
             sx={{
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            noValidate
-            autoComplete="off"
           >
-            <form id="form-board" noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <form id="form-task" noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl>
                 <OutlinedInput placeholder="Список №1" onChange={handleChange}/>
               </FormControl>
@@ -71,7 +65,7 @@ export const NewTask = ({ board }: INewTask) => {
           </Button>
           <Button
             type="submit"
-            id="form-board"
+            form="form-task"
             autoFocus
           >
             Сохранить
