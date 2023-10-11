@@ -7,22 +7,68 @@ import styles from './layout.module.css';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import {initialData} from '../../data/source';
 import { DropResult } from 'react-beautiful-dnd';
+import { randomId } from '../../utils/getRandomId';
 
 export const Layout = () => {
   const [initialValue, setInitialValue] = useLocalStorage<TInitialData>(initialData, 'boardsList')
 
   const { board_id } = useParams<{ board_id: string }>();
-  
   const currentBoard = initialValue.boards[board_id || ''];
 
   const handleSaveBoard = (boardName: string) => {
-    // setBoardsList((prev: Board[]) => {
-    //   const id = prev.reduce((sum, curr) => {
-    //     return curr.id > sum ? curr.id + 1 : sum + 1;
-    //   }, 0);
-    //   return [...prev, {id, name: boardName}]
-    // });
-    console.log(boardName)
+    const newId = randomId(10);
+
+    const newBoard = {
+      id: newId,
+      title: boardName,
+      taskIds: [],
+      position: 0,
+    };
+
+    const newState = {
+      ...initialValue,
+      boards: {
+        ...initialValue.boards,
+        [newBoard.id]: newBoard,
+      },
+      boardOrder: [
+        newId,
+        ...initialValue.boardOrder,
+      ]
+    };
+
+    setInitialValue(newState);
+  };
+
+  const handleSaveTask = (taskName: string) => {
+    const newId = randomId(10);
+
+    const newTask = {
+      id: newId,
+      title: taskName,
+      stepIds: [],
+      position: 0,
+    };
+
+    const newState = {
+      ...initialValue,
+      tasks: {
+        ...initialValue.tasks,
+        [newTask.id]: newTask,
+      },
+      boards: {
+        ...initialValue.boards,
+        [currentBoard.id]: {
+          ...currentBoard,
+          taskIds: [
+            newId,
+            ...currentBoard.taskIds,
+          ]
+        }
+      }
+    };
+
+    setInitialValue(newState);
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -31,6 +77,9 @@ export const Layout = () => {
 
     const step = initialValue.steps[draggableId]
     console.log(step)
+    
+    const task = initialValue.tasks[draggableId]
+    console.log(task)
 
     if (!destination) {
       return;
@@ -127,8 +176,9 @@ export const Layout = () => {
           </div>
           <Outlet context={[
             initialValue,
+            handleDragEnd,
             handleSaveBoard,
-            handleDragEnd
+            handleSaveTask,
           ]}/>
         </Box>
       </Container>

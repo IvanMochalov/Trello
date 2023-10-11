@@ -1,6 +1,7 @@
 import { TInitialData, TTask } from '../../type';
 import { TaskStep } from '../TaskStep';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Draggable } from 'react-beautiful-dnd';
+import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
 import { useOutletContext } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -17,19 +18,29 @@ interface ITaskStepsListWrapper {
 }
 
 const Container = styled.div`
+  box-sizing: border-box;
   border: 1px solid lightgray;
   border-radius: 4px;
   background-color: white;
-  width: 230px;
+  width: calc((100% - (3 * 15px))/4);
+  min-height: 150px;
+  min-width: 150px;
   display: flex;
   flex-direction: column;
-  margin: 0 8px;
+
+  &:not(:nth-child(4n-3)) {
+    margin-left: 15px;
+  }
+  &:not(:nth-child(-n+4)) {
+    margin-top: 15px;
+  }
 `
 const Title = styled.h3<ITitle>`
   margin: 0;
   padding: 8px;
   color: #333;
   text-align: center;
+  cursor: grab;
   border-bottom: 1px solid lightgray;
   transition: background-color .2s ease-in-out;
   background-color: ${(props) => props.isdragging ? 'lightgreen' : 'white'};
@@ -40,7 +51,7 @@ const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
   flex-direction: column;
   padding: 8px;
   flexGrow: 1;
-  min-height: 100px;
+  // min-height: 100px;
   height: 100%;
   transition: background-color .2s ease-in-out;
   background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'white'}
@@ -66,7 +77,7 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
           >
             {task.title}
           </Title>
-          <Droppable
+          <StrictModeDroppable
             droppableId={task.id}
             type="step"
             direction="vertical"
@@ -91,7 +102,7 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
                 {provided.placeholder}
               </TaskStepsListWrapper>
             )}
-          </Droppable>
+          </StrictModeDroppable>
         </Container>
       )}
     </Draggable>

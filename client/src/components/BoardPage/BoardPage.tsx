@@ -1,9 +1,10 @@
 import { useOutletContext, useParams } from 'react-router-dom';
 import { TInitialData } from '../../type';
-import { Button, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { BoardTasksList } from '../BoardTasksList/BoardTasksList';
 import styles from './boardPage.module.css';
 import styled from 'styled-components';
+import { NewTask } from '../NewTask';
 
 const Container = styled.div`
   display: flex;
@@ -23,7 +24,9 @@ export const BoardPage = () => {
         <div className={styles.boardTitleBox}>
           {currentBoard.title}
         </div>
-        <Button variant="outlined">Добавить список</Button>
+        <div className={styles.buttonWrapper}>
+          <NewTask board={currentBoard}/>
+        </div>
       </Stack>
       <BoardTasksList board={currentBoard}/>
     </Container>

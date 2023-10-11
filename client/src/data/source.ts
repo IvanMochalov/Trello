@@ -29,7 +29,7 @@ export const initialData = {
         position: 2
       },
     'task-4': {
-        id: 'task-3',
+        id: 'task-4',
         title: 'Поиск решений',
         stepIds: [],
         position: 3

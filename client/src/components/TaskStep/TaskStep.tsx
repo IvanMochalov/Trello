@@ -17,6 +17,7 @@ const Container = styled.div<IContainer>`
   border-radius: 3px;
   padding: 8px;
   margin-bottom: 5px;
+  cursor: grab;
   background-color: ${(props) => 
     props.isdraggingover
       ? 'darkgray '

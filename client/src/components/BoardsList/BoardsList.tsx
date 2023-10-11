@@ -6,7 +6,6 @@ import styles from './boardsList.module.css';
 export const BoardsList = () => {
   const [initialValue]: [TInitialData] = useOutletContext();
 
-  console.log(initialValue)
   return (
     <Stack
       direction="column"

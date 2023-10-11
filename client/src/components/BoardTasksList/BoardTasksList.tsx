@@ -1,6 +1,7 @@
 import { TBoard, TInitialData } from '../../type';
 import { TaskStepsList } from '../TaskStepsList';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
 import { useOutletContext } from 'react-router';
 import styled from 'styled-components';
 
@@ -14,7 +15,7 @@ interface IContainer {
 
 const Container = styled.div<IContainer>`
   display: flex;
-  margin: 0 -8px;
+  flex-wrap: wrap;
   padding: 10px 0;
   transition: background-color .2s ease-in-out;
   background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'}
@@ -23,13 +24,13 @@ const Container = styled.div<IContainer>`
 export const BoardTasksList = (
     { board }: IBoardTasksListProps
   ) => {
-    const [initialValue,,handleDragEnd]: [TInitialData, (boardName: string) => void, () => void] = useOutletContext();
+  const [initialValue, handleDragEnd]: [TInitialData, () => void] = useOutletContext();
 
   return (
     <DragDropContext
       onDragEnd={handleDragEnd}
     >
-      <Droppable
+      <StrictModeDroppable
         droppableId="all-tasks"
         direction="horizontal"
         type="task"
@@ -54,7 +55,7 @@ export const BoardTasksList = (
             {provided.placeholder}
           </Container>
         )}
-      </Droppable>
+      </StrictModeDroppable>
     </DragDropContext>
   )
 }
