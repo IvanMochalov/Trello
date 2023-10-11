@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField, useMediaQuery } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useOutletContext } from 'react-router-dom';
 import { TBoard, TInitialData } from '../../type';
@@ -28,9 +28,11 @@ export const NewTask = ({ board }: INewTask) => {
     setTaskName(event.target.value)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log(event)
+    handleSaveTask(taskName);
+    setOpen(false);
   }
 
   return (
@@ -56,22 +58,22 @@ export const NewTask = ({ board }: INewTask) => {
             noValidate
             autoComplete="off"
           >
-            <TextField
-              autoFocus={true}
-              required
-              id="outlined-required"
-              label="Мой список"
-              placeholder="Список №1"
-              onChange={handleChange}
-              onSubmit={handleSubmit}
-            />
+            <form id="form-board" noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <FormControl>
+                <OutlinedInput placeholder="Список №1" onChange={handleChange}/>
+              </FormControl>
+            </form>
           </Box>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Отмена
           </Button>
-          <Button onClick={() => {handleSaveTask(taskName); setOpen(false);}} autoFocus>
+          <Button
+            type="submit"
+            id="form-board"
+            autoFocus
+          >
             Сохранить
           </Button>
         </DialogActions>

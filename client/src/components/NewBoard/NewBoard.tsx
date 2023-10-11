@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField, useMediaQuery } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useOutletContext } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { TInitialData } from '../../type';
 export const NewBoard = () => {
   const [,,handleSaveBoard]: [TInitialData, () => void, (boardName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
-  const [boardName, setBoardName] = React.useState('Моя доска');
+  const [boardName, setBoardName] = React.useState('');
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -25,9 +25,11 @@ export const NewBoard = () => {
     setBoardName(event.target.value)
   }
 
-  const handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     console.log(event)
+    handleSaveBoard(boardName);
+    setOpen(false);
   }
 
   return (
@@ -46,29 +48,27 @@ export const NewBoard = () => {
         </DialogTitle>
         <DialogContent>
           <Box
-            component="form"
+            component="div"
             sx={{
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
-            noValidate
-            autoComplete="off"
           >
-            <TextField
-              autoFocus={true}
-              required
-              id="outlined-required"
-              label="Моя доска"
-              placeholder="Доска №1"
-              onChange={handleChange}
-              onSubmit={handleSubmit}
-            />
+            <form id="form-board" noValidate autoComplete="off" onSubmit={handleSubmit}>
+              <FormControl>
+                <OutlinedInput placeholder="Доска №1" onChange={handleChange}/>
+              </FormControl>
+            </form>
           </Box>
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
             Отмена
           </Button>
-          <Button onClick={() => {handleSaveBoard(boardName); setOpen(false);}} autoFocus>
+          <Button
+            type="submit"
+            form="form-board"
+            autoFocus
+          >
             Сохранить
           </Button>
         </DialogActions>
