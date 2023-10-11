@@ -1,57 +1,61 @@
-import React from 'react';
-import { Board } from '../../type';
-import { Task } from '../../type';
-import { Stack } from '@mui/material';
+import { TBoard, TInitialData } from '../../type';
 import { TaskStepsList } from '../TaskStepsList';
 import { DragDropContext } from 'react-beautiful-dnd';
-import type { DropResult } from 'react-beautiful-dnd';
+import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
+import { useOutletContext } from 'react-router';
+import styled from 'styled-components';
 
 interface IBoardTasksListProps {
-  tasksList?: Task[]
-  boardId: number
+  board: TBoard
 }
 
-export const BoardTasksList = ({ tasksList, boardId }: IBoardTasksListProps) => {
+interface IContainer {
+  isdraggingover?: boolean
+}
 
-  const DragEndHandler = (result: DropResult) => {
-    const { destination, source } = result;
+const Container = styled.div<IContainer>`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  transition: background-color .2s ease-in-out;
+  background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'}
+`
 
-    // console.log('result', result)
-
-    if (!destination) {
-      return;
-    }
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const task = tasksList ? tasksList[Number(source.droppableId)-1] : null;
-    const listSteps = task?.listSteps;
-    const cutStep = listSteps?.splice(source.index, 1);
-    cutStep && task?.listSteps?.splice(destination.index, 0, cutStep[0]);
-
-    // console.log(typeof localStorage.boardsList)
-    // localStorage.boardsList =  JSON.stringify()
-    // console.log(JSON.parse(localStorage.boardsList).find((board: Board) => board.id === boardId))
-
-    console.log('listSteps', listSteps)
-    
-    return result
-  }
+export const BoardTasksList = (
+    { board }: IBoardTasksListProps
+  ) => {
+  const [initialValue, handleDragEnd]: [TInitialData, () => void] = useOutletContext();
 
   return (
-    <Stack spacing={2} direction="row">
-      <DragDropContext
-        onDragEnd={DragEndHandler}
+    <DragDropContext
+      onDragEnd={handleDragEnd}
+    >
+      <StrictModeDroppable
+        droppableId="all-tasks"
+        direction="horizontal"
+        type="task"
       >
-        {tasksList?.map((task: Task) => (
-          <TaskStepsList key={task.id} listId={task.id} listName={task.listName} steps={task.listSteps} />
-        ))}
-      </DragDropContext>
-    </Stack>
+        {(provided, snapshot) => (
+          <Container
+            {...provided.droppableProps}
+            ref={provided.innerRef}
+            isdraggingover={snapshot.isDraggingOver}
+          >
+            {board.taskIds.map((taskId: string, index) => {
+              const task = initialValue.tasks[taskId];
+              
+              return (
+                <TaskStepsList
+                  key={task.id}
+                  task={task}
+                  index={index}
+                />
+              )
+            })}
+            {provided.placeholder}
+          </Container>
+        )}
+      </StrictModeDroppable>
+    </DragDropContext>
   )
 }

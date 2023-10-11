@@ -1,26 +1,34 @@
-import React from 'react'
 import { useOutletContext, useParams } from 'react-router-dom';
-import { Board } from '../../type';
-import { Button, Stack } from '@mui/material';
+import { TInitialData } from '../../type';
+import { Stack } from '@mui/material';
 import { BoardTasksList } from '../BoardTasksList/BoardTasksList';
 import styles from './boardPage.module.css';
+import styled from 'styled-components';
+import { NewTask } from '../NewTask';
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export const BoardPage = () => {
+  const [initialData]: [TInitialData] = useOutletContext();
+
   const { board_id } = useParams<{ board_id: string }>();
-
-  const [boardsList]: [Board[]] = useOutletContext();
-
-  const currentBoard = boardsList.find(board => board.id === parseInt((board_id || '')));
+  
+  const currentBoard = initialData.boards[board_id || ''];
 
   return (
-    <Stack spacing={3} direction="column">
+    <Container>
       <Stack spacing={1} direction="row" sx={{ marginBottom: '20px' }}>
         <div className={styles.boardTitleBox}>
-          {currentBoard?.name}
+          {currentBoard.title}
         </div>
-        <Button variant="outlined">Добавить список</Button>
+        <div className={styles.buttonWrapper}>
+          <NewTask board={currentBoard}/>
+        </div>
       </Stack>
-      <BoardTasksList boardId={parseInt(board_id || '')} tasksList={currentBoard?.tasksList} />
-    </Stack>
+      <BoardTasksList board={currentBoard}/>
+    </Container>
   )
 }

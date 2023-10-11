@@ -1,14 +1,17 @@
 import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, TextField, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useOutletContext } from 'react-router-dom';
-import { TInitialData } from '../../type';
+import { TBoard, TInitialData } from '../../type';
 
-export const NewBoard = () => {
-  const [,,handleSaveBoard]: [TInitialData, () => void, (boardName: string) => void] = useOutletContext();
+interface INewTask {
+  board: TBoard
+}
+
+export const NewTask = ({ board }: INewTask) => {
+  const [,,,handleSaveTask]: [TInitialData, () => void, (boardName: string) => void, (taskName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
-  const [boardName, setBoardName] = React.useState('Моя доска');
+  const [taskName, setTaskName] = React.useState('Мой список');
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -22,7 +25,7 @@ export const NewBoard = () => {
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setBoardName(event.target.value)
+    setTaskName(event.target.value)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLInputElement>) => {
@@ -32,8 +35,8 @@ export const NewBoard = () => {
 
   return (
     <>
-      <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
-        Новая доска
+      <Button variant="outlined" onClick={handleClickOpen}>
+        Добавить список
       </Button>
       <Dialog
         fullScreen={fullScreen}
@@ -42,7 +45,7 @@ export const NewBoard = () => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Название доски"}
+          {"Название списка"}
         </DialogTitle>
         <DialogContent>
           <Box
@@ -57,8 +60,8 @@ export const NewBoard = () => {
               autoFocus={true}
               required
               id="outlined-required"
-              label="Моя доска"
-              placeholder="Доска №1"
+              label="Мой список"
+              placeholder="Список №1"
               onChange={handleChange}
               onSubmit={handleSubmit}
             />
@@ -68,7 +71,7 @@ export const NewBoard = () => {
           <Button autoFocus onClick={handleClose}>
             Отмена
           </Button>
-          <Button onClick={() => {handleSaveBoard(boardName); setOpen(false);}} autoFocus>
+          <Button onClick={() => {handleSaveTask(taskName); setOpen(false);}} autoFocus>
             Сохранить
           </Button>
         </DialogActions>

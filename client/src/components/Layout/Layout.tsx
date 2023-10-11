@@ -1,34 +1,169 @@
 import React from 'react';
 import { Container, Box } from '@mui/material';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useParams } from 'react-router-dom';
 import { Smile } from '../Smile';
-import { Board } from '../../type';
+import { TInitialData } from '../../type';
 import styles from './layout.module.css';
-import {bd} from '../../data';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import {initialData} from '../../data/source';
+import { DropResult } from 'react-beautiful-dnd';
+import { randomId } from '../../utils/getRandomId';
 
 export const Layout = () => {
-  // localStorage.setItem('boardsList', JSON.stringify(bd));
-  const [boardsList, setBoardsList] = React.useState<Board[]>(() => {
-    const list = localStorage.getItem('boardsList')
-    if (list && list !== 'undefined') {
-      return JSON.parse(list)
-    }
-    return []
-  });
+  const [initialValue, setInitialValue] = useLocalStorage<TInitialData>(initialData, 'boardsList')
+
+  const { board_id } = useParams<{ board_id: string }>();
+  const currentBoard = initialValue.boards[board_id || ''];
 
   const handleSaveBoard = (boardName: string) => {
-    setBoardsList((prev) => {
-      const id = prev.reduce((sum, curr) => {
-        return curr.id > sum ? curr.id + 1 : sum + 1;
-      }, 0);
-      return [...prev, {id, name: boardName}]
-    });
+    const newId = randomId(10);
+
+    const newBoard = {
+      id: newId,
+      title: boardName,
+      taskIds: [],
+      position: 0,
+    };
+
+    const newState = {
+      ...initialValue,
+      boards: {
+        ...initialValue.boards,
+        [newBoard.id]: newBoard,
+      },
+      boardOrder: [
+        newId,
+        ...initialValue.boardOrder,
+      ]
+    };
+
+    setInitialValue(newState);
   };
 
-  React.useEffect(() => {
-    console.log('useEffect')
-    localStorage.boardsList =  JSON.stringify([...boardsList]);
-  }, [boardsList])
+  const handleSaveTask = (taskName: string) => {
+    const newId = randomId(10);
+
+    const newTask = {
+      id: newId,
+      title: taskName,
+      stepIds: [],
+      position: 0,
+    };
+
+    const newState = {
+      ...initialValue,
+      tasks: {
+        ...initialValue.tasks,
+        [newTask.id]: newTask,
+      },
+      boards: {
+        ...initialValue.boards,
+        [currentBoard.id]: {
+          ...currentBoard,
+          taskIds: [
+            newId,
+            ...currentBoard.taskIds,
+          ]
+        }
+      }
+    };
+
+    setInitialValue(newState);
+  };
+
+  const handleDragEnd = (result: DropResult) => {
+    const { destination, source, draggableId, type } = result;
+    console.log(result)
+
+    const step = initialValue.steps[draggableId]
+    console.log(step)
+    
+    const task = initialValue.tasks[draggableId]
+    console.log(task)
+
+    if (!destination) {
+      return;
+    }
+
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    if (type === 'task') {
+      const newTaskIds = Array.from(currentBoard.taskIds);
+      newTaskIds.splice(source.index, 1);
+      newTaskIds.splice(destination.index, 0, draggableId);
+
+      const newBoard = {
+        ...currentBoard,
+        taskIds: newTaskIds,
+      };
+
+      const newState = {
+        ...initialValue,
+        boards: {
+          ...initialValue.boards,
+          [currentBoard.id]: newBoard,
+        },
+      };
+
+      setInitialValue(newState);
+      return;
+    }
+
+    const home = initialValue.tasks[source.droppableId];
+    const foreign = initialValue.tasks[destination.droppableId];
+
+    if (home === foreign) {
+      const newStepIds = Array.from(home.stepIds);
+      newStepIds.splice(source.index, 1);
+      newStepIds.splice(destination.index, 0, draggableId);
+  
+      const newTask = {
+        ...home,
+        stepIds: newStepIds,
+      };
+  
+      const newState = {
+        ...initialValue,
+        tasks: {
+          ...initialValue.tasks,
+          [newTask.id]: newTask,
+        },
+      };
+  
+      setInitialValue(newState)
+      return;
+    }
+
+    const homeStepIds = Array.from(home.stepIds);
+    homeStepIds.splice(source.index, 1);
+    const newHome = {
+      ...home,
+      stepIds: homeStepIds,
+    };
+
+    const foreignStepIds = Array.from(foreign.stepIds);
+    foreignStepIds.splice(destination.index, 0, draggableId)
+    const newForeign = {
+      ...foreign,
+      stepIds: foreignStepIds,
+    };
+
+    const newState = {
+      ...initialValue,
+      tasks: {
+        ...initialValue.tasks,
+        [newHome.id]: newHome,
+        [newForeign.id]: newForeign,
+      },
+    };
+
+    setInitialValue(newState)
+  };
 
   return (
     <React.Fragment>
@@ -39,7 +174,12 @@ export const Layout = () => {
               <Smile />
             </Link>
           </div>
-          <Outlet context={[boardsList, handleSaveBoard]}/>
+          <Outlet context={[
+            initialValue,
+            handleDragEnd,
+            handleSaveBoard,
+            handleSaveTask,
+          ]}/>
         </Box>
       </Container>
     </React.Fragment>
