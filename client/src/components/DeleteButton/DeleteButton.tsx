@@ -21,7 +21,7 @@ export const DeleteButton = ({ handleClick, boardName }: IDeleteButton) => {
   return (
     <>
       <Tooltip title="Delete" placement="top">
-        <IconButton sx={{ marginRight: '5px' }} onClick={handleClickOpen}>
+        <IconButton sx={{ marginRight: '5px', color: 'crimson' }} onClick={handleClickOpen}>
           <DeleteIcon />
         </IconButton>
       </Tooltip>

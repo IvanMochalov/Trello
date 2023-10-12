@@ -12,11 +12,43 @@ import { EditButton } from '../EditButton'
 
 const BoardWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: start;
+  overflow: hidden;
+  width: 100%;
+  overflow-wrap: break-word;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 4px;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12);
+  background-color: #fff;
+  font-weight: 600;
+  font-size: 1.2em;
+  line-height: 1.43;
+  letter-spacing: 0.01071em;
+  padding: 8px;
+
+  &:active {
+    box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12);
+  }
+  &:hover {
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    background-color: #eaeaea;
+    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  }
+  &:focus-visible {
+    outline: none;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    background-color: #eaeaea;
+    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
+  }
 `
 
 const BoardActionsWrapper = styled.div`
   display: flex;
-  margin-right: 10px;
+  width: 20%;
+  right: 0;
 `
 
 export const BoardsList = () => {
@@ -33,15 +65,15 @@ export const BoardsList = () => {
         const board = initialValue.boards[boardId];
         
         return (
-          <BoardWrapper>
-            <BoardActionsWrapper>
-              <EditButton />
-              <DeleteButton boardName={board.title} handleClick={() => {handleDeleteBoard(board.id)}}/>
-            </BoardActionsWrapper>
-            <Tooltip key={board.id} title={`Go to ${board.title}`} placement="top">
-              <Link className={styles.boardItem} key={board.id} to={`/boards/${board.id}`}>{board.title}</Link>
-            </Tooltip>
-          </BoardWrapper>
+          <Tooltip key={board.id} title={`Go to ${board.title}`} placement="top">
+            <BoardWrapper tabIndex={0}>
+                <Link className={styles.boardItemLink} key={board.id} to={`/boards/${board.id}`} tabIndex={-1}>{board.title}</Link>
+              <BoardActionsWrapper>
+                <EditButton />
+                <DeleteButton boardName={board.title} handleClick={() => {handleDeleteBoard(board.id)}}/>
+              </BoardActionsWrapper>
+            </BoardWrapper>
+          </Tooltip>
         )
       })}
     </Stack>
