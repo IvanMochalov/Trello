@@ -55,7 +55,7 @@ export const TaskStep = ({ step, index }: ITaskStepProps) => {
       // index={step.position}
     >
       {(provided, snapshot) => (
-        <Tooltip title="Dragg and drop" placement="right">
+        <Tooltip title="Dragg and drop" placement="right" key={step.id}>
           <Container
             ref={provided.innerRef}
             isdragging={snapshot.isDragging}

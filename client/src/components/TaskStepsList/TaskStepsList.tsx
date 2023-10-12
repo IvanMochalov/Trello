@@ -92,7 +92,7 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Tooltip title="Dragg and drop" placement="top">
+          <Tooltip title="Dragg and drop" placement="top" key={task.id}>
             <Title
               {...provided.dragHandleProps}
               isdragging={snapshot.isDragging}

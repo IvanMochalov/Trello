@@ -6,7 +6,6 @@ import { Tooltip } from '@mui/material'
 
 export const BoardsList = () => {
   const [initialValue]: [TInitialData] = useOutletContext();
-  console.log(initialValue)
 
   return (
     <Stack
@@ -19,7 +18,7 @@ export const BoardsList = () => {
         const board = initialValue.boards[boardId];
         
         return (
-          <Tooltip title={`Go to ${board.title}`} placement="left">
+          <Tooltip key={board.id} title={`Go to ${board.title}`} placement="left">
             <Link className={styles.boardItem} key={board.id} to={`/boards/${board.id}`}>{board.title}</Link>
           </Tooltip>
         )

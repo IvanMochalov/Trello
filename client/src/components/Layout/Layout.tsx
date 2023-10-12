@@ -104,13 +104,13 @@ export const Layout = () => {
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
-    console.log(result)
+    // console.log('result',result)
 
-    const step = initialValue.steps[draggableId]
-    console.log(step)
+    // const step = initialValue.steps[draggableId]
+    // console.log('step',step)
     
-    const task = initialValue.tasks[draggableId]
-    console.log(task)
+    // const task = initialValue.tasks[draggableId]
+    // console.log('task',task)
 
     if (!destination) {
       return;
