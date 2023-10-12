@@ -2,12 +2,14 @@ import React from 'react';
 import { Container, Box, Tooltip } from '@mui/material';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Smile } from '../Smile';
-import { TInitialData, TTask } from '../../type';
+import { TBoard, TInitialData, TTask } from '../../type';
 import styles from './layout.module.css';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { initialData } from '../../data/source';
 import { DropResult } from 'react-beautiful-dnd';
 import { randomId } from '../../utils/getRandomId';
+import { instanceOfTBoard } from '../../utils/instanceOfTBoard';
+import { instanceOfTTask } from '../../utils/instanceOfTTask';
 
 export const Layout = () => {
   const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>(initialData, 'boardsList')
@@ -16,88 +18,81 @@ export const Layout = () => {
   const { board_id } = useParams<{ board_id: string }>();
   const currentBoard = initialValue.boards[board_id || ''];
 
-  const handleSaveBoard = (boardName: string) => {
+  const handleSave = (itemName: string, currentItem?: TBoard | TTask ) => {
     const newId = randomId(10);
+    let newState = {};
 
-    const newBoard = {
-      id: newId,
-      title: boardName,
-      taskIds: [],
-      position: 0,
-    };
-
-    const newState = {
-      ...initialValue,
-      boards: {
-        ...initialValue.boards,
-        [newBoard.id]: newBoard,
-      },
-      boardOrder: [
-        newId,
-        ...initialValue.boardOrder,
-      ]
-    };
-
-    setInitialValue(newState);
-  };
-
-  const handleSaveTask = (taskName: string) => {
-    const newId = randomId(10);
-
-    const newTask = {
-      id: newId,
-      title: taskName,
-      stepIds: [],
-      position: 0,
-    };
-
-    const newState = {
-      ...initialValue,
-      tasks: {
-        ...initialValue.tasks,
-        [newTask.id]: newTask,
-      },
-      boards: {
-        ...initialValue.boards,
-        [currentBoard.id]: {
-          ...currentBoard,
-          taskIds: [
-            newId,
-            ...currentBoard.taskIds,
-          ]
+    if (instanceOfTBoard(currentItem)) {
+      const newTask = {
+        id: newId,
+        title: itemName,
+        stepIds: [],
+        position: 0,
+      };
+      newState = {
+        ...initialValue,
+        tasks: {
+          ...initialValue.tasks,
+          [newTask.id]: newTask,
+        },
+        boards: {
+          ...initialValue.boards,
+          [currentItem.id]: {
+            ...currentItem,
+            taskIds: [
+              newId,
+              ...currentItem.taskIds,
+            ]
+          }
         }
-      }
-    };
+      };
+    }
 
-    setInitialValue(newState);
-  };
-
-  const handleSaveStep = (stepName: string, currentTask: TTask) => {
-    const newId = randomId(10);
-
-    const newStep = {
-      id: newId,
-      content: stepName,
-      position: 0,
-    };
-
-    const newState = {
-      ...initialValue,
-      steps: {
-        ...initialValue.steps,
-        [newStep.id]: newStep,
-      },
-      tasks: {
-        ...initialValue.tasks,
-        [currentTask.id]: {
-          ...currentTask,
-          stepIds: [
-            newId,
-            ...currentTask.stepIds
-          ]
+    if (instanceOfTTask(currentItem)) {
+      const newStep = {
+        id: newId,
+        content: itemName,
+        position: 0,
+      };
+  
+      newState = {
+        ...initialValue,
+        steps: {
+          ...initialValue.steps,
+          [newStep.id]: newStep,
+        },
+        tasks: {
+          ...initialValue.tasks,
+          [currentItem.id]: {
+            ...currentItem,
+            stepIds: [
+              newId,
+              ...currentItem.stepIds
+            ]
+          }
         }
-      }
-    };
+      };
+    }
+
+    if (currentItem === undefined) {
+      const newBoard = {
+        id: newId,
+        title: itemName,
+        taskIds: [],
+        position: 0,
+      };
+      newState = {
+        ...initialValue,
+        boards: {
+          ...initialValue.boards,
+          [newBoard.id]: newBoard,
+        },
+        boardOrder: [
+          newId,
+          ...initialValue.boardOrder,
+        ]
+      };
+    }
 
     setInitialValue(newState);
   };
@@ -199,20 +194,18 @@ export const Layout = () => {
   return (
     <React.Fragment>
       <Container maxWidth="lg">
-        <Box sx={{ height: '100vh', paddingTop: '40px' }}>
+        <Box sx={{ height: '100vh' }}>
           <div className={styles.smileWrapper}>
             <Tooltip title="Go to Main">
               <Link to='/boards' tabIndex={-1}>
-                <Smile />
+                <Smile happy={true}/>
               </Link>
             </Tooltip>
           </div>
           <Outlet context={[
             initialValue,
             handleDragEnd,
-            handleSaveBoard,
-            handleSaveTask,
-            handleSaveStep,
+            handleSave,
           ]}/>
         </Box>
       </Container>
