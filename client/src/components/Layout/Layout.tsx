@@ -1,16 +1,17 @@
 import React from 'react';
-import { Container, Box } from '@mui/material';
+import { Container, Box, Tooltip } from '@mui/material';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Smile } from '../Smile';
-import { TInitialData } from '../../type';
+import { TInitialData, TTask } from '../../type';
 import styles from './layout.module.css';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import {initialData} from '../../data/source';
+import { initialData } from '../../data/source';
 import { DropResult } from 'react-beautiful-dnd';
 import { randomId } from '../../utils/getRandomId';
 
 export const Layout = () => {
-  const [initialValue, setInitialValue] = useLocalStorage<TInitialData>(initialData, 'boardsList')
+  const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>(initialData, 'boardsList')
+  // const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>({}, 'boardsList')
 
   const { board_id } = useParams<{ board_id: string }>();
   const currentBoard = initialValue.boards[board_id || ''];
@@ -63,6 +64,36 @@ export const Layout = () => {
           taskIds: [
             newId,
             ...currentBoard.taskIds,
+          ]
+        }
+      }
+    };
+
+    setInitialValue(newState);
+  };
+
+  const handleSaveStep = (stepName: string, currentTask: TTask) => {
+    const newId = randomId(10);
+
+    const newStep = {
+      id: newId,
+      content: stepName,
+      position: 0,
+    };
+
+    const newState = {
+      ...initialValue,
+      steps: {
+        ...initialValue.steps,
+        [newStep.id]: newStep,
+      },
+      tasks: {
+        ...initialValue.tasks,
+        [currentTask.id]: {
+          ...currentTask,
+          stepIds: [
+            newId,
+            ...currentTask.stepIds
           ]
         }
       }
@@ -170,15 +201,18 @@ export const Layout = () => {
       <Container maxWidth="lg">
         <Box sx={{ height: '100vh', paddingTop: '40px' }}>
           <div className={styles.smileWrapper}>
-            <Link to='/boards' tabIndex={-1}>
-              <Smile />
-            </Link>
+            <Tooltip title="Go to Main">
+              <Link to='/boards' tabIndex={-1}>
+                <Smile />
+              </Link>
+            </Tooltip>
           </div>
           <Outlet context={[
             initialValue,
             handleDragEnd,
             handleSaveBoard,
             handleSaveTask,
+            handleSaveStep,
           ]}/>
         </Box>
       </Container>

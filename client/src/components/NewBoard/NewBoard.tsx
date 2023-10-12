@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useOutletContext } from 'react-router-dom';
@@ -8,7 +8,10 @@ import { TInitialData } from '../../type';
 export const NewBoard = () => {
   const [,,handleSaveBoard]: [TInitialData, () => void, (boardName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
+
   const [boardName, setBoardName] = React.useState('');
+
+  const formBoardId = React.useId();
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -26,17 +29,22 @@ export const NewBoard = () => {
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    console.log(event)
-    handleSaveBoard(boardName);
+    event.preventDefault();
+    if (boardName === '') {
+      return;
+    }
+    handleSaveBoard(boardName.trim());
+    setBoardName('');
     setOpen(false);
   }
 
   return (
     <>
-      <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
-        Новая доска
-      </Button>
+      <Tooltip title="Create new Board" placement="right">
+        <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
+          Новая доска
+        </Button>
+      </Tooltip>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -53,7 +61,7 @@ export const NewBoard = () => {
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
           >
-            <form id="form-board" noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <form id={formBoardId} noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl>
                 <OutlinedInput placeholder="Доска №1" onChange={handleChange}/>
               </FormControl>
@@ -66,7 +74,7 @@ export const NewBoard = () => {
           </Button>
           <Button
             type="submit"
-            form="form-board"
+            form={formBoardId}
             autoFocus
           >
             Сохранить
