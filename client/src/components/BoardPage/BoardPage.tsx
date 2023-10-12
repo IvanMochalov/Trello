@@ -5,6 +5,7 @@ import { BoardTasksList } from '../BoardTasksList/BoardTasksList';
 import styles from './boardPage.module.css';
 import styled from 'styled-components';
 import { NewTask } from '../NewTask';
+import { NotFound } from '../NotFound'
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ export const BoardPage = () => {
   return (
     <Container>
       {currentBoard === undefined ?
-        <p>board not found</p>
+        <NotFound />
         : (
           <>
             <Stack spacing={1} direction="row" sx={{ marginBottom: '20px' }}>
@@ -29,7 +30,7 @@ export const BoardPage = () => {
                 {currentBoard.title}
               </div>
               <div className={styles.buttonWrapper}>
-                <NewTask />
+                <NewTask currBoard={currentBoard}/>
               </div>
             </Stack>
             <BoardTasksList board={currentBoard}/>

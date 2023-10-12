@@ -2,10 +2,14 @@ import * as React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useOutletContext } from 'react-router-dom';
-import { TInitialData } from '../../type';
+import { TBoard, TInitialData, TTask } from '../../type';
 
-export const NewTask = () => {
-  const [,,,handleSaveTask]: [TInitialData, () => void, (boardName: string) => void, (taskName: string) => void] = useOutletContext();
+interface INewTask {
+  currBoard: TBoard;
+}
+
+export const NewTask = ({currBoard}: INewTask) => {
+  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentItem?: TBoard | TTask ) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
 
   const [taskName, setTaskName] = React.useState('');
@@ -32,7 +36,7 @@ export const NewTask = () => {
     if (taskName === '') {
       return;
     }
-    handleSaveTask(taskName.trim());
+    handleSave(taskName.trim(), currBoard);
     setTaskName('');
     setOpen(false);
   }

@@ -1,10 +1,19 @@
-import TipsAndUpdatesTwoToneIcon from '@mui/icons-material/TipsAndUpdatesTwoTone';
+import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { IconButton } from '@mui/material';
 
-export const Smile = () => {
+interface ISmile {
+  happy: boolean;
+}
+
+export const Smile = ({ happy }: ISmile) => {
   return (
     <IconButton aria-label="Example" >
-      <TipsAndUpdatesTwoToneIcon sx={{ fontSize: 60, color: '#39bd3f' }}/>
+      {happy ? (
+        <InsertEmoticonIcon sx={{ fontSize: 60, color: '#39bd3f' }}/>
+      ) : (
+        <SentimentVeryDissatisfiedIcon sx={{ fontSize: 60, color: '#5a41c8' }}/>
+      )}
     </IconButton>
   )
 }
