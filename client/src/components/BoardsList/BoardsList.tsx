@@ -20,7 +20,7 @@ const BoardActionsWrapper = styled.div`
 `
 
 export const BoardsList = () => {
-  const [initialValue]: [TInitialData] = useOutletContext();
+  const [initialValue,,,handleDeleteBoard]: [TInitialData,() => void ,() => void, (boardId: string) => void] = useOutletContext();
   
   return (
     <Stack
@@ -36,7 +36,7 @@ export const BoardsList = () => {
           <BoardWrapper>
             <BoardActionsWrapper>
               <EditButton />
-              <DeleteButton />
+              <DeleteButton boardName={board.title} handleClick={() => {handleDeleteBoard(board.id)}}/>
             </BoardActionsWrapper>
             <Tooltip key={board.id} title={`Go to ${board.title}`} placement="top">
               <Link className={styles.boardItem} key={board.id} to={`/boards/${board.id}`}>{board.title}</Link>
