@@ -62,7 +62,7 @@ export const TaskStep = ({ step, index }: ITaskStepProps) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
           >
-            {step.content}
+            {step.title}
           </Container>
         </Tooltip>
       )}

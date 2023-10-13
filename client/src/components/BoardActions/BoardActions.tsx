@@ -2,14 +2,16 @@ import React from 'react';
 import { IconButton, Menu } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { DeleteButton } from '../DeleteButton';
-import { TBoard } from '../../type';
+import { TBoard, TStep, TTask } from '../../type';
 import { EditButton } from '../EditButton';
 
 interface IBoardActionsProps {
-  board: TBoard
+  item: TBoard | TTask | TStep
+  type: string
+  currParent?: TBoard | TTask
 }
 
-export const BoardActions = ({board}: IBoardActionsProps) => {
+export const BoardActions = ({item, type, currParent}: IBoardActionsProps) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -39,8 +41,8 @@ export const BoardActions = ({board}: IBoardActionsProps) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <EditButton board={board} handleCloseMenu={handleClose}/>
-        <DeleteButton board={board}/>
+        <EditButton item={item} type={type} handleCloseMenu={handleClose}/>
+        <DeleteButton currParent={currParent} item={item} type={type} handleCloseMenu={handleClose}/>
       </Menu>
     </>
   )

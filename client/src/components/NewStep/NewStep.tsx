@@ -41,7 +41,7 @@ interface INewStep {
 }
 
 export const NewStep = ({ currTask }: INewStep) => {
-  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentItem?: TBoard | TTask ) => void] = useOutletContext();
+  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentParent?: TBoard | TTask ) => void] = useOutletContext();
 
   const [stepName, setStepName] = React.useState('');
 
@@ -66,7 +66,7 @@ export const NewStep = ({ currTask }: INewStep) => {
         <FormControl>
           <OutlinedInput
             value={stepName}
-            placeholder="Задача №1"
+            placeholder="Шаг №1"
             onChange={handleChange}
             sx={{
               width: '100%',

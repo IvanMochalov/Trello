@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Box, Tooltip } from '@mui/material';
 import { Link, Outlet, useParams } from 'react-router-dom';
 import { Smile } from '../Smile';
-import { TBoard, TInitialData, TTask } from '../../type';
+import { TBoard, TInitialData, TStep, TTask } from '../../type';
 import styles from './layout.module.css';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
 import { initialData } from '../../data/source';
@@ -112,11 +112,11 @@ export const Layout = () => {
     setInitialValue(newState)
   };
 
-  const handleSave = (itemName: string, currentItem?: TBoard | TTask ) => {
+  const handleSave = (itemName: string, currentParent?: TBoard | TTask ) => {
     const newId = randomId(10);
     let newState = {};
 
-    if (instanceOfTBoard(currentItem)) {
+    if (instanceOfTBoard(currentParent)) {
       const newTask = {
         id: newId,
         title: itemName,
@@ -131,18 +131,18 @@ export const Layout = () => {
         },
         boards: {
           ...initialValue.boards,
-          [currentItem.id]: {
-            ...currentItem,
+          [currentParent.id]: {
+            ...currentParent,
             taskIds: [
               newId,
-              ...currentItem.taskIds,
+              ...currentParent.taskIds,
             ]
           }
         }
       };
     }
 
-    if (instanceOfTTask(currentItem)) {
+    if (instanceOfTTask(currentParent)) {
       const newStep = {
         id: newId,
         content: itemName,
@@ -157,18 +157,18 @@ export const Layout = () => {
         },
         tasks: {
           ...initialValue.tasks,
-          [currentItem.id]: {
-            ...currentItem,
+          [currentParent.id]: {
+            ...currentParent,
             stepIds: [
               newId,
-              ...currentItem.stepIds
+              ...currentParent.stepIds
             ]
           }
         }
       };
     }
 
-    if (currentItem === undefined) {
+    if (currentParent === undefined) {
       const newBoard = {
         id: newId,
         title: itemName,
@@ -191,30 +191,61 @@ export const Layout = () => {
     setInitialValue(newState);
   };
 
-  const handleDeleteBoard = (boardId: string) => {
-    const currentBoard = initialValue.boards[boardId]
+  const handleDelete = (currentItem: TBoard | TTask | TStep, currentParent?: TBoard | TTask) => {
+    let newState = {};
 
-    currentBoard.taskIds.forEach((taskId: string) => {
-      const currentTask = initialValue.tasks[taskId];
+    if (instanceOfTBoard(currentItem)) {
+      const currentBoard = initialValue.boards[currentItem.id]
+  
+      currentBoard.taskIds.forEach((taskId: string) => {
+        const currentTask = initialValue.tasks[taskId];
+  
+        currentTask.stepIds.forEach((stepId: string) => {
+          delete initialValue.steps[stepId];
+        })
+  
+        delete initialValue.tasks[taskId];
+      })
+      
+      delete initialValue.boards[currentItem.id];
+  
+      const newBoardOrder = initialValue.boardOrder.filter(function(id: string) {
+        return id !== currentItem.id
+      })
+  
+      newState = {
+        ...initialValue,
+        
+        boardOrder: newBoardOrder
+      };
+    }
+
+    if (instanceOfTTask(currentItem) && currentParent !== undefined) {
+      const currentTask = initialValue.tasks[currentItem.id]
+      console.log(currentTask)
 
       currentTask.stepIds.forEach((stepId: string) => {
         delete initialValue.steps[stepId];
       })
 
-      delete initialValue.tasks[taskId];
-    })
-    
-    delete initialValue.boards[boardId];
+      delete initialValue.tasks[currentItem.id];
 
-    const newBoardOrder = initialValue.boardOrder.filter(function(id: string) {
-      return id !== boardId
-    })
+      const currentBoardTaskIds = initialValue.boards[currentParent.id].taskIds.filter(function(id: string) {
+        return id !== currentItem.id
+      })
 
-    const newState = {
-      ...initialValue,
-      
-      boardOrder: newBoardOrder
+      newState = {
+        ...initialValue,
+        boards: {
+          ...initialValue.boards,
+          [currentParent.id]: {
+            ...initialValue.boards[currentParent.id],
+            taskIds: currentBoardTaskIds
+          }
+        }
+      };
     }
+
 
     setInitialValue(newState);
   };
@@ -257,7 +288,7 @@ export const Layout = () => {
             initialValue,
             handleDragEnd,
             handleSave,
-            handleDeleteBoard,
+            handleDelete,
             handleEditBoard,
           ]}/>
         </Box>

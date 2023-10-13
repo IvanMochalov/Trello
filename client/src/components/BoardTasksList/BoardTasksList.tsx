@@ -49,6 +49,7 @@ export const BoardTasksList = (
                   key={task.id}
                   task={task}
                   index={index}
+                  currParent={board}
                 />
               )
             })}

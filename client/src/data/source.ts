@@ -1,13 +1,13 @@
 export const initialData = {
   steps: {
-    'step-1': { id: 'step-1', content: 'Подключить Redux-1', position: 0 },
-    'step-2': { id: 'step-2', content: 'Подключить Redux-2', position: 1 },
-    'step-3': { id: 'step-3', content: 'Подключить Redux-3', position: 2 },
-    'step-4': { id: 'step-4', content: 'Подключить Redux-4', position: 3 },
-    'step-5': { id: 'step-5', content: 'Установить Redux-1', position: 0 },
-    'step-6': { id: 'step-6', content: 'Установить Redux-2', position: 1 },
-    'step-7': { id: 'step-7', content: 'Установить Redux-3', position: 2 },
-    'step-8': { id: 'step-8', content: 'Установить Redux-4', position: 3 },
+    'step-1': { id: 'step-1', title: 'Подключить Redux-1', position: 0 },
+    'step-2': { id: 'step-2', title: 'Подключить Redux-2', position: 1 },
+    'step-3': { id: 'step-3', title: 'Подключить Redux-3', position: 2 },
+    'step-4': { id: 'step-4', title: 'Подключить Redux-4', position: 3 },
+    'step-5': { id: 'step-5', title: 'Установить Redux-1', position: 0 },
+    'step-6': { id: 'step-6', title: 'Установить Redux-2', position: 1 },
+    'step-7': { id: 'step-7', title: 'Установить Redux-3', position: 2 },
+    'step-8': { id: 'step-8', title: 'Установить Redux-4', position: 3 },
   },
   tasks: {
     'task-1': {

@@ -1,6 +1,6 @@
 export type TStep = {
   id: string
-  content: string
+  title: string
   position: number
 }
 

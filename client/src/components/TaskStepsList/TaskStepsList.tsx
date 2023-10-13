@@ -1,4 +1,4 @@
-import { TInitialData, TTask } from '../../type';
+import { TBoard, TInitialData, TTask } from '../../type';
 import { TaskStep } from '../TaskStep';
 import { Draggable } from 'react-beautiful-dnd';
 import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
@@ -6,13 +6,15 @@ import { useOutletContext } from 'react-router-dom';
 import { NewStep } from '../NewStep';
 import { Tooltip } from '@mui/material'
 import styled from 'styled-components';
+import { BoardActions } from '../BoardActions'
 
 interface ITasksListProps {
   task: TTask
   index: number
+  currParent: TBoard
 }
 
-interface ITitle {
+interface IHeaderList {
   isdragging?: boolean
 }
 
@@ -39,11 +41,12 @@ const Container = styled.div`
   //   margin-top: 15px;
   // }
 `
-const Title = styled.h3<ITitle>`
-  margin: 0;
+const HeaderList = styled.div<IHeaderList>`
+  display: flex;
   padding: 8px;
   color: #333;
-  text-align: center;
+  justify-content: space-between;
+  align-items: center;
   cursor: grab;
   border-bottom: 1px solid lightgray;
   transition: background-color .2s ease-in-out;
@@ -68,6 +71,11 @@ const Title = styled.h3<ITitle>`
   }
 `
 
+const Title = styled.h3`
+  margin: 0;
+  font-size: 1.5em;
+`
+
 const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
   display: flex;
   flex-direction: column;
@@ -78,7 +86,7 @@ const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
   background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'white'}
 `
 
-export const TaskStepsList = ({ task, index }: ITasksListProps) => {
+export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
   const [initialValue]: [TInitialData] = useOutletContext();
 
   return (
@@ -92,14 +100,17 @@ export const TaskStepsList = ({ task, index }: ITasksListProps) => {
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Tooltip title="Dragg and drop" placement="top" key={task.id}>
-            <Title
-              {...provided.dragHandleProps}
-              isdragging={snapshot.isDragging}
-            >
-              {task.title}
-            </Title>
-          </Tooltip>
+          <HeaderList
+             {...provided.dragHandleProps}
+             isdragging={snapshot.isDragging}
+          >
+            <Tooltip title="Dragg and drop" placement="top" >
+              <Title>
+                {task.title}
+              </Title>
+            </Tooltip>
+            <BoardActions currParent={currParent} type='список' item={task}/>
+          </HeaderList>
           <NewStep currTask={task} />
           <StrictModeDroppable
             droppableId={task.id}

@@ -1,16 +1,19 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogTitle, MenuItem, useMediaQuery, useTheme } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { TBoard, TInitialData } from '../../type'
+import { TBoard, TInitialData, TStep, TTask } from '../../type'
 import { useOutletContext } from 'react-router-dom'
 
 interface IDeleteButton {
   // handleClick: () => void
-  board: TBoard
+  item: TBoard | TTask | TStep
+  type: string
+  currParent?: TBoard | TTask
+  handleCloseMenu: () => void
 }
 
-export const DeleteButton = ({  board }: IDeleteButton) => {
-  const [,,,handleDeleteBoard]: [TInitialData,() => void ,() => void, (boardId: string) => void] = useOutletContext();
+export const DeleteButton = ({ item, type, currParent, handleCloseMenu }: IDeleteButton) => {
+  const [,,,handleDelete]: [TInitialData,() => void ,() => void, (item: TBoard | TTask | TStep, currParent?: TBoard | TTask) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
 
   const theme = useTheme();
@@ -22,6 +25,7 @@ export const DeleteButton = ({  board }: IDeleteButton) => {
 
   const handleClose = () => {
     setOpen(false);
+    handleCloseMenu()
   };
 
   return (
@@ -38,11 +42,11 @@ export const DeleteButton = ({  board }: IDeleteButton) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Удалить доску '${board.title}' ?`}
+          {`Удаление ${type} '${item.title}' `}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
-          <Button onClick={() => {handleDeleteBoard(board.id); handleClose()}} autoFocus>
+          <Button onClick={() => {handleDelete(item, currParent); handleClose()}} autoFocus>
             Удалить
           </Button>
         </DialogActions>

@@ -9,7 +9,7 @@ interface INewTask {
 }
 
 export const NewTask = ({currBoard}: INewTask) => {
-  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentItem?: TBoard | TTask ) => void] = useOutletContext();
+  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentParent?: TBoard | TTask ) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
 
   const [taskName, setTaskName] = React.useState('');

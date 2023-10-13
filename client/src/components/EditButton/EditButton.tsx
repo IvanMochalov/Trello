@@ -1,24 +1,25 @@
 import React from 'react';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, useMediaQuery, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { TBoard, TInitialData } from '../../type';
+import { TBoard, TInitialData, TStep, TTask } from '../../type';
 import { useOutletContext } from 'react-router-dom';
 
 interface IEditButtonProps {
-  board: TBoard
+  item: TBoard | TTask | TStep
+  type: string
   handleCloseMenu: () => void
 }
 
-export const EditButton = ({ board, handleCloseMenu }: IEditButtonProps) => {
+export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) => {
   const [,,,,handleEditBoard]: [TInitialData,() => void ,() => void, () => void, (itemId: string, newItemName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
-  const [boardName, setBoardName] = React.useState(board.title);
+  const [boardName, setBoardName] = React.useState(item.title);
 
   const formEditBoardId = React.useId();
 
   React.useEffect(() => {
-    setBoardName(board.title)
-  }, [board.title])
+    setBoardName(item.title)
+  }, [item.title])
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -41,7 +42,7 @@ export const EditButton = ({ board, handleCloseMenu }: IEditButtonProps) => {
     if (boardName === '') {
       return;
     }
-    handleEditBoard(board.id, boardName.trim())
+    handleEditBoard(item.id, boardName.trim())
     setOpen(false);
     handleCloseMenu()
   }
@@ -60,7 +61,7 @@ export const EditButton = ({ board, handleCloseMenu }: IEditButtonProps) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" sx={{maxWidth: '100%', whiteSpace: 'normal'}}>
-          {`Редактирование доски '${board.title}'`}
+          {`Редактирование ${type} '${item.title}'`}
         </DialogTitle>
         <DialogContent>
           <Box

@@ -8,9 +8,7 @@ export const MainContent = () => {
       <div className={styles.boardWrapper}>
         <NewBoard />
       </div>
-      <div className={styles.boardsListWrapper}>
-        <BoardsList />
-      </div>
+      <BoardsList />
     </div>
   )
 }
