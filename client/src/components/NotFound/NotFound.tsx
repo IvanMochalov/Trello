@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Smile } from '../Smile';
 import { Tooltip } from '@mui/material';
 import styles from './notFound.module.css';
-import { styled } from 'styled-components'
+import styled from 'styled-components';
 
 const Title = styled.h3`
   color: #5a41c8;
