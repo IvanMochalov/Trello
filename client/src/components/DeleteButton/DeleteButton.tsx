@@ -1,14 +1,20 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Tooltip } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogTitle, MenuItem, useMediaQuery, useTheme } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { TBoard, TInitialData } from '../../type'
+import { useOutletContext } from 'react-router-dom'
 
 interface IDeleteButton {
-  handleClick: () => void
-  boardName: string
+  // handleClick: () => void
+  board: TBoard
 }
 
-export const DeleteButton = ({ handleClick, boardName }: IDeleteButton) => {
+export const DeleteButton = ({  board }: IDeleteButton) => {
+  const [,,,handleDeleteBoard]: [TInitialData,() => void ,() => void, (boardId: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -20,23 +26,23 @@ export const DeleteButton = ({ handleClick, boardName }: IDeleteButton) => {
 
   return (
     <>
-      <Tooltip title="Delete" placement="top">
-        <IconButton sx={{ marginRight: '5px', color: 'crimson' }} onClick={handleClickOpen}>
-          <DeleteIcon />
-        </IconButton>
-      </Tooltip>
+      <MenuItem onClick={handleClickOpen} tabIndex={0}>
+        <DeleteIcon sx={{ marginRight: '5px', color: 'crimson' }}/>
+        Delete
+      </MenuItem>
       <Dialog
+        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Удалить доску '${boardName}' ?`}
+          {`Удалить доску '${board.title}' ?`}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleClose}>Отмена</Button>
-          <Button onClick={() => {handleClick(); handleClose()}} autoFocus>
+          <Button onClick={() => {handleDeleteBoard(board.id); handleClose()}} autoFocus>
             Удалить
           </Button>
         </DialogActions>

@@ -1,5 +1,5 @@
 .boardItemLink {
-  width: 80%;
+  width: calc(100% - 40px);
   text-align: center;
   text-decoration: none;
   color: rgba(0, 0, 0, 0.87);

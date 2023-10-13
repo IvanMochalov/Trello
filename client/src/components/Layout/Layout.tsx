@@ -219,6 +219,29 @@ export const Layout = () => {
     setInitialValue(newState);
   };
 
+  const handleEditBoard = (itemId: string, newItemName: string) => {
+    const currentBoard = initialValue.boards[itemId]
+
+    if (currentBoard.title === newItemName) {
+      return
+    }
+    
+    const newBoard = {
+      ...currentBoard,
+      title: newItemName,
+    };
+
+    const newState = {
+      ...initialValue,
+      boards: {
+        ...initialValue.boards,
+        [newBoard.id]: newBoard,
+      },
+    };
+    
+    setInitialValue(newState);
+  }
+
   return (
     <React.Fragment>
       <Container maxWidth="lg">
@@ -235,6 +258,7 @@ export const Layout = () => {
             handleDragEnd,
             handleSave,
             handleDeleteBoard,
+            handleEditBoard,
           ]}/>
         </Box>
       </Container>

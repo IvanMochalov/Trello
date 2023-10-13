@@ -4,11 +4,8 @@ import { TInitialData } from '../../type';
 import Stack from '@mui/material/Stack';
 import styles from './boardsList.module.css';
 import { Tooltip } from '@mui/material';
-
-
+import { BoardActions } from '../BoardActions';
 import styled from 'styled-components';
-import { DeleteButton } from '../DeleteButton'
-import { EditButton } from '../EditButton'
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -45,14 +42,8 @@ const BoardWrapper = styled.div`
   }
 `
 
-const BoardActionsWrapper = styled.div`
-  display: flex;
-  width: 20%;
-  right: 0;
-`
-
 export const BoardsList = () => {
-  const [initialValue,,,handleDeleteBoard]: [TInitialData,() => void ,() => void, (boardId: string) => void] = useOutletContext();
+  const [initialValue]: [TInitialData] = useOutletContext();
   
   return (
     <Stack
@@ -67,11 +58,8 @@ export const BoardsList = () => {
         return (
           <Tooltip key={board.id} title={`Go to ${board.title}`} placement="top">
             <BoardWrapper tabIndex={0}>
-                <Link className={styles.boardItemLink} key={board.id} to={`/boards/${board.id}`} tabIndex={-1}>{board.title}</Link>
-              <BoardActionsWrapper>
-                <EditButton />
-                <DeleteButton boardName={board.title} handleClick={() => {handleDeleteBoard(board.id)}}/>
-              </BoardActionsWrapper>
+              <Link className={styles.boardItemLink} key={board.id} to={`/boards/${board.id}`} tabIndex={-1}>{board.title}</Link>
+              <BoardActions board={board}/>
             </BoardWrapper>
           </Tooltip>
         )
