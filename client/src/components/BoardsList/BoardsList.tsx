@@ -61,7 +61,7 @@ export const BoardsList = () => {
       alignItems="stretch"
       spacing={1}
     >
-      {initialValue.boardOrder.map((boardId: string) => {
+      {initialValue.boardOrder && initialValue.boardOrder.map((boardId: string) => {
         const board = initialValue.boards[boardId];
         
         return (

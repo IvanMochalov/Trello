@@ -12,11 +12,11 @@ import { instanceOfTBoard } from '../../utils/instanceOfTBoard';
 import { instanceOfTTask } from '../../utils/instanceOfTTask';
 
 export const Layout = () => {
-  const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>(initialData, 'boardsList')
-  // const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>({}, 'boardsList')
+  // const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>(initialData, 'boardsList')
+  const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>({ steps: {}, tasks: {}, boards: {}, boardOrder: [] }, 'boardsList')
 
   const { board_id } = useParams<{ board_id: string }>();
-  const currentBoard = initialValue.boards[board_id || ''];
+  const currentBoard = initialValue.boards && initialValue.boards[board_id || ''];
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
