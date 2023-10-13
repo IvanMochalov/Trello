@@ -13,12 +13,12 @@ interface IEditButtonProps {
 export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) => {
   const [,,,,handleEditBoard]: [TInitialData,() => void ,() => void, () => void, (itemId: string, newItemName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
-  const [itemName, setItemdName] = React.useState(item.title);
+  const [itemName, setItemName] = React.useState(item.title);
 
   const formEditId = React.useId();
 
   React.useEffect(() => {
-    setItemdName(item.title)
+    setItemName(item.title)
   }, [item.title])
 
   const theme = useTheme();
@@ -34,7 +34,7 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setItemdName(event.target.value)
+    setItemName(event.target.value)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

@@ -76,7 +76,7 @@ export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
             <Title>
               {step.title}
             </Title>
-            <ItemActions type='список' item={step} currParent={currParent} />
+            <ItemActions type='шаг' item={step} currParent={currParent} />
           </Container>
         </Tooltip>
       )}

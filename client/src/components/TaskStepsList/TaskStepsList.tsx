@@ -22,10 +22,11 @@ interface ITaskStepsListWrapper {
 	isdraggingover?: boolean
 }
 
-const Container = styled.div`
+const Container = styled.div<IHeaderList>`
 	box-sizing: border-box;
 	border: 1px solid lightgray;
-	border-radius: 4px;
+	border-radius: 8px;
+	overflow: hidden;
 	background-color: white;
 	width: calc((100% - (4 * 16px)) / 4);
 	flex-shrink: 0;
@@ -34,6 +35,7 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	margin: 8px;
+	border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
 `
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
@@ -42,9 +44,9 @@ const HeaderList = styled.div<IHeaderList>`
 	justify-content: space-between;
 	align-items: center;
 	cursor: grab;
-	outline: 1px solid;
+	border-bottom: 1px solid;
 	transition: background-color 0.2s ease-in-out;
-	outline-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
+	border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
 	background-color: ${props => (props.isdragging ? 'lightgreen' : 'white')};
 
 	&:focus {
@@ -95,7 +97,11 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 			// index={task.position}
 		>
 			{(provided, snapshot) => (
-				<Container {...provided.draggableProps} ref={provided.innerRef}>
+				<Container
+					{...provided.draggableProps}
+					ref={provided.innerRef}
+					isdragging={snapshot.isDragging}
+				>
 					<HeaderList
 						{...provided.dragHandleProps}
 						isdragging={snapshot.isDragging}
