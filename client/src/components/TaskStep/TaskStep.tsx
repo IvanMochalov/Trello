@@ -19,7 +19,8 @@ const Container = styled.div<IContainer>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid lightgray;
+  border: 1px solid;
+  border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
   border-radius: 3px;
   padding: 8px;
   margin-bottom: 5px;
@@ -51,8 +52,9 @@ const Container = styled.div<IContainer>`
   }
 `
 
-const Title = styled.h4`
-  margin: 0;
+const Title = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {

@@ -28,18 +28,12 @@ const Container = styled.div`
 	border-radius: 4px;
 	background-color: white;
 	width: calc((100% - (4 * 16px)) / 4);
+	flex-shrink: 0;
 	min-height: 150px;
 	min-width: 150px;
 	display: flex;
 	flex-direction: column;
 	margin: 8px;
-
-	// &:not(:nth-child(4n-3)) {
-	//   margin-left: 15px;
-	// }
-	// &:not(:nth-child(-n+4)) {
-	//   margin-top: 15px;
-	// }
 `
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
@@ -48,8 +42,9 @@ const HeaderList = styled.div<IHeaderList>`
 	justify-content: space-between;
 	align-items: center;
 	cursor: grab;
-	border-bottom: 1px solid lightgray;
+	outline: 1px solid;
 	transition: background-color 0.2s ease-in-out;
+	outline-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
 	background-color: ${props => (props.isdragging ? 'lightgreen' : 'white')};
 
 	&:focus {
@@ -76,13 +71,15 @@ const HeaderList = styled.div<IHeaderList>`
 const Title = styled.h3`
 	margin: 0;
 	font-size: 1.5em;
+	overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
 	display: flex;
 	flex-direction: column;
 	padding: 8px;
-	flexgrow: 1;
+	flex-grow: 1;
 	height: 100%;
 	transition: background-color 0.2s ease-in-out;
 	background-color: ${props => (props.isdraggingover ? 'lightblue' : 'white')};
@@ -104,7 +101,9 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 						isdragging={snapshot.isDragging}
 					>
 						<Tooltip title='Dragg and drop' placement='top'>
-							<Title>{task.title}</Title>
+							<Title>
+								{task.title}
+							</Title>
 						</Tooltip>
 						<ItemActions type='список' item={task} currParent={currParent} />
 					</HeaderList>

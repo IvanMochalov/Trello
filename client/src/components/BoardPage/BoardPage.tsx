@@ -11,6 +11,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
+const Title = styled.h2`
+  font-size: 1em;
+  line-height: 1.5;
+  
+`
 
 export const BoardPage = () => {
   const [initialData]: [TInitialData] = useOutletContext();
@@ -27,7 +32,9 @@ export const BoardPage = () => {
           <>
             <Stack spacing={1} direction="row" sx={{ marginBottom: '20px' }}>
               <div className={styles.boardTitleBox}>
-                {currentBoard.title}
+                <Title>
+                  {currentBoard.title}
+                </Title>
               </div>
               <div className={styles.buttonWrapper}>
                 <NewTask currBoard={currentBoard}/>
