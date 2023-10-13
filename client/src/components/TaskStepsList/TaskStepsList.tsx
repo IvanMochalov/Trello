@@ -123,7 +123,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 								{task.stepIds.map((stepId: string, index) => {
 									const step = initialValue.steps[stepId]
 
-									return <TaskStep key={step.id} step={step} index={index} />
+									return <TaskStep key={step.id} step={step} index={index} currParent={task}/>
 								})}
 								{provided.placeholder}
 							</TaskStepsListWrapper>

@@ -13,12 +13,12 @@ interface IEditButtonProps {
 export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) => {
   const [,,,,handleEditBoard]: [TInitialData,() => void ,() => void, () => void, (itemId: string, newItemName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
-  const [boardName, setBoardName] = React.useState(item.title);
+  const [itemName, setItemdName] = React.useState(item.title);
 
-  const formEditBoardId = React.useId();
+  const formEditId = React.useId();
 
   React.useEffect(() => {
-    setBoardName(item.title)
+    setItemdName(item.title)
   }, [item.title])
 
   const theme = useTheme();
@@ -34,15 +34,15 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setBoardName(event.target.value)
+    setItemdName(event.target.value)
   }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (boardName === '') {
+    if (itemName === '') {
       return;
     }
-    handleEditBoard(item.id, boardName.trim())
+    handleEditBoard(item.id, itemName.trim())
     setOpen(false);
     handleCloseMenu()
   }
@@ -70,9 +70,9 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
               '& .MuiTextField-root': { m: 1, width: '25ch' },
             }}
           >
-            <form id={formEditBoardId} noValidate autoComplete="off" onSubmit={handleSubmit}>
+            <form id={formEditId} noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl sx={{width: '100%'}}>
-                <OutlinedInput value={boardName} placeholder="Доска №1" onChange={handleChange}/>
+                <OutlinedInput value={itemName} placeholder="Доска №1" onChange={handleChange}/>
               </FormControl>
             </form>
           </Box>
@@ -83,7 +83,7 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
           </Button>
           <Button
             type="submit"
-            form={formEditBoardId}
+            form={formEditId}
             autoFocus
           >
             Сохранить

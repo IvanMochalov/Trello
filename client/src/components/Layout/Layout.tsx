@@ -145,7 +145,7 @@ export const Layout = () => {
     if (instanceOfTTask(currentParent)) {
       const newStep = {
         id: newId,
-        content: itemName,
+        title: itemName,
         position: 0,
       };
   
@@ -222,7 +222,6 @@ export const Layout = () => {
 
     if (instanceOfTTask(currentItem) && currentParent !== undefined) {
       const currentTask = initialValue.tasks[currentItem.id]
-      console.log(currentTask)
 
       currentTask.stepIds.forEach((stepId: string) => {
         delete initialValue.steps[stepId];
@@ -246,6 +245,24 @@ export const Layout = () => {
       };
     }
 
+    if (!instanceOfTBoard(currentItem) && !instanceOfTTask(currentItem) && currentParent !== undefined) {
+      delete initialValue.steps[currentItem.id];
+
+      const currentTaskStepIds = initialValue.tasks[currentParent.id].stepIds.filter(function(id: string) {
+        return id !== currentItem.id
+      })
+
+      newState = {
+        ...initialValue,
+        tasks: {
+          ...initialValue.tasks,
+          [currentParent.id]: {
+            ...initialValue.tasks[currentParent.id],
+            stepIds: currentTaskStepIds
+          }
+        }
+      };
+    }
 
     setInitialValue(newState);
   };
