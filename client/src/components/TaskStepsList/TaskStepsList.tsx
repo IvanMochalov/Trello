@@ -20,20 +20,23 @@ interface IHeaderList {
 
 interface ITaskStepsListWrapper {
 	isdraggingover?: boolean
+	stepIds: string[]
 }
 
 const Container = styled.div<IHeaderList>`
+	display: inline-flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	flex-grow: 0;
 	box-sizing: border-box;
 	border: 1px solid lightgray;
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: white;
-	width: calc((100% - (4 * 16px)) / 4);
-	flex-shrink: 0;
-	min-height: 150px;
-	min-width: 150px;
-	display: flex;
-	flex-direction: column;
+	// width: calc((100% - (4 * 16px)) / 4);
+	// min-width: 150px;
+	width: 250px;
+	// min-height: 150px;
 	margin: 8px;
 	border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
 `
@@ -80,7 +83,7 @@ const Title = styled.h3`
 const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
 	display: flex;
 	flex-direction: column;
-	padding: 8px;
+	padding: ${props => props.stepIds.length === 0 ? '0px' : '8px'};
 	flex-grow: 1;
 	height: 100%;
 	transition: background-color 0.2s ease-in-out;
@@ -121,6 +124,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 					>
 						{(provided, snapshot) => (
 							<TaskStepsListWrapper
+								stepIds={task.stepIds}
 								ref={provided.innerRef}
 								{...provided.droppableProps}
 								isdraggingover={snapshot.isDraggingOver}

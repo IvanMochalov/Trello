@@ -14,8 +14,13 @@ interface IContainer {
 }
 
 const Container = styled.div<IContainer>`
-  display: flex;
-  flex-wrap: nowrap;
+  // display: flex;
+  // flex-shrink: 0;
+  // flex-wrap: nowrap;
+  width: fit-content;
+  display: block;
+  white-space : nowrap;
+  vertical-align : top;
   margin: -8px -8px;
   transition: background-color .2s ease-in-out;
   background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'}
