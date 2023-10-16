@@ -1,4 +1,3 @@
-import { Tooltip } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
 import { useOutletContext } from 'react-router-dom';
 import { TBoard, TInitialData, TTask } from '../../type';
@@ -20,7 +19,7 @@ interface IHeaderList {
 
 interface ITaskStepsListWrapper {
 	isdraggingover?: boolean
-	stepIds: string[]
+	items: string[]
 }
 
 const Container = styled.div<IHeaderList>`
@@ -33,12 +32,9 @@ const Container = styled.div<IHeaderList>`
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: white;
-	// width: calc((100% - (4 * 16px)) / 4);
-	// min-width: 150px;
 	width: 250px;
-	// min-height: 150px;
 	margin: 8px;
-	border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
+	border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
 `
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
@@ -49,7 +45,7 @@ const HeaderList = styled.div<IHeaderList>`
 	cursor: grab;
 	border-bottom: 1px solid;
 	transition: background-color 0.2s ease-in-out;
-	border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
+	border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
 	background-color: ${props => (props.isdragging ? 'lightgreen' : 'white')};
 
 	&:focus {
@@ -83,7 +79,7 @@ const Title = styled.h3`
 const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
 	display: flex;
 	flex-direction: column;
-	padding: ${props => props.stepIds.length === 0 ? '0px' : '8px'};
+	padding: ${props => props.items.length === 0 ? '0px' : '8px'};
 	flex-grow: 1;
 	height: 100%;
 	transition: background-color 0.2s ease-in-out;
@@ -97,7 +93,6 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 		<Draggable
 			draggableId={task.id}
 			index={index}
-			// index={task.position}
 		>
 			{(provided, snapshot) => (
 				<Container
@@ -109,11 +104,9 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 						{...provided.dragHandleProps}
 						isdragging={snapshot.isDragging}
 					>
-						<Tooltip title='Dragg and drop' placement='top'>
-							<Title>
-								{task.title}
-							</Title>
-						</Tooltip>
+						<Title>
+							{task.title}
+						</Title>
 						<ItemActions type='список' item={task} currParent={currParent} />
 					</HeaderList>
 					<NewStep currTask={task} />
@@ -124,7 +117,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 					>
 						{(provided, snapshot) => (
 							<TaskStepsListWrapper
-								stepIds={task.stepIds}
+								items={task.stepIds}
 								ref={provided.innerRef}
 								{...provided.droppableProps}
 								isdraggingover={snapshot.isDraggingOver}
@@ -132,7 +125,14 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 								{task.stepIds.map((stepId: string, index) => {
 									const step = initialValue.steps[stepId]
 
-									return <TaskStep key={step.id} step={step} index={index} currParent={task}/>
+									return (
+										<TaskStep
+											key={step.id}
+											step={step}
+											index={index}
+											currParent={task}
+										/>
+									)
 								})}
 								{provided.placeholder}
 							</TaskStepsListWrapper>

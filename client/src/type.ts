@@ -1,21 +1,19 @@
 export type TStep = {
   id: string
   title: string
-  position: number
+  done: boolean
 }
 
 export type TTask = {
   id: string
   title: string
   stepIds: string[]
-  position: number
 }
 
 export type TBoard = {
   id: string
   title: string
   taskIds: string[]
-  position: number
 }
 
 export type TInitialData = {

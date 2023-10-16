@@ -1,8 +1,10 @@
+import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { TStep, TTask } from '../../type';
+import { TInitialData, TStep, TTask } from '../../type';
 import styled from 'styled-components';
-import { Tooltip } from '@mui/material'
-import { ItemActions } from '../ItemActions'
+import { ItemActions } from '../ItemActions';
+import { useOutletContext } from 'react-router-dom';
+import { DoneButton } from '../DoneButton';
 
 interface ITaskStepProps {
   step: TStep
@@ -12,7 +14,11 @@ interface ITaskStepProps {
 
 interface IContainer {
   isdragging?: boolean
-  isdraggingover?: boolean
+  isdragdisabled?: boolean
+}
+
+interface ITitle {
+  done?: boolean
 }
 
 const Container = styled.div<IContainer>`
@@ -20,14 +26,14 @@ const Container = styled.div<IContainer>`
   align-items: center;
   justify-content: space-between;
   border: 1px solid;
-  border-color: ${(props) => props.isdragging ? 'red' : 'lightgray'};
+  border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
   border-radius: 3px;
   padding: 8px;
   margin-bottom: 5px;
-  cursor: grab;
+  cursor: ${(props) => props.isdragdisabled ? 'not-allowed' : 'grab'};
   background-color: ${(props) => 
-    props.isdraggingover
-      ? 'darkgray '
+    props.isdragdisabled
+      ? 'lightgray'
       : props.isdragging
         ? 'lightgreen'
         : 'white'};
@@ -52,33 +58,36 @@ const Container = styled.div<IContainer>`
   }
 `
 
-const Title = styled.span`
+const Title = styled.span<ITitle>`
   overflow: hidden;
+  width: 100%;
   text-overflow: ellipsis;
+  text-decoration: ${(props) => props.done ? 'line-through' : 'none'};
 `
 
 export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
+  const [,,,,,handleToggleDone]: [TInitialData,() => void ,() => void, () => void, () => void, (currentItem: TStep) => void] = useOutletContext();
 
   return (
     <Draggable
       draggableId={step.id}
       index={index}
-      // index={step.position}
+      isDragDisabled={step.done}
     >
       {(provided, snapshot) => (
-        <Tooltip title="Dragg and drop" placement="right" key={step.id}>
-          <Container
-            ref={provided.innerRef}
-            isdragging={snapshot.isDragging}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <Title>
-              {step.title}
-            </Title>
-            <ItemActions type='шаг' item={step} currParent={currParent} />
-          </Container>
-        </Tooltip>
+        <Container
+          ref={provided.innerRef}
+          isdragging={snapshot.isDragging}
+          isdragdisabled={step.done}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+        >
+          <DoneButton item={step} done={step.done} handleClick={handleToggleDone} />
+          <Title done={step.done}>
+            {step.title}
+          </Title>
+          <ItemActions type='шаг' item={step} currParent={currParent} />
+        </Container>
       )}
     </Draggable>
   )

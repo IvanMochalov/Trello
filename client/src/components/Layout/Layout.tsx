@@ -20,13 +20,6 @@ export const Layout = () => {
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
-    // console.log('result',result)
-
-    // const step = initialValue.steps[draggableId]
-    // console.log('step',step)
-    
-    // const task = initialValue.tasks[draggableId]
-    // console.log('task',task)
 
     if (!destination) {
       return;
@@ -121,7 +114,6 @@ export const Layout = () => {
         id: newId,
         title: itemName,
         stepIds: [],
-        position: 0,
       };
       newState = {
         ...initialValue,
@@ -146,7 +138,7 @@ export const Layout = () => {
       const newStep = {
         id: newId,
         title: itemName,
-        position: 0,
+        done: false,
       };
   
       newState = {
@@ -173,7 +165,6 @@ export const Layout = () => {
         id: newId,
         title: itemName,
         taskIds: [],
-        position: 0,
       };
       newState = {
         ...initialValue,
@@ -269,8 +260,6 @@ export const Layout = () => {
 
   const handleEdit = (currentItem: TBoard | TTask | TStep, newItemName: string) => {
     let newState = {};
-    console.log(currentItem)
-    console.log(newItemName)
 
     if (currentItem.title === newItemName) {
       return
@@ -291,7 +280,6 @@ export const Layout = () => {
           [newBoard.id]: newBoard,
         },
       };
-      console.log('newState',newState)
     }
 
     if (instanceOfTTask(currentItem)) {
@@ -331,26 +319,21 @@ export const Layout = () => {
     setInitialValue(newState);
   }
 
-  const handleEditBoard = (itemId: string, newItemName: string) => {
-    const currentBoard = initialValue.boards[itemId]
+  const handleToggleDone = (currentItem: TStep) => {
+    const currentStep = initialValue.steps[currentItem.id]
 
-    if (currentBoard.title === newItemName) {
-      return
+    const newStep = {
+      ...currentStep,
+      done: !currentStep.done
     }
-    
-    const newBoard = {
-      ...currentBoard,
-      title: newItemName,
-    };
-
     const newState = {
       ...initialValue,
-      boards: {
-        ...initialValue.boards,
-        [newBoard.id]: newBoard,
+      steps: {
+        ...initialValue.steps,
+        [newStep.id]: newStep,
       },
     };
-    
+  
     setInitialValue(newState);
   }
 
@@ -371,7 +354,7 @@ export const Layout = () => {
             handleSave,
             handleDelete,
             handleEdit,
-            // handleEditBoard,
+            handleToggleDone,
           ]}/>
         </Box>
       </Container>
