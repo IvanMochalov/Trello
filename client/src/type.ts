@@ -1,3 +1,5 @@
+import { DropResult } from 'react-beautiful-dnd';
+
 export type TStep = {
   id: string
   title: string
@@ -27,4 +29,18 @@ export type TInitialData = {
   tasks: {
     [key: string]: TTask
   }
+}
+
+export type THandlers = {
+  dragEnd: (result: DropResult) => void
+  itemSave: (itemName: string, currentParent?: TBoard | TTask) => void
+  itemDelete: (currentItem: TBoard | TTask | TStep, currentParent?: TBoard | TTask) => void
+  itemEdit: (currentItem: TBoard | TTask | TStep, newItemName: string) => void
+  itemSort: (ids: string[], currentParent: TTask, direction: boolean) => void
+  itemToggleDone: (currentItem: TStep) => void
+}
+
+export type TOutletContext = {
+  data: TInitialData
+  handlers: THandlers
 }

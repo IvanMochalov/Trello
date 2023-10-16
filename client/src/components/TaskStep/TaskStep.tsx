@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { TInitialData, TStep, TTask } from '../../type';
+import { TOutletContext, TStep, TTask } from '../../type';
 import styled from 'styled-components';
 import { ItemActions } from '../ItemActions';
 import { useOutletContext } from 'react-router-dom';
@@ -67,7 +67,7 @@ const Title = styled.span<ITitle>`
 `
 
 export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
-  const [,,,,,handleToggleDone]: [TInitialData,() => void ,() => void, () => void, () => void, (currentItem: TStep) => void] = useOutletContext();
+  const { handlers: { itemToggleDone } } = useOutletContext<TOutletContext>();
 
   return (
     <Draggable
@@ -83,7 +83,7 @@ export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <DoneButton item={step} done={step.done} handleClick={handleToggleDone} />
+          <DoneButton item={step} done={step.done} handleClick={itemToggleDone} />
           <Title done={step.done}>
             {step.title}
           </Title>

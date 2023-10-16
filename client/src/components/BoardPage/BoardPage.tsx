@@ -1,11 +1,11 @@
 import { useOutletContext, useParams } from 'react-router-dom';
-import { TInitialData } from '../../type';
+import { TOutletContext } from '../../type';
 import { Stack } from '@mui/material';
 import { BoardTasksList } from '../BoardTasksList/BoardTasksList';
 import styles from './boardPage.module.css';
 import styled from 'styled-components';
 import { NewTask } from '../NewTask';
-import { NotFound } from '../NotFound'
+import { NotFound } from '../NotFound';
 
 const Container = styled.div`
   display: flex;
@@ -14,15 +14,14 @@ const Container = styled.div`
 const Title = styled.h2`
   font-size: 1em;
   line-height: 1.5;
-  
 `
 
 export const BoardPage = () => {
-  const [initialData]: [TInitialData] = useOutletContext();
+  const { data } = useOutletContext<TOutletContext>();
 
   const { board_id } = useParams<{ board_id: string }>();
   
-  const currentBoard = initialData.boards[board_id || ''];
+  const currentBoard = data.boards[board_id || ''];
 
   return (
     <Container>

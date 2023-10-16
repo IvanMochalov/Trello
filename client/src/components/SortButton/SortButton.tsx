@@ -8,7 +8,6 @@ interface ISortButtonProps {
   handleClick: (ids:  string[], currentParent: TTask, dir: boolean) => void
 }
 
-
 export  const SortButton = ({  stepIds, currTask, handleClick }: ISortButtonProps) => {
   const [sortDirection, setSortDirection] = React.useState(true);
 

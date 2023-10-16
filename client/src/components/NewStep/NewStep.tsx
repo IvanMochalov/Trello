@@ -3,7 +3,7 @@ import { FormControl } from '@mui/base';
 import { OutlinedInput, Tooltip } from '@mui/material';
 import styled from 'styled-components';
 import ArrowCircleRightOutlinedIcon from '@mui/icons-material/ArrowCircleRightOutlined';
-import { TBoard, TInitialData, TTask } from '../../type';
+import { TOutletContext, TTask } from '../../type';
 import { useOutletContext } from 'react-router';
 
 const Container = styled.div`
@@ -42,7 +42,7 @@ interface INewStep {
 }
 
 export const NewStep = ({ currTask }: INewStep) => {
-  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentParent?: TBoard | TTask ) => void] = useOutletContext();
+  const { handlers: { itemSave } } = useOutletContext<TOutletContext>();
 
   const [stepName, setStepName] = React.useState('');
 
@@ -57,7 +57,7 @@ export const NewStep = ({ currTask }: INewStep) => {
     if (stepName === '') {
       return;
     }
-    handleSave(stepName.trim(), currTask);
+    itemSave(stepName.trim(), currTask);
     setStepName('');
   }
 

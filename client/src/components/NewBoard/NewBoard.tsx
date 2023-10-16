@@ -3,10 +3,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMedi
 import { useTheme } from '@mui/material/styles';
 import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
 import { useOutletContext } from 'react-router-dom';
-import { TBoard, TInitialData, TTask } from '../../type';
+import { TOutletContext } from '../../type';
 
 export const NewBoard = () => {
-  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentItem?: TBoard | TTask ) => void] = useOutletContext();
+  const { handlers: { itemSave } } = useOutletContext<TOutletContext>();
   const [open, setOpen] = React.useState(false);
 
   const [boardName, setBoardName] = React.useState('');
@@ -33,7 +33,7 @@ export const NewBoard = () => {
     if (boardName === '') {
       return;
     }
-    handleSave(boardName.trim());
+    itemSave(boardName.trim());
     setBoardName('');
     setOpen(false);
   }

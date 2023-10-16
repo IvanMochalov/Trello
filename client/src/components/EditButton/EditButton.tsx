@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, MenuItem, OutlinedInput, useMediaQuery, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import { TBoard, TInitialData, TStep, TTask } from '../../type';
+import { TBoard, TOutletContext, TStep, TTask } from '../../type';
 import { useOutletContext } from 'react-router-dom';
 
 interface IEditButtonProps {
@@ -11,7 +11,7 @@ interface IEditButtonProps {
 }
 
 export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) => {
-  const [,,,,handleEdit]: [TInitialData,() => void ,() => void, () => void, (currentItem:  TBoard | TTask | TStep, newItemName: string) => void] = useOutletContext();
+  const { handlers: { itemEdit } } = useOutletContext<TOutletContext>();
   const [open, setOpen] = React.useState(false);
   const [itemName, setItemName] = React.useState(item.title);
 
@@ -42,7 +42,7 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
     if (itemName === '') {
       return;
     }
-    handleEdit(item, itemName.trim())
+    itemEdit(item, itemName.trim())
     setOpen(false);
     handleCloseMenu()
   }

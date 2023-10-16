@@ -374,15 +374,19 @@ export const Layout = () => {
               </Link>
             </Tooltip>
           </div>
-          <Outlet context={[
-            initialValue,
-            handleDragEnd,
-            handleSave,
-            handleDelete,
-            handleEdit,
-            handleToggleDone,
-            handleSort,
-          ]}/>
+          <Outlet
+            context={{
+              data: initialValue,
+              handlers: {
+                dragEnd: handleDragEnd,
+                itemSave: handleSave,
+                itemDelete: handleDelete,
+                itemEdit: handleEdit,
+                itemSort: handleSort,
+                itemToggleDone: handleToggleDone,
+              }
+            }}
+          />
         </Box>
       </Container>
     </React.Fragment>

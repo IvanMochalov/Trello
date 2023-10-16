@@ -1,12 +1,12 @@
 import { Draggable } from 'react-beautiful-dnd';
 import { useOutletContext } from 'react-router-dom';
-import { TBoard, TInitialData, TTask } from '../../type';
+import { TBoard, TOutletContext, TTask } from '../../type';
 import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
 import { NewStep } from '../NewStep';
 import { ItemActions } from '../ItemActions';
 import { TaskStep } from '../TaskStep';
 import styled from 'styled-components';
-import { SortButton } from '../SortButton'
+import { SortButton } from '../SortButton';
 
 interface ITasksListProps {
 	task: TTask
@@ -25,7 +25,7 @@ interface ITaskStepsListWrapper {
 
 const Container = styled.div<IHeaderList>`
 	display: inline-flex;
-	align-items: start;
+	align-items: flex-start;
 	flex-direction: column;
 	flex-shrink: 0;
 	flex-grow: 0;
@@ -98,7 +98,7 @@ const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
 `
 
 export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
-	const [initialValue,,,,,,handleSort]: [TInitialData,() => void ,() => void, () => void, () => void, () => void, (ids: string[], currentParent: TTask) => void] = useOutletContext();
+	const { data, handlers: { itemSort } } = useOutletContext<TOutletContext>();
 
 	return (
 		<Draggable
@@ -123,7 +123,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 					<NewStep currTask={task} />
 					{task.stepIds.length !== 0 ? (
 						<ActionsStepListWrapper >
-							<SortButton stepIds={task.stepIds} currTask={task} handleClick={handleSort}/>
+							<SortButton stepIds={task.stepIds} currTask={task} handleClick={itemSort}/>
 						</ActionsStepListWrapper>
 					) : null}
 					<StrictModeDroppable
@@ -139,7 +139,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 								isdraggingover={snapshot.isDraggingOver}
 							>
 								{task.stepIds.map((stepId: string, index) => {
-									const step = initialValue.steps[stepId]
+									const step = data.steps[stepId]
 
 									return (
 										<TaskStep

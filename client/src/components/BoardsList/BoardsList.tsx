@@ -1,9 +1,9 @@
-import { Tooltip } from '@mui/material'
-import { Link, useOutletContext } from 'react-router-dom'
-import styled from 'styled-components'
-import { TInitialData } from '../../type'
-import { ItemActions } from '../ItemActions'
-import styles from './boardsList.module.css'
+import { Tooltip } from '@mui/material';
+import { Link, useOutletContext } from 'react-router-dom';
+import { TOutletContext } from '../../type';
+import { ItemActions } from '../ItemActions';
+import styled from 'styled-components';
+import styles from './boardsList.module.css';
 
 const BoardsListWrapper = styled.div`
 	display: flex;
@@ -60,13 +60,13 @@ const BoardWrapper = styled.div`
 `
 
 export const BoardsList = () => {
-	const [initialValue]: [TInitialData] = useOutletContext()
+	const { data } = useOutletContext<TOutletContext>();
 
 	return (
 		<BoardsListWrapper>
-			{initialValue.boardOrder &&
-				initialValue.boardOrder.map((boardId: string) => {
-					const board = initialValue.boards[boardId]
+			{data.boardOrder &&
+				data.boardOrder.map((boardId: string) => {
+					const board = data.boards[boardId]
 
 					return (
 						board && (
