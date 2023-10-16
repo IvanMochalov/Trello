@@ -11,7 +11,7 @@ interface IEditButtonProps {
 }
 
 export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) => {
-  const [,,,,handleEditBoard]: [TInitialData,() => void ,() => void, () => void, (itemId: string, newItemName: string) => void] = useOutletContext();
+  const [,,,,handleEdit]: [TInitialData,() => void ,() => void, () => void, (currentItem:  TBoard | TTask | TStep, newItemName: string) => void] = useOutletContext();
   const [open, setOpen] = React.useState(false);
   const [itemName, setItemName] = React.useState(item.title);
 
@@ -42,7 +42,7 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
     if (itemName === '') {
       return;
     }
-    handleEditBoard(item.id, itemName.trim())
+    handleEdit(item, itemName.trim())
     setOpen(false);
     handleCloseMenu()
   }

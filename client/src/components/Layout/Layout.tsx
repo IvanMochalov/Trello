@@ -267,6 +267,70 @@ export const Layout = () => {
     setInitialValue(newState);
   };
 
+  const handleEdit = (currentItem: TBoard | TTask | TStep, newItemName: string) => {
+    let newState = {};
+    console.log(currentItem)
+    console.log(newItemName)
+
+    if (currentItem.title === newItemName) {
+      return
+    }
+    
+    if (instanceOfTBoard(currentItem)) {
+      const currentBoard = initialValue.boards[currentItem.id]
+  
+      const newBoard = {
+        ...currentBoard,
+        title: newItemName,
+      };
+      
+      newState = {
+        ...initialValue,
+        boards: {
+          ...initialValue.boards,
+          [newBoard.id]: newBoard,
+        },
+      };
+      console.log('newState',newState)
+    }
+
+    if (instanceOfTTask(currentItem)) {
+      const currentTask = initialValue.tasks[currentItem.id]
+  
+      const newTask = {
+        ...currentTask,
+        title: newItemName,
+      };
+  
+      newState = {
+        ...initialValue,
+        tasks: {
+          ...initialValue.tasks,
+          [newTask.id]: newTask,
+        },
+      };
+    }
+
+    if (!instanceOfTTask(currentItem) && !instanceOfTBoard(currentItem)) {
+      const currentStep = initialValue.steps[currentItem.id]
+  
+      const newStep = {
+        ...currentStep,
+        title: newItemName,
+      };
+  
+      newState = {
+        ...initialValue,
+        steps: {
+          ...initialValue.steps,
+          [newStep.id]: newStep,
+        },
+      };
+    }
+    
+    setInitialValue(newState);
+  }
+
   const handleEditBoard = (itemId: string, newItemName: string) => {
     const currentBoard = initialValue.boards[itemId]
 
@@ -306,7 +370,8 @@ export const Layout = () => {
             handleDragEnd,
             handleSave,
             handleDelete,
-            handleEditBoard,
+            handleEdit,
+            // handleEditBoard,
           ]}/>
         </Box>
       </Container>
