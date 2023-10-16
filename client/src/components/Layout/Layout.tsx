@@ -5,14 +5,12 @@ import { Smile } from '../Smile';
 import { TBoard, TInitialData, TStep, TTask } from '../../type';
 import styles from './layout.module.css';
 import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { initialData } from '../../data/source';
 import { DropResult } from 'react-beautiful-dnd';
 import { randomId } from '../../utils/getRandomId';
 import { instanceOfTBoard } from '../../utils/instanceOfTBoard';
 import { instanceOfTTask } from '../../utils/instanceOfTTask';
 
 export const Layout = () => {
-  // const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>(initialData, 'boardsList')
   const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>({ steps: {}, tasks: {}, boards: {}, boardOrder: [] }, 'boardsList')
 
   const { board_id } = useParams<{ board_id: string }>();
