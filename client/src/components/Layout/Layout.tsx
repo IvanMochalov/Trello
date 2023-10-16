@@ -363,7 +363,7 @@ export const Layout = () => {
 
   return (
     <React.Fragment>
-      <Container maxWidth="lg">
+      <Container maxWidth="xl">
         <Box sx={{ height: '100vh' }}>
           <div className={styles.smileWrapper}>
             <Tooltip title="Go to Main">
