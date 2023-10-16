@@ -325,12 +325,38 @@ export const Layout = () => {
     const newStep = {
       ...currentStep,
       done: !currentStep.done
-    }
+    };
+
     const newState = {
       ...initialValue,
       steps: {
         ...initialValue.steps,
         [newStep.id]: newStep,
+      },
+    };
+  
+    setInitialValue(newState);
+  }
+
+  const handleSort = (ids: string[], currentParent: TTask, direction: boolean) => {
+    if (ids.length === 0 || ids === undefined) {
+      return;
+    }
+
+    const newStepIds = ids.map((id) => {
+      return initialValue.steps[id];
+    }).sort((a,b) => {
+      return !direction ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
+    }).map((step) => step.id);
+    
+    const newState = {
+      ...initialValue,
+      tasks: {
+        ...initialValue.tasks,
+        [currentParent.id]: {
+          ...currentParent,
+          stepIds: newStepIds
+        },
       },
     };
   
@@ -355,6 +381,7 @@ export const Layout = () => {
             handleDelete,
             handleEdit,
             handleToggleDone,
+            handleSort,
           ]}/>
         </Box>
       </Container>

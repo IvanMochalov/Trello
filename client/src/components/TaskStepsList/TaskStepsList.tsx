@@ -6,6 +6,7 @@ import { NewStep } from '../NewStep';
 import { ItemActions } from '../ItemActions';
 import { TaskStep } from '../TaskStep';
 import styled from 'styled-components';
+import { SortButton } from '../SortButton'
 
 interface ITasksListProps {
 	task: TTask
@@ -24,6 +25,7 @@ interface ITaskStepsListWrapper {
 
 const Container = styled.div<IHeaderList>`
 	display: inline-flex;
+	align-items: start;
 	flex-direction: column;
 	flex-shrink: 0;
 	flex-grow: 0;
@@ -38,6 +40,7 @@ const Container = styled.div<IHeaderList>`
 `
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
+	width: 100%;
 	padding: 8px;
 	color: #333;
 	justify-content: space-between;
@@ -76,9 +79,17 @@ const Title = styled.h3`
   text-overflow: ellipsis;
 `
 
+const ActionsStepListWrapper = styled.div`
+	width: 100%;
+	display: flex;
+	padding: 0 8px;
+`
+
 const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
 	display: flex;
+	width: 100%;
 	flex-direction: column;
+	align-items: center;
 	padding: ${props => props.items.length === 0 ? '0px' : '8px'};
 	flex-grow: 1;
 	height: 100%;
@@ -87,7 +98,7 @@ const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
 `
 
 export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
-	const [initialValue]: [TInitialData] = useOutletContext()
+	const [initialValue,,,,,,handleSort]: [TInitialData,() => void ,() => void, () => void, () => void, () => void, (ids: string[], currentParent: TTask) => void] = useOutletContext();
 
 	return (
 		<Draggable
@@ -110,6 +121,11 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 						<ItemActions type='список' item={task} currParent={currParent} />
 					</HeaderList>
 					<NewStep currTask={task} />
+					{task.stepIds.length !== 0 ? (
+						<ActionsStepListWrapper >
+							<SortButton stepIds={task.stepIds} currTask={task} handleClick={handleSort}/>
+						</ActionsStepListWrapper>
+					) : null}
 					<StrictModeDroppable
 						droppableId={task.id}
 						type='step'

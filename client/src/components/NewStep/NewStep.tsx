@@ -8,6 +8,7 @@ import { useOutletContext } from 'react-router';
 
 const Container = styled.div`
   padding: 8px;
+  width: 100%;
 `
 
 const Form = styled.form`

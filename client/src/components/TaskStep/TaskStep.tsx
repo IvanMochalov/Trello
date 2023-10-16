@@ -23,6 +23,7 @@ interface ITitle {
 
 const Container = styled.div<IContainer>`
   display: flex;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
   border: 1px solid;
