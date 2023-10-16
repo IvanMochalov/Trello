@@ -25,6 +25,7 @@ export  const SortButton = ({  stepIds, currTask, handleClick }: ISortButtonProp
         height: '20px',
         color: 'gray',
         borderRadius: '10px',
+        fontWeight: '400',
         '&:hover': {
           backgroundColor: 'rgba(0, 0, 0, 0.04)'
         }
