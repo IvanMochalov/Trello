@@ -60,8 +60,10 @@ const Container = styled.div<IContainer>`
 `
 
 const Title = styled.span<ITitle>`
-  overflow: hidden;
   width: 100%;
+  font-size: 0.8em;
+  white-space: nowrap;
+  overflow: hidden;
   text-overflow: ellipsis;
   text-decoration: ${(props) => props.done ? 'line-through' : 'none'};
 `

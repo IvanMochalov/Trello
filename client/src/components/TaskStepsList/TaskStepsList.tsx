@@ -29,14 +29,20 @@ const Container = styled.div<IHeaderList>`
 	flex-direction: column;
 	flex-shrink: 0;
 	flex-grow: 0;
+	font-size: 1.2rem;
 	box-sizing: border-box;
 	border: 1px solid lightgray;
 	border-radius: 8px;
 	overflow: hidden;
 	background-color: white;
-	width: 250px;
-	margin: 8px;
+	width: 200px;
+	margin: 4px;
 	border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
+
+	@media (min-width: 768px) {
+		width: 250px;
+		margin: 8px;
+	};
 `
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
@@ -74,7 +80,7 @@ const HeaderList = styled.div<IHeaderList>`
 
 const Title = styled.h3`
 	margin: 0;
-	font-size: 1.5em;
+	font-size: 1em;
 	overflow: hidden;
   text-overflow: ellipsis;
 `

@@ -14,16 +14,17 @@ interface IContainer {
 }
 
 const Container = styled.div<IContainer>`
-  // display: flex;
-  // flex-shrink: 0;
-  // flex-wrap: nowrap;
   width: fit-content;
   display: block;
   white-space : nowrap;
-  // vertical-align : top;
-  margin: -8px -8px;
+  margin: -4px -4px;
   transition: background-color .2s ease-in-out;
-  background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'}
+  border-radius: 10px;
+  background-color: ${(props) => props.isdraggingover ? 'lightblue' : 'inherit'};
+
+  @media (min-width: 768px) {
+		margin: -8px -8px;
+	};
 `
 
 export const BoardTasksList = (
