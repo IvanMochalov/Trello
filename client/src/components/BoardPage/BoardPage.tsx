@@ -12,6 +12,7 @@ const Container = styled.div`
 
 const ActionsWrapper = styled.div`
   display: flex;
+  // align-items: center;
   flex-direction: row;
   margin-bottom: 20px;
 `

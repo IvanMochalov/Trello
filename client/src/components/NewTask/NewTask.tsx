@@ -3,10 +3,33 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMedi
 import { useTheme } from '@mui/material/styles';
 import { useOutletContext } from 'react-router-dom';
 import { TBoard, TOutletContext } from '../../type';
+import styled from 'styled-components'
 
 interface INewTask {
   currBoard: TBoard;
 }
+
+const ButtonAddList = styled.button`
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(25, 118, 210, 0.5);
+  color: #1976d2;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  min-width: 64px;
+  padding: 5px 15px;
+  border-radius: 4px;
+  background-color: transparent;
+
+  @media (min-width: 768px) {
+		line-height: 1.75;
+	};
+`
 
 export const NewTask = ({currBoard}: INewTask) => {
   const { handlers: { itemSave } } = useOutletContext<TOutletContext>();
@@ -43,9 +66,12 @@ export const NewTask = ({currBoard}: INewTask) => {
 
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <ButtonAddList
+        onClick={handleClickOpen}
+
+      >
         Добавить список
-      </Button>
+      </ButtonAddList>
       <Dialog
         fullScreen={fullScreen}
         open={open}
