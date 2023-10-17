@@ -64,13 +64,13 @@ export const NewTask = ({currBoard}: INewTask) => {
           >
             <form id={formTaskId} noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl>
-                <OutlinedInput placeholder="Список №1" onChange={handleChange}/>
+                <OutlinedInput placeholder="Список №1" onChange={handleChange} autoFocus/>
               </FormControl>
             </form>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button onClick={handleClose}>
             Отмена
           </Button>
           <Button

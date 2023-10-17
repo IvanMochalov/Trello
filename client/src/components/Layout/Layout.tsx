@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Box, Tooltip } from '@mui/material';
+import { Container, Box } from '@mui/material';
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { Smile } from '../Smile';
 import { TBoard, TInitialData, TStep, TTask } from '../../type';
@@ -379,11 +379,9 @@ export const Layout = () => {
       <Container maxWidth="xl">
         <Box sx={{ height: '100vh' }}>
           <div className={styles.smileWrapper}>
-            {/* <Tooltip title="Go to Main"> */}
-              <Link to='/boards' tabIndex={-1}>
-                <Smile happy={isHappy}/>
-              </Link>
-            {/* </Tooltip> */}
+            <Link to='/boards' tabIndex={-1} style={{textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+              <Smile happy={isHappy}/>
+            </Link>
           </div>
           <Outlet
             context={{

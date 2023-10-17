@@ -1,23 +1,37 @@
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 import { IconButton, Tooltip } from '@mui/material';
+import styled from 'styled-components'
 
 interface ISmile {
   happy: boolean;
 }
 
+const Title = styled.h3`
+  color: #5a41c8;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  text-decoration: none;
+`
+
 export const Smile = ({ happy }: ISmile) => {
   return (
-    <IconButton aria-label="go to main" >
+    <>
+    <IconButton aria-label="go to main" sx={{flexDirection: 'column'}}>
       {happy ? (
-        <Tooltip title="Go to Main">
+        <Tooltip title="Go to Main" placement='top'>
           <InsertEmoticonIcon sx={{ fontSize: 60, color: '#39bd3f' }}/>
         </Tooltip>
       ) : (
-        <Tooltip title="Not Found. Go to Main">
-          <SentimentVeryDissatisfiedIcon sx={{ fontSize: 60, color: '#5a41c8' }}/>
-        </Tooltip>
+        <>
+          <Tooltip title="Not Found. Go to Main" placement='top'>
+            <SentimentVeryDissatisfiedIcon sx={{ fontSize: 60, color: '#5a41c8' }}/>
+          </Tooltip>
+          
+        </>
       )}
     </IconButton>
+    {!happy && <Title>not found</Title>}
+    </>
   )
 }

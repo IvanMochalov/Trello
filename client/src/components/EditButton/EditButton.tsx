@@ -72,19 +72,18 @@ export const EditButton = ({ item, type, handleCloseMenu }: IEditButtonProps) =>
           >
             <form id={formEditId} noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl sx={{width: '100%'}}>
-                <OutlinedInput value={itemName} placeholder="Доска №1" onChange={handleChange}/>
+                <OutlinedInput value={itemName} placeholder={`${type} №1`} onChange={handleChange} autoFocus/>
               </FormControl>
             </form>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button onClick={handleClose}>
             Отмена
           </Button>
           <Button
             type="submit"
             form={formEditId}
-            autoFocus
           >
             Сохранить
           </Button>

@@ -73,7 +73,7 @@ export const BoardsList = () => {
 							<Tooltip
 								key={board.id}
 								title={`Go to ${board.title}`}
-								placement='top'
+								placement='top-start'
 							>
 								<BoardWrapper tabIndex={0}>
 									<Link
@@ -84,7 +84,7 @@ export const BoardsList = () => {
 									>
 										{board.title}
 									</Link>
-									<ItemActions type='доски' item={board} />
+									<ItemActions type='доска' item={board} />
 								</BoardWrapper>
 							</Tooltip>
 						)

@@ -63,19 +63,18 @@ export const NewBoard = () => {
           >
             <form id={formBoardId} noValidate autoComplete="off" onSubmit={handleSubmit}>
               <FormControl>
-                <OutlinedInput placeholder="Доска №1" onChange={handleChange}/>
+                <OutlinedInput placeholder="Доска №1" onChange={handleChange} autoFocus/>
               </FormControl>
             </form>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button onClick={handleClose}>
             Отмена
           </Button>
           <Button
             type="submit"
             form={formBoardId}
-            autoFocus
           >
             Сохранить
           </Button>

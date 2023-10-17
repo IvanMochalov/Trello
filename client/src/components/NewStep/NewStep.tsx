@@ -67,6 +67,7 @@ export const NewStep = ({ currTask }: INewStep) => {
         <FormControl>
           <OutlinedInput
             value={stepName}
+            autoFocus
             placeholder="Шаг №1"
             onChange={handleChange}
             sx={{
