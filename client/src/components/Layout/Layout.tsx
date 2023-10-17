@@ -25,7 +25,7 @@ export const Layout = () => {
     } else {
       setIsHappy(true);
     }
-
+    console.log('useEffect')
   }, [board_id, currentBoard, location])
 
 
