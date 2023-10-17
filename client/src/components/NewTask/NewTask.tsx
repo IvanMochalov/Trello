@@ -12,6 +12,7 @@ interface INewTask {
 const ButtonAddList = styled.button`
   display: flex;
   height: 100%;
+  width: 100%;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(25, 118, 210, 0.5);
