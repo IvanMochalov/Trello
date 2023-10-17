@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Box, Tooltip } from '@mui/material';
-import { Link, Outlet, useParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
 import { Smile } from '../Smile';
 import { TBoard, TInitialData, TStep, TTask } from '../../type';
 import styles from './layout.module.css';
@@ -15,6 +15,19 @@ export const Layout = () => {
 
   const { board_id } = useParams<{ board_id: string }>();
   const currentBoard = initialValue.boards && initialValue.boards[board_id || ''];
+
+  const [isHappy, setIsHappy] = React.useState(true);
+  const location = useLocation()
+
+  React.useEffect(() => {
+    if ((location.pathname === `/boards/${board_id}`) && (currentBoard === undefined)) {
+      setIsHappy(false);
+    } else {
+      setIsHappy(true);
+    }
+
+  }, [board_id, currentBoard, location])
+
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId, type } = result;
@@ -366,11 +379,11 @@ export const Layout = () => {
       <Container maxWidth="xl">
         <Box sx={{ height: '100vh' }}>
           <div className={styles.smileWrapper}>
-            <Tooltip title="Go to Main">
+            {/* <Tooltip title="Go to Main"> */}
               <Link to='/boards' tabIndex={-1}>
-                <Smile happy={true}/>
+                <Smile happy={isHappy}/>
               </Link>
-            </Tooltip>
+            {/* </Tooltip> */}
           </div>
           <Outlet
             context={{
