@@ -7,7 +7,7 @@ import styles from './notFound.module.css';
 export const NotFound = () => {
   return (
     <Container maxWidth="xl">
-      <Box sx={{ height: '100vh' }}>
+      <Box>
         <div className={styles.smileWrapper}>
           <Link to='/boards' tabIndex={-1} style={{textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Smile happy={false} />
