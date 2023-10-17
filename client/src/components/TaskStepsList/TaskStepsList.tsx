@@ -87,7 +87,7 @@ const ActionsStepListWrapper = styled.div`
 	padding: 0 8px;
 `
 
-const TaskStepsListWrapper = styled.div<ITaskStepsListWrapper>`
+const TaskStepsListWrapper = styled.ul<ITaskStepsListWrapper>`
 	display: flex;
 	width: 100%;
 	flex-direction: column;

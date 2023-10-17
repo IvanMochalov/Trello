@@ -5,7 +5,7 @@ import { ItemActions } from '../ItemActions';
 import styled from 'styled-components';
 import styles from './boardsList.module.css';
 
-const BoardsListWrapper = styled.div`
+const BoardsListWrapper = styled.ul`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -14,7 +14,7 @@ const BoardsListWrapper = styled.div`
 	min-width: 288px;
 `
 
-const BoardWrapper = styled.div`
+const BoardWrapper = styled.li`
 	display: flex;
 	box-sizing: border-box;
 	align-items: center;
@@ -33,8 +33,8 @@ const BoardWrapper = styled.div`
 	letter-spacing: 0.01071em;
 	padding: 8px;
 
-	&:not(:first-child) {
-		margin-top: 15px;
+	&:not(:last-child) {
+		margin-bottom: 15px;
 	}
 
 	&:active {

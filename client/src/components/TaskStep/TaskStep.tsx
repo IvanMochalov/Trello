@@ -21,7 +21,7 @@ interface ITitle {
   done?: boolean
 }
 
-const Container = styled.div<IContainer>`
+const Container = styled.li<IContainer>`
   display: flex;
   width: 100%;
   align-items: center;
@@ -30,7 +30,6 @@ const Container = styled.div<IContainer>`
   border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
   border-radius: 3px;
   padding: 8px;
-  margin-bottom: 5px;
   cursor: ${(props) => props.isdragdisabled ? 'not-allowed' : 'grab'};
   background-color: ${(props) => 
     props.isdragdisabled
@@ -39,6 +38,10 @@ const Container = styled.div<IContainer>`
         ? 'lightgreen'
         : 'white'};
   transition: background-color .2s ease-in-out;
+
+  &:not(:last-child) {
+    margin-bottom: 5px;
+  }
 
   &:focus {
     outline: none;
