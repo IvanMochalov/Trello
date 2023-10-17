@@ -40,7 +40,7 @@ export const NewBoard = () => {
 
   return (
     <>
-      <Tooltip title="Create new Board" placement="top-start">
+      <Tooltip title="Добавить доску" placement="top-start">
         <Button variant="contained" onClick={handleClickOpen} color='success' startIcon={<AddCircleTwoToneIcon />} sx={{width: '100%'}}>
           Новая доска
         </Button>

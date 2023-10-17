@@ -73,7 +73,7 @@ export const BoardsList = () => {
 								<BoardWrapper tabIndex={0}>
 									<Tooltip
 										key={board.id}
-										title={`Go to ${board.title}`}
+										title={`Перейти к ${board.title}`}
 										placement='top-end'
 									>
 										<Link

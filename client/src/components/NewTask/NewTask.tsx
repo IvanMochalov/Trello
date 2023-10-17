@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useOutletContext } from 'react-router-dom';
 import { TBoard, TOutletContext } from '../../type';
@@ -28,6 +28,12 @@ const ButtonAddList = styled.button`
   background-color: transparent;
   cursor: pointer;
   transition: all .3s ease-in-out;
+
+  &:hover {
+    outline: none;
+    background-color: #1976d2;
+    color: white;
+  }
 
   &:focus-visible {
     outline: none;
@@ -75,12 +81,14 @@ export const NewTask = ({currBoard}: INewTask) => {
 
   return (
     <>
-      <ButtonAddList
-        onClick={handleClickOpen}
-
-      >
-        Добавить список
-      </ButtonAddList>
+      <Tooltip title="Добавить список" placement="top-start">
+        <ButtonAddList
+          onClick={handleClickOpen}
+          
+          >
+          Добавить список
+        </ButtonAddList>
+      </Tooltip>
       <Dialog
         fullScreen={fullScreen}
         open={open}

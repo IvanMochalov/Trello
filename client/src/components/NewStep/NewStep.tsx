@@ -63,32 +63,34 @@ export const NewStep = ({ currTask }: INewStep) => {
 
   return (
     <Container>
-      <Form id={formStepId} noValidate autoComplete="off" onSubmit={handleSubmit} >
-        <FormControl>
-          <OutlinedInput
-            value={stepName}
-            placeholder="Шаг №1"
-            onChange={handleChange}
-            sx={{
-              width: '100%',
-              '& .MuiOutlinedInput-input': {
-                padding: '7px',
-                paddingRight: '37px',
-              }
-            }}
-          />
-        </FormControl>
-        {stepName && (
-          <Tooltip title="Create new Step" placement="left-start">
-            <Button
-              type="submit"
-              form={formStepId}
-            >
-              <ArrowCircleRightOutlinedIcon sx={{cursor: 'pointer'}}/>
-            </Button>
-          </Tooltip>
-        )}
-      </Form>
+      <Tooltip title="Добавить шаг" placement="top">
+        <Form id={formStepId} noValidate autoComplete="off" onSubmit={handleSubmit} >
+          <FormControl>
+            <OutlinedInput
+              value={stepName}
+              placeholder="Шаг №1"
+              onChange={handleChange}
+              sx={{
+                width: '100%',
+                '& .MuiOutlinedInput-input': {
+                  padding: '7px',
+                  paddingRight: '37px',
+                }
+              }}
+            />
+          </FormControl>
+          {stepName && (
+            <Tooltip title="Create new Step" placement="left-start">
+              <Button
+                type="submit"
+                form={formStepId}
+              >
+                <ArrowCircleRightOutlinedIcon sx={{cursor: 'pointer'}}/>
+              </Button>
+            </Tooltip>
+          )}
+        </Form>
+      </Tooltip>
     </Container>
   )
 }

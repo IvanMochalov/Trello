@@ -19,12 +19,12 @@ export const Smile = ({ happy }: ISmile) => {
     <>
     <IconButton aria-label="go to main" sx={{flexDirection: 'column'}}>
       {happy ? (
-        <Tooltip title="Go to Main" placement='top'>
+        <Tooltip title="На Главную" placement='left'>
           <InsertEmoticonIcon sx={{ fontSize: 60, color: '#39bd3f' }}/>
         </Tooltip>
       ) : (
         <>
-          <Tooltip title="Not Found. Go to Main" placement='top'>
+          <Tooltip title="Страница не найдена. На главную" placement='left'>
             <SentimentVeryDissatisfiedIcon sx={{ fontSize: 60, color: '#5a41c8' }}/>
           </Tooltip>
           
