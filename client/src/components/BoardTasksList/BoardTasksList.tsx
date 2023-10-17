@@ -13,10 +13,10 @@ interface IContainer {
   isdraggingover?: boolean
 }
 
-const Container = styled.div<IContainer>`
-  width: fit-content;
+const Container = styled.ul<IContainer>`
   display: block;
-  white-space : nowrap;
+  white-space: nowrap;
+  width: fit-content;
   margin: -4px -4px;
   transition: background-color .2s ease-in-out;
   border-radius: 10px;

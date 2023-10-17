@@ -23,14 +23,10 @@ interface ITaskStepsListWrapper {
 	items: string[]
 }
 
-const Container = styled.div<IHeaderList>`
-	display: inline-flex;
-	align-items: flex-start;
-	flex-direction: column;
-	flex-shrink: 0;
-	flex-grow: 0;
+const Container = styled.li<IHeaderList>`
+	display: inline-block;
+	vertical-align: top;
 	font-size: 1.2rem;
-	box-sizing: border-box;
 	border: 1px solid lightgray;
 	border-radius: 8px;
 	overflow: hidden;

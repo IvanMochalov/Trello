@@ -25,6 +25,7 @@ const ButtonAddList = styled.button`
   padding: 5px 15px;
   border-radius: 4px;
   background-color: transparent;
+  cursor: pointer;
 
   @media (min-width: 768px) {
 		line-height: 1.75;
