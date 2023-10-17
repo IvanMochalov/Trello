@@ -26,6 +26,13 @@ const ButtonAddList = styled.button`
   border-radius: 4px;
   background-color: transparent;
   cursor: pointer;
+  transition: all .3s ease-in-out;
+
+  &:focus-visible {
+    outline: none;
+    background-color: rgba(25, 118, 210, 0.5);
+    color: white;
+  }
 
   @media (min-width: 768px) {
 		line-height: 1.75;
