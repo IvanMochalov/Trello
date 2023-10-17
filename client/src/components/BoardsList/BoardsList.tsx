@@ -10,9 +10,8 @@ const BoardsListWrapper = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: start;
-	width: 45%;
-	min-width: 400px;
-	margin-bottom: 40px;
+	width: 50%;
+	min-width: 288px;
 `
 
 const BoardWrapper = styled.div`
@@ -70,23 +69,24 @@ export const BoardsList = () => {
 
 					return (
 						board && (
-							<Tooltip
-								key={board.id}
-								title={`Go to ${board.title}`}
-								placement='top-start'
-							>
+							
 								<BoardWrapper tabIndex={0}>
-									<Link
-										className={styles.boardItemLink}
+									<Tooltip
 										key={board.id}
-										to={`/boards/${board.id}`}
-										tabIndex={-1}
+										title={`Go to ${board.title}`}
+										placement='top-end'
 									>
-										{board.title}
-									</Link>
+										<Link
+											className={styles.boardItemLink}
+											key={board.id}
+											to={`/boards/${board.id}`}
+											tabIndex={-1}
+										>
+											{board.title}
+										</Link>
+									</Tooltip>
 									<ItemActions type='доска' item={board} />
 								</BoardWrapper>
-							</Tooltip>
 						)
 					)
 				})}

@@ -1,8 +1,23 @@
+html {
+  font-size: 16px;
+}
 body {
   font-family: 'Roboto', sans-serif;
   user-select: none;
   background-color: #ebf6ff;
+  font-size: 100%;
 }
+/* @media (max-width: 1800px) {
+  body {
+      font-size:90%;
+  }
+}
+
+@media (max-width: 1000px) {
+  body {
+      font-size:80%;
+  }
+} */
 /* Scrollbar modification */
 ::-webkit-scrollbar {
   width: 12px;

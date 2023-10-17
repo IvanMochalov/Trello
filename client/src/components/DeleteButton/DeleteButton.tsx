@@ -40,7 +40,7 @@ export const DeleteButton = ({ item, type, currParent, handleCloseMenu }: IDelet
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle id="alert-dialog-title" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
           {`Удаление ${type} '${item.title}' `}
         </DialogTitle>
         <DialogActions>
