@@ -48,7 +48,7 @@ export const NewStep = ({ currTask }: INewStep) => {
 
   const formStepId = React.useId();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStepName(event.target.value);
   }
 
