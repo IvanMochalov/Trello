@@ -52,11 +52,13 @@ export const Layout = () => {
 		}
 
 		if (type === 'task') {
-			const newTaskIds = Array.from(currentBoard.taskIds)
-			newTaskIds.splice(source.index, 1)
-			newTaskIds.splice(destination.index, 0, draggableId)
-
-			const newState = TaskEvents.drag(newTaskIds, currentBoard, initialValue)
+			const newState = TaskEvents.drag(
+				currentBoard,
+				initialValue,
+				source,
+				destination,
+				draggableId
+			)
 			setInitialValue(newState)
 			return
 		}
@@ -65,27 +67,24 @@ export const Layout = () => {
 		const foreign: TTask = initialValue.tasks[destination.droppableId]
 
 		if (home === foreign) {
-			const newStepIds = Array.from(home.stepIds)
-			newStepIds.splice(source.index, 1)
-			newStepIds.splice(destination.index, 0, draggableId)
-
-			const newState = StepEvents.dragOnTask(newStepIds, home, initialValue)
+			const newState = StepEvents.dragOnTask(
+				home,
+				initialValue,
+				source,
+				destination,
+				draggableId
+			)
 			setInitialValue(newState)
 			return
 		}
 
-		const homeStepIds = Array.from(home.stepIds)
-		homeStepIds.splice(source.index, 1)
-
-		const foreignStepIds = Array.from(foreign.stepIds)
-		foreignStepIds.splice(destination.index, 0, draggableId)
-
 		const newState = StepEvents.dragBetweenTasks(
 			home,
-			homeStepIds,
 			foreign,
-			foreignStepIds,
-			initialValue
+			initialValue,
+			source,
+			destination,
+			draggableId
 		)
 
 		setInitialValue(newState)

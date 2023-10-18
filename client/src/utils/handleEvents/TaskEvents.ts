@@ -1,3 +1,4 @@
+import { DraggableLocation } from 'react-beautiful-dnd'
 import { TBoard, TInitialData, TTask } from '../../type';
 
 export const TaskEvents = {
@@ -74,7 +75,11 @@ export const TaskEvents = {
 			},
 		}
 	},
-	drag(newTaskIds: string[], currentBoard: TBoard, initialValue: TInitialData) {
+	drag(currentBoard: TBoard, initialValue: TInitialData, source: DraggableLocation, destination: DraggableLocation, draggableId: string) {
+		const newTaskIds = Array.from(currentBoard.taskIds)
+		newTaskIds.splice(source.index, 1)
+		newTaskIds.splice(destination.index, 0, draggableId)
+
 		const newBoard = {
 			...currentBoard,
 			taskIds: newTaskIds,

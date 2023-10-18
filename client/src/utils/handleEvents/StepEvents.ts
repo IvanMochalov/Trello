@@ -1,3 +1,4 @@
+import { DraggableLocation } from 'react-beautiful-dnd'
 import { TBoard, TTask, TStep, TInitialData } from '../../type'
 
 export const StepEvents = {
@@ -112,7 +113,17 @@ export const StepEvents = {
 			},
 		}
 	},
-	dragOnTask(newStepIds: string[], home: TTask, initialValue: TInitialData) {
+	dragOnTask(
+		home: TTask,
+		initialValue: TInitialData,
+		source: DraggableLocation,
+		destination: DraggableLocation,
+		draggableId: string
+	) {
+		const newStepIds = Array.from(home.stepIds)
+		newStepIds.splice(source.index, 1)
+		newStepIds.splice(destination.index, 0, draggableId)
+
 		const newTask = {
 			...home,
 			stepIds: newStepIds,
@@ -128,16 +139,21 @@ export const StepEvents = {
 	},
 	dragBetweenTasks(
 		home: TTask,
-		homeStepIds: string[],
 		foreign: TTask,
-		foreignStepIds: string[],
-		initialValue: TInitialData
+		initialValue: TInitialData,
+		source: DraggableLocation,
+		destination: DraggableLocation,
+		draggableId: string
 	) {
+		const homeStepIds = Array.from(home.stepIds)
+		homeStepIds.splice(source.index, 1)
 		const newHome = {
 			...home,
 			stepIds: homeStepIds,
 		}
 
+		const foreignStepIds = Array.from(foreign.stepIds)
+		foreignStepIds.splice(destination.index, 0, draggableId)
 		const newForeign = {
 			...foreign,
 			stepIds: foreignStepIds,
