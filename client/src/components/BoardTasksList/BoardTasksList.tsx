@@ -1,6 +1,6 @@
 import { TBoard, TOutletContext } from '../../type';
 import { TaskStepsList } from '../TaskStepsList';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
 import { useOutletContext } from 'react-router';
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ export const BoardTasksList = (
 
   return (
     <DragDropContext
-      onDragEnd={dragEnd}
+      onDragEnd={(result: DropResult) => dragEnd(result)(board)}
     >
       <StrictModeDroppable
         droppableId="all-tasks"

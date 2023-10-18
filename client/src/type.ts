@@ -32,7 +32,7 @@ export type TInitialData = {
 }
 
 export type THandlers = {
-  dragEnd: (result: DropResult) => void
+  dragEnd: (result: DropResult) => (currentBoard: TBoard) => void
   itemSave: (itemName: string, currentParent?: TBoard | TTask) => void
   itemDelete: (currentItem: TBoard | TTask | TStep, currentParent?: TBoard | TTask) => void
   itemEdit: (currentItem: TBoard | TTask | TStep, newItemName: string) => void

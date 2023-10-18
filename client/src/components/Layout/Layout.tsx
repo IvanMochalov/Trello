@@ -36,7 +36,7 @@ export const Layout = () => {
 		}
 	}, [board_id, currentBoard, location])
 
-	const handleDragEnd = (result: DropResult) => {
+	const handleDragEnd = (result: DropResult) => (board: TBoard) => {
 		const { destination, source, draggableId, type } = result
 
 		if (!destination) {
@@ -53,7 +53,7 @@ export const Layout = () => {
 
 		if (type === 'task') {
 			const newState = TaskEvents.drag(
-				currentBoard,
+				board,
 				initialValue,
 				source,
 				destination,
