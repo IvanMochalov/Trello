@@ -43,8 +43,9 @@ export const Layout = () => {
 			return
 		}
 
-    const notIsDrag = destination.droppableId === source.droppableId &&
-    destination.index === source.index
+		const notIsDrag =
+			destination.droppableId === source.droppableId &&
+			destination.index === source.index
 
 		if (notIsDrag) {
 			return
@@ -79,7 +80,13 @@ export const Layout = () => {
 		const foreignStepIds = Array.from(foreign.stepIds)
 		foreignStepIds.splice(destination.index, 0, draggableId)
 
-    const newState = StepEvents.dragBetweenTasks(home, homeStepIds, foreign, foreignStepIds, initialValue)
+		const newState = StepEvents.dragBetweenTasks(
+			home,
+			homeStepIds,
+			foreign,
+			foreignStepIds,
+			initialValue
+		)
 
 		setInitialValue(newState)
 	}

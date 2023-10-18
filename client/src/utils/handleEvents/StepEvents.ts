@@ -112,32 +112,38 @@ export const StepEvents = {
 			},
 		}
 	},
-  dragOnTask(newStepIds: string[], home: TTask, initialValue: TInitialData) {
-    const newTask = {
-      ...home,
-      stepIds: newStepIds,
-    }
+	dragOnTask(newStepIds: string[], home: TTask, initialValue: TInitialData) {
+		const newTask = {
+			...home,
+			stepIds: newStepIds,
+		}
 
-    return {
-      ...initialValue,
-      tasks: {
-        ...initialValue.tasks,
-        [newTask.id]: newTask,
-      },
-    }
-  },
-  dragBetweenTasks(home: TTask, homeStepIds: string[], foreign: TTask, foreignStepIds: string[], initialValue: TInitialData) {
-    const newHome = {
+		return {
+			...initialValue,
+			tasks: {
+				...initialValue.tasks,
+				[newTask.id]: newTask,
+			},
+		}
+	},
+	dragBetweenTasks(
+		home: TTask,
+		homeStepIds: string[],
+		foreign: TTask,
+		foreignStepIds: string[],
+		initialValue: TInitialData
+	) {
+		const newHome = {
 			...home,
 			stepIds: homeStepIds,
 		}
 
-    const newForeign = {
+		const newForeign = {
 			...foreign,
 			stepIds: foreignStepIds,
 		}
 
-    return {
+		return {
 			...initialValue,
 			tasks: {
 				...initialValue.tasks,
@@ -145,5 +151,5 @@ export const StepEvents = {
 				[newForeign.id]: newForeign,
 			},
 		}
-  },
+	},
 }
