@@ -70,15 +70,13 @@ export const BoardsList = () => {
 					return (
 						board && (
 							
-								<BoardWrapper tabIndex={0}>
+								<BoardWrapper tabIndex={0} key={board.id}>
 									<Tooltip
-										key={board.id}
 										title={`Перейти к ${board.title}`}
 										placement='top-end'
 									>
 										<Link
 											className={styles.boardItemLink}
-											key={board.id}
 											to={`/boards/${board.id}`}
 											tabIndex={-1}
 										>
