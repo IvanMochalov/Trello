@@ -129,24 +129,42 @@ export const Layout = () => {
 		currentParent?: TBoard | TTask
 	) => {
 		const isBoard = instanceOfTBoard(currentItem);
-		const isTask = instanceOfTTask(currentItem) && currentParent !== undefined;
+		const isTask =
+			instanceOfTTask(currentItem) &&
+			instanceOfTBoard(currentParent) &&
+			currentParent !== undefined;
 		const isStep =
 			!instanceOfTBoard(currentItem) &&
 			!instanceOfTTask(currentItem) &&
+			!instanceOfTBoard(currentParent) &&
 			currentParent !== undefined;
 
 		let newState = {};
+		const dataEvent = {
+			initialValue,
+		};
 
 		if (isBoard) {
-			newState = BoardEvents.delete(initialValue, currentItem);
+			newState = BoardEvents.delete({
+				...dataEvent,
+				currentItem,
+			});
 		}
 
 		if (isTask) {
-			newState = TaskEvents.delete(initialValue, currentItem, currentParent);
+			newState = TaskEvents.delete({
+				...dataEvent,
+				currentItem,
+				currentParent,
+			});
 		}
 
 		if (isStep) {
-			newState = StepEvents.delete(initialValue, currentItem, currentParent);
+			newState = StepEvents.delete({
+				...dataEvent,
+				currentItem,
+				currentParent,
+			});
 		}
 
 		setInitialValue(newState);
@@ -167,23 +185,44 @@ export const Layout = () => {
 			return;
 		}
 
+		const dataEvent = {
+			newItemName,
+			initialValue,
+		};
+
 		if (isBoard) {
-			newState = BoardEvents.edit(newItemName, currentItem, initialValue);
+			newState = BoardEvents.edit({
+				...dataEvent,
+				currentItem,
+			});
 		}
 
 		if (isTask) {
-			newState = TaskEvents.edit(newItemName, currentItem, initialValue);
+			newState = TaskEvents.edit({
+				...dataEvent,
+				currentItem,
+			});
 		}
 
 		if (isStep) {
-			newState = StepEvents.edit(newItemName, currentItem, initialValue);
+			newState = StepEvents.edit({
+				...dataEvent,
+				currentItem,
+			});
 		}
 
 		setInitialValue(newState);
 	};
 
 	const handleToggleDone = (currentItem: TStep) => {
-		const newState = StepEvents.toggleDone(currentItem, initialValue);
+		const dataEvent = {
+			currentItem,
+			initialValue,
+		};
+
+		const newState = StepEvents.toggleDone({
+			...dataEvent,
+		});
 
 		setInitialValue(newState);
 	};
@@ -197,12 +236,16 @@ export const Layout = () => {
 			return;
 		}
 
-		const newState = StepEvents.sort(
+		const dataEvent = {
 			ids,
 			currentParent,
 			direction,
-			initialValue
-		);
+			initialValue,
+		};
+
+		const newState = StepEvents.sort({
+			...dataEvent,
+		});
 
 		setInitialValue(newState);
 	};

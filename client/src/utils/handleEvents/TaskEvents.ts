@@ -30,11 +30,12 @@ export const TaskEvents = {
 			},
 		};
 	},
-	delete(
-		initialValue: TInitialData,
-		currentItem: TTask,
-		currentParent: TBoard | TTask
-	) {
+	delete(data: {
+		initialValue: TInitialData;
+		currentItem: TTask;
+		currentParent: TBoard;
+	}) {
+		const { initialValue, currentItem, currentParent } = data;
 		const currentTask = initialValue.tasks[currentItem.id];
 
 		currentTask.stepIds.forEach((stepId: string) => {
@@ -60,7 +61,12 @@ export const TaskEvents = {
 			},
 		};
 	},
-	edit(newItemName: string, currentItem: TTask, initialValue: TInitialData) {
+	edit(data: {
+		newItemName: string;
+		initialValue: TInitialData;
+		currentItem: TTask;
+	}) {
+		const { newItemName, initialValue, currentItem } = data;
 		const currentTask = initialValue.tasks[currentItem.id];
 
 		const newTask = {

@@ -17,7 +17,8 @@ export const BoardEvents = {
 			boardOrder: [newId, ...initialValue.boardOrder],
 		};
 	},
-	delete(initialValue: TInitialData, currentItem: TBoard) {
+	delete(data: { initialValue: TInitialData; currentItem: TBoard }) {
+		const { initialValue, currentItem } = data;
 		const currentBoard = initialValue.boards[currentItem.id];
 
 		currentBoard.taskIds.forEach((taskId: string) => {
@@ -42,7 +43,12 @@ export const BoardEvents = {
 			boardOrder: newBoardOrder,
 		};
 	},
-	edit(newItemName: string, currentItem: TBoard, initialValue: TInitialData) {
+	edit(data: {
+		newItemName: string;
+		initialValue: TInitialData;
+		currentItem: TBoard;
+	}) {
+		const { newItemName, initialValue, currentItem } = data;
 		const currentBoard = initialValue.boards[currentItem.id];
 
 		const newBoard = {

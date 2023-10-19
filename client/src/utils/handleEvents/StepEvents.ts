@@ -1,5 +1,5 @@
 import { DraggableLocation } from 'react-beautiful-dnd';
-import { TBoard, TTask, TStep, TInitialData } from '../../type';
+import { TTask, TStep, TInitialData } from '../../type';
 
 export const StepEvents = {
 	save(data: {
@@ -30,11 +30,12 @@ export const StepEvents = {
 			},
 		};
 	},
-	delete(
-		initialValue: TInitialData,
-		currentItem: TStep,
-		currentParent: TBoard | TTask
-	) {
+	delete(data: {
+		initialValue: TInitialData;
+		currentItem: TStep;
+		currentParent: TTask;
+	}) {
+		const { initialValue, currentItem, currentParent } = data;
 		delete initialValue.steps[currentItem.id];
 
 		const currentTaskStepIds = initialValue.tasks[
@@ -54,7 +55,12 @@ export const StepEvents = {
 			},
 		};
 	},
-	edit(newItemName: string, currentItem: TStep, initialValue: TInitialData) {
+	edit(data: {
+		newItemName: string;
+		initialValue: TInitialData;
+		currentItem: TStep;
+	}) {
+		const { newItemName, initialValue, currentItem } = data;
 		const currentStep = initialValue.steps[currentItem.id];
 
 		const newStep = {
@@ -70,7 +76,8 @@ export const StepEvents = {
 			},
 		};
 	},
-	toggleDone(currentItem: TStep, initialValue: TInitialData) {
+	toggleDone(data: { initialValue: TInitialData; currentItem: TStep }) {
+		const { initialValue, currentItem } = data;
 		const currentStep = initialValue.steps[currentItem.id];
 
 		const newStep = {
@@ -86,12 +93,13 @@ export const StepEvents = {
 			},
 		};
 	},
-	sort(
-		ids: string[],
-		currentParent: TTask,
-		direction: boolean,
-		initialValue: TInitialData
-	) {
+	sort(data: {
+		ids: string[];
+		currentParent: TTask;
+		direction: boolean;
+		initialValue: TInitialData;
+	}) {
+		const { ids, currentParent, direction, initialValue } = data;
 		const newStepIds = ids
 			.map(id => {
 				return initialValue.steps[id];
