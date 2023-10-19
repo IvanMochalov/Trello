@@ -1,1 +1,1 @@
-export * from './NewBoard'
+export * from './NewBoard';

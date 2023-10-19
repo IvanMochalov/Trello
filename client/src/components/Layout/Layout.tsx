@@ -1,298 +1,288 @@
+import { Box, Container } from '@mui/material';
 import React from 'react';
-import { Container, Box, Tooltip } from '@mui/material';
-import { Link, Outlet, useParams } from 'react-router-dom';
-import { Smile } from '../Smile';
-import { TBoard, TInitialData, TStep, TTask } from '../../type';
-import styles from './layout.module.css';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { initialData } from '../../data/source';
 import { DropResult } from 'react-beautiful-dnd';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { TBoard, TInitialData, TStep, TTask } from '../../type';
 import { randomId } from '../../utils/getRandomId';
+import { TaskEvents } from '../../utils/handleEvents/TaskEvents';
 import { instanceOfTBoard } from '../../utils/instanceOfTBoard';
 import { instanceOfTTask } from '../../utils/instanceOfTTask';
+import { Smile } from '../Smile';
+import styles from './layout.module.css';
+import { BoardEvents } from '../../utils/handleEvents/BoardEvents';
+import { StepEvents } from '../../utils/handleEvents/StepEvents';
 
 export const Layout = () => {
-  // const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>(initialData, 'boardsList')
-  const [initialValue, setInitialValue] = useLocalStorage<TInitialData | Object>({ steps: {}, tasks: {}, boards: {}, boardOrder: [] }, 'boardsList')
+	const [initialValue, setInitialValue] = useLocalStorage<
+		TInitialData | Object
+	>({ steps: {}, tasks: {}, boards: {}, boardOrder: [] }, 'boardsList');
 
-  const { board_id } = useParams<{ board_id: string }>();
-  const currentBoard = initialValue.boards && initialValue.boards[board_id || ''];
+	const { board_id } = useParams<{ board_id: string }>();
+	const currBoard = initialValue.boards && initialValue.boards[board_id || ''];
 
-  const handleDragEnd = (result: DropResult) => {
-    const { destination, source, draggableId, type } = result;
-    // console.log('result',result)
+	const [isHappy, setIsHappy] = React.useState(true);
+	const location = useLocation();
 
-    // const step = initialValue.steps[draggableId]
-    // console.log('step',step)
-    
-    // const task = initialValue.tasks[draggableId]
-    // console.log('task',task)
+	React.useEffect(() => {
+		if (
+			location.pathname === `/boards/${board_id}` &&
+			currBoard === undefined
+		) {
+			setIsHappy(false);
+		} else {
+			setIsHappy(true);
+		}
+	}, [board_id, currBoard, location]);
 
-    if (!destination) {
-      return;
-    }
+	const handleDragEnd = (result: DropResult) => (currentBoard: TBoard) => {
+		const { destination, source, draggableId, type } = result;
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
+		if (!destination) {
+			return;
+		}
 
-    if (type === 'task') {
-      const newTaskIds = Array.from(currentBoard.taskIds);
-      newTaskIds.splice(source.index, 1);
-      newTaskIds.splice(destination.index, 0, draggableId);
+		const notIsDrag =
+			destination.droppableId === source.droppableId &&
+			destination.index === source.index;
 
-      const newBoard = {
-        ...currentBoard,
-        taskIds: newTaskIds,
-      };
+		if (notIsDrag) {
+			return;
+		}
 
-      const newState = {
-        ...initialValue,
-        boards: {
-          ...initialValue.boards,
-          [currentBoard.id]: newBoard,
-        },
-      };
+		const dataEvent = {
+			initialValue,
+			source,
+			destination,
+			draggableId,
+		};
 
-      setInitialValue(newState);
-      return;
-    }
+		if (type === 'task') {
+			const newState = TaskEvents.drag({
+				...dataEvent,
+				currentBoard,
+			});
 
-    const home = initialValue.tasks[source.droppableId];
-    const foreign = initialValue.tasks[destination.droppableId];
+			setInitialValue(newState);
+			return;
+		}
 
-    if (home === foreign) {
-      const newStepIds = Array.from(home.stepIds);
-      newStepIds.splice(source.index, 1);
-      newStepIds.splice(destination.index, 0, draggableId);
-  
-      const newTask = {
-        ...home,
-        stepIds: newStepIds,
-      };
-  
-      const newState = {
-        ...initialValue,
-        tasks: {
-          ...initialValue.tasks,
-          [newTask.id]: newTask,
-        },
-      };
-  
-      setInitialValue(newState)
-      return;
-    }
+		const home: TTask = initialValue.tasks[source.droppableId];
+		const foreign: TTask = initialValue.tasks[destination.droppableId];
 
-    const homeStepIds = Array.from(home.stepIds);
-    homeStepIds.splice(source.index, 1);
-    const newHome = {
-      ...home,
-      stepIds: homeStepIds,
-    };
+		if (home === foreign) {
+			const newState = StepEvents.dragOnTask({
+				...dataEvent,
+				home,
+			});
+			setInitialValue(newState);
+			return;
+		}
 
-    const foreignStepIds = Array.from(foreign.stepIds);
-    foreignStepIds.splice(destination.index, 0, draggableId)
-    const newForeign = {
-      ...foreign,
-      stepIds: foreignStepIds,
-    };
+		const newState = StepEvents.dragBetweenTasks({
+			...dataEvent,
+			home,
+			foreign,
+		});
 
-    const newState = {
-      ...initialValue,
-      tasks: {
-        ...initialValue.tasks,
-        [newHome.id]: newHome,
-        [newForeign.id]: newForeign,
-      },
-    };
+		setInitialValue(newState);
+	};
 
-    setInitialValue(newState)
-  };
+	const handleSave = (itemName: string, currentParent?: TBoard | TTask) => {
+		const isBoard = currentParent === undefined;
+		const isTask = instanceOfTBoard(currentParent);
+		const isStep = instanceOfTTask(currentParent);
 
-  const handleSave = (itemName: string, currentParent?: TBoard | TTask ) => {
-    const newId = randomId(10);
-    let newState = {};
+		const newId = randomId(10);
+		let newState = {};
+		const dataEvent = {
+			newId,
+			itemName,
+			initialValue,
+		};
 
-    if (instanceOfTBoard(currentParent)) {
-      const newTask = {
-        id: newId,
-        title: itemName,
-        stepIds: [],
-        position: 0,
-      };
-      newState = {
-        ...initialValue,
-        tasks: {
-          ...initialValue.tasks,
-          [newTask.id]: newTask,
-        },
-        boards: {
-          ...initialValue.boards,
-          [currentParent.id]: {
-            ...currentParent,
-            taskIds: [
-              newId,
-              ...currentParent.taskIds,
-            ]
-          }
-        }
-      };
-    }
+		if (isTask) {
+			newState = TaskEvents.save({
+				...dataEvent,
+				currentParent,
+			});
+		}
 
-    if (instanceOfTTask(currentParent)) {
-      const newStep = {
-        id: newId,
-        content: itemName,
-        position: 0,
-      };
-  
-      newState = {
-        ...initialValue,
-        steps: {
-          ...initialValue.steps,
-          [newStep.id]: newStep,
-        },
-        tasks: {
-          ...initialValue.tasks,
-          [currentParent.id]: {
-            ...currentParent,
-            stepIds: [
-              newId,
-              ...currentParent.stepIds
-            ]
-          }
-        }
-      };
-    }
+		if (isStep) {
+			newState = StepEvents.save({
+				...dataEvent,
+				currentParent,
+			});
+		}
 
-    if (currentParent === undefined) {
-      const newBoard = {
-        id: newId,
-        title: itemName,
-        taskIds: [],
-        position: 0,
-      };
-      newState = {
-        ...initialValue,
-        boards: {
-          ...initialValue.boards,
-          [newBoard.id]: newBoard,
-        },
-        boardOrder: [
-          newId,
-          ...initialValue.boardOrder,
-        ]
-      };
-    }
+		if (isBoard) {
+			newState = BoardEvents.save({
+				...dataEvent,
+			});
+		}
 
-    setInitialValue(newState);
-  };
+		setInitialValue(newState);
+	};
 
-  const handleDelete = (currentItem: TBoard | TTask | TStep, currentParent?: TBoard | TTask) => {
-    let newState = {};
+	const handleDelete = (
+		currentItem: TBoard | TTask | TStep,
+		currentParent?: TBoard | TTask
+	) => {
+		const isBoard = instanceOfTBoard(currentItem);
+		const isTask =
+			instanceOfTTask(currentItem) &&
+			instanceOfTBoard(currentParent) &&
+			currentParent !== undefined;
+		const isStep =
+			!instanceOfTBoard(currentItem) &&
+			!instanceOfTTask(currentItem) &&
+			!instanceOfTBoard(currentParent) &&
+			currentParent !== undefined;
 
-    if (instanceOfTBoard(currentItem)) {
-      const currentBoard = initialValue.boards[currentItem.id]
-  
-      currentBoard.taskIds.forEach((taskId: string) => {
-        const currentTask = initialValue.tasks[taskId];
-  
-        currentTask.stepIds.forEach((stepId: string) => {
-          delete initialValue.steps[stepId];
-        })
-  
-        delete initialValue.tasks[taskId];
-      })
-      
-      delete initialValue.boards[currentItem.id];
-  
-      const newBoardOrder = initialValue.boardOrder.filter(function(id: string) {
-        return id !== currentItem.id
-      })
-  
-      newState = {
-        ...initialValue,
-        
-        boardOrder: newBoardOrder
-      };
-    }
+		let newState = {};
+		const dataEvent = {
+			initialValue,
+		};
 
-    if (instanceOfTTask(currentItem) && currentParent !== undefined) {
-      const currentTask = initialValue.tasks[currentItem.id]
-      console.log(currentTask)
+		if (isBoard) {
+			newState = BoardEvents.delete({
+				...dataEvent,
+				currentItem,
+			});
+		}
 
-      currentTask.stepIds.forEach((stepId: string) => {
-        delete initialValue.steps[stepId];
-      })
+		if (isTask) {
+			newState = TaskEvents.delete({
+				...dataEvent,
+				currentItem,
+				currentParent,
+			});
+		}
 
-      delete initialValue.tasks[currentItem.id];
+		if (isStep) {
+			newState = StepEvents.delete({
+				...dataEvent,
+				currentItem,
+				currentParent,
+			});
+		}
 
-      const currentBoardTaskIds = initialValue.boards[currentParent.id].taskIds.filter(function(id: string) {
-        return id !== currentItem.id
-      })
+		setInitialValue(newState);
+	};
 
-      newState = {
-        ...initialValue,
-        boards: {
-          ...initialValue.boards,
-          [currentParent.id]: {
-            ...initialValue.boards[currentParent.id],
-            taskIds: currentBoardTaskIds
-          }
-        }
-      };
-    }
+	const handleEdit = (
+		currentItem: TBoard | TTask | TStep,
+		newItemName: string
+	) => {
+		const isBoard = instanceOfTBoard(currentItem);
+		const isTask = instanceOfTTask(currentItem);
+		const isStep =
+			!instanceOfTBoard(currentItem) && !instanceOfTTask(currentItem);
 
+		let newState = {};
 
-    setInitialValue(newState);
-  };
+		if (currentItem.title === newItemName) {
+			return;
+		}
 
-  const handleEditBoard = (itemId: string, newItemName: string) => {
-    const currentBoard = initialValue.boards[itemId]
+		const dataEvent = {
+			newItemName,
+			initialValue,
+		};
 
-    if (currentBoard.title === newItemName) {
-      return
-    }
-    
-    const newBoard = {
-      ...currentBoard,
-      title: newItemName,
-    };
+		if (isBoard) {
+			newState = BoardEvents.edit({
+				...dataEvent,
+				currentItem,
+			});
+		}
 
-    const newState = {
-      ...initialValue,
-      boards: {
-        ...initialValue.boards,
-        [newBoard.id]: newBoard,
-      },
-    };
-    
-    setInitialValue(newState);
-  }
+		if (isTask) {
+			newState = TaskEvents.edit({
+				...dataEvent,
+				currentItem,
+			});
+		}
 
-  return (
-    <React.Fragment>
-      <Container maxWidth="lg">
-        <Box sx={{ height: '100vh' }}>
-          <div className={styles.smileWrapper}>
-            <Tooltip title="Go to Main">
-              <Link to='/boards' tabIndex={-1}>
-                <Smile happy={true}/>
-              </Link>
-            </Tooltip>
-          </div>
-          <Outlet context={[
-            initialValue,
-            handleDragEnd,
-            handleSave,
-            handleDelete,
-            handleEditBoard,
-          ]}/>
-        </Box>
-      </Container>
-    </React.Fragment>
-  )
-}
+		if (isStep) {
+			newState = StepEvents.edit({
+				...dataEvent,
+				currentItem,
+			});
+		}
+
+		setInitialValue(newState);
+	};
+
+	const handleToggleDone = (currentItem: TStep) => {
+		const dataEvent = {
+			currentItem,
+			initialValue,
+		};
+
+		const newState = StepEvents.toggleDone({
+			...dataEvent,
+		});
+
+		setInitialValue(newState);
+	};
+
+	const handleSort = (
+		ids: string[],
+		currentParent: TTask,
+		direction: boolean
+	) => {
+		if (ids.length === 0 || ids === undefined) {
+			return;
+		}
+
+		const dataEvent = {
+			ids,
+			currentParent,
+			direction,
+			initialValue,
+		};
+
+		const newState = StepEvents.sort({
+			...dataEvent,
+		});
+
+		setInitialValue(newState);
+	};
+
+	return (
+		<React.Fragment>
+			<Container maxWidth='xl'>
+				<Box>
+					<div className={styles.smileWrapper}>
+						<Link
+							to='/boards'
+							tabIndex={-1}
+							style={{
+								textDecoration: 'none',
+								display: 'flex',
+								flexDirection: 'column',
+								alignItems: 'center',
+							}}
+						>
+							<Smile happy={isHappy} />
+						</Link>
+					</div>
+					<Outlet
+						context={{
+							data: initialValue,
+							handlers: {
+								dragEnd: handleDragEnd,
+								itemSave: handleSave,
+								itemDelete: handleDelete,
+								itemEdit: handleEdit,
+								itemSort: handleSort,
+								itemToggleDone: handleToggleDone,
+							},
+						}}
+					/>
+				</Box>
+			</Container>
+		</React.Fragment>
+	);
+};

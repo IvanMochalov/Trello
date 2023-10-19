@@ -1,86 +1,143 @@
 import * as React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Box, useMediaQuery, FormControl, OutlinedInput } from '@mui/material';
+import {
+	Button,
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogTitle,
+	Box,
+	useMediaQuery,
+	FormControl,
+	OutlinedInput,
+	Tooltip,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useOutletContext } from 'react-router-dom';
-import { TBoard, TInitialData, TTask } from '../../type';
+import { TBoard, TOutletContext } from '../../type';
+import styled from 'styled-components';
 
 interface INewTask {
-  currBoard: TBoard;
+	currBoard: TBoard;
 }
 
-export const NewTask = ({currBoard}: INewTask) => {
-  const [,,handleSave]: [TInitialData, () => void, (itemName: string, currentParent?: TBoard | TTask ) => void] = useOutletContext();
-  const [open, setOpen] = React.useState(false);
+const ButtonAddList = styled.button`
+	display: flex;
+	height: 100%;
+	width: 100%;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid rgba(25, 118, 210, 0.5);
+	color: #1976d2;
+	font-weight: 500;
+	font-size: 0.875rem;
+	line-height: 1;
+	letter-spacing: 0.02857em;
+	text-transform: uppercase;
+	min-width: 64px;
+	padding: 5px 15px;
+	border-radius: 4px;
+	background-color: transparent;
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
 
-  const [taskName, setTaskName] = React.useState('');
+	&:hover {
+		outline: none;
+		background-color: #1976d2;
+		color: white;
+	}
 
-  const formTaskId = React.useId();
+	&:focus-visible {
+		outline: none;
+		background-color: rgba(25, 118, 210, 0.5);
+		color: white;
+	}
 
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+	@media (min-width: 768px) {
+		line-height: 1.75;
+	}
+`;
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+export const NewTask = ({ currBoard }: INewTask) => {
+	const {
+		handlers: { itemSave },
+	} = useOutletContext<TOutletContext>();
+	const [open, setOpen] = React.useState(false);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+	const [taskName, setTaskName] = React.useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setTaskName(event.target.value)
-  }
+	const formTaskId = React.useId();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (taskName === '') {
-      return;
-    }
-    handleSave(taskName.trim(), currBoard);
-    setTaskName('');
-    setOpen(false);
-  }
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  return (
-    <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Добавить список
-      </Button>
-      <Dialog
-        fullScreen={fullScreen}
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">
-          {"Название списка"}
-        </DialogTitle>
-        <DialogContent>
-          <Box
-            component="div"
-            sx={{
-              '& .MuiTextField-root': { m: 1, width: '25ch' },
-            }}
-          >
-            <form id={formTaskId} noValidate autoComplete="off" onSubmit={handleSubmit}>
-              <FormControl>
-                <OutlinedInput placeholder="Список №1" onChange={handleChange}/>
-              </FormControl>
-            </form>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Отмена
-          </Button>
-          <Button
-            type="submit"
-            form={formTaskId}
-          >
-            Сохранить
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  );
-}
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleChange = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setTaskName(event.target.value);
+	};
+
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		if (taskName === '') {
+			return;
+		}
+		itemSave(taskName.trim(), currBoard);
+		setTaskName('');
+		setOpen(false);
+	};
+
+	return (
+		<>
+			<Tooltip title='Добавить список' placement='top-start'>
+				<ButtonAddList onClick={handleClickOpen}>Добавить список</ButtonAddList>
+			</Tooltip>
+			<Dialog
+				fullScreen={fullScreen}
+				open={open}
+				onClose={handleClose}
+				aria-labelledby='responsive-dialog-title'
+			>
+				<DialogTitle id='responsive-dialog-title'>
+					{'Название списка'}
+				</DialogTitle>
+				<DialogContent>
+					<Box
+						component='div'
+						sx={{
+							'& .MuiTextField-root': { m: 1, width: '25ch' },
+						}}
+					>
+						<form
+							id={formTaskId}
+							noValidate
+							autoComplete='off'
+							onSubmit={handleSubmit}
+						>
+							<FormControl>
+								<OutlinedInput
+									placeholder='Список №1'
+									onChange={handleChange}
+									autoFocus
+								/>
+							</FormControl>
+						</form>
+					</Box>
+				</DialogContent>
+				<DialogActions>
+					<Button onClick={handleClose}>Отмена</Button>
+					<Button type='submit' form={formTaskId}>
+						Сохранить
+					</Button>
+				</DialogActions>
+			</Dialog>
+		</>
+	);
+};

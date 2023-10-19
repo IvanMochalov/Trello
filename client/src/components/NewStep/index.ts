@@ -1,1 +1,1 @@
-export * from './NewStep'
+export * from './NewStep';

@@ -1,12 +1,19 @@
 .mainContentWrapper {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+	margin-bottom: 30px;
 }
 .boardWrapper {
-  width: 200px;
+	width: 200px;
+	margin-bottom: 20px;
 }
-.boardsListWrapper {
-  width: 45%;
-  min-width: 400px;
-  margin-bottom: 40px;
+
+@media (min-width: 768px) {
+	.mainContentWrapper {
+		flex-direction: row;
+	}
+	.boardWrapper {
+		margin-bottom: 0;
+	}
 }

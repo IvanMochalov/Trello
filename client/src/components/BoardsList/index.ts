@@ -1,1 +1,1 @@
-export * from './BoardsList'
+export * from './BoardsList';
