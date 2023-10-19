@@ -18,6 +18,7 @@ const Container = styled.ul<IContainer>`
 	white-space: nowrap;
 	width: fit-content;
 	margin: -4px -4px;
+	min-width: 100%;
 	transition: background-color 0.2s ease-in-out;
 	border-radius: 10px;
 	background-color: ${props =>
