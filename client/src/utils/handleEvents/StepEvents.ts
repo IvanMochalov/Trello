@@ -2,12 +2,13 @@ import { DraggableLocation } from 'react-beautiful-dnd';
 import { TBoard, TTask, TStep, TInitialData } from '../../type';
 
 export const StepEvents = {
-	save(
-		newId: string,
-		itemName: string,
-		currentParent: TTask,
-		initialValue: TInitialData
-	) {
+	save(data: {
+		newId: string;
+		itemName: string;
+		initialValue: TInitialData;
+		currentParent: TTask;
+	}) {
+		const { newId, itemName, initialValue, currentParent } = data;
 		const newStep = {
 			id: newId,
 			title: itemName,

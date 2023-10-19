@@ -2,12 +2,13 @@ import { DraggableLocation } from 'react-beautiful-dnd';
 import { TBoard, TInitialData, TTask } from '../../type';
 
 export const TaskEvents = {
-	save(
-		newId: string,
-		itemName: string,
-		currentParent: TBoard,
-		initialValue: TInitialData
-	) {
+	save(data: {
+		newId: string;
+		itemName: string;
+		initialValue: TInitialData;
+		currentParent: TBoard;
+	}) {
+		const { newId, itemName, initialValue, currentParent } = data;
 		const newTask = {
 			id: newId,
 			title: itemName,

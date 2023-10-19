@@ -1,7 +1,8 @@
 import { TBoard, TInitialData } from '../../type';
 
 export const BoardEvents = {
-	save(newId: string, itemName: string, initialValue: TInitialData) {
+	save(data: { newId: string; itemName: string; initialValue: TInitialData }) {
+		const { newId, itemName, initialValue } = data;
 		const newBoard = {
 			id: newId,
 			title: itemName,

@@ -95,17 +95,30 @@ export const Layout = () => {
 
 		const newId = randomId(10);
 		let newState = {};
+		const dataEvent = {
+			newId,
+			itemName,
+			initialValue,
+		};
 
 		if (isTask) {
-			newState = TaskEvents.save(newId, itemName, currentParent, initialValue);
+			newState = TaskEvents.save({
+				...dataEvent,
+				currentParent,
+			});
 		}
 
 		if (isStep) {
-			newState = StepEvents.save(newId, itemName, currentParent, initialValue);
+			newState = StepEvents.save({
+				...dataEvent,
+				currentParent,
+			});
 		}
 
 		if (isBoard) {
-			newState = BoardEvents.save(newId, itemName, initialValue);
+			newState = BoardEvents.save({
+				...dataEvent,
+			});
 		}
 
 		setInitialValue(newState);
