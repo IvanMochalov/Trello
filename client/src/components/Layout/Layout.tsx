@@ -1,5 +1,3 @@
-/** @format */
-
 import { Box, Container } from '@mui/material';
 import React from 'react';
 import { DropResult } from 'react-beautiful-dnd';
