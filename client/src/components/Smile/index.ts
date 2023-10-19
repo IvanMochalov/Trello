@@ -1,1 +1,1 @@
-export * from './Smile'
+export * from './Smile';

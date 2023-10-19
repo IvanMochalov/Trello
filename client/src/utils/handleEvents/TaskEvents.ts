@@ -1,4 +1,4 @@
-import { DraggableLocation } from 'react-beautiful-dnd'
+import { DraggableLocation } from 'react-beautiful-dnd';
 import { TBoard, TInitialData, TTask } from '../../type';
 
 export const TaskEvents = {
@@ -12,7 +12,7 @@ export const TaskEvents = {
 			id: newId,
 			title: itemName,
 			stepIds: [],
-		}
+		};
 
 		return {
 			...initialValue,
@@ -27,26 +27,26 @@ export const TaskEvents = {
 					taskIds: [newId, ...currentParent.taskIds],
 				},
 			},
-		}
+		};
 	},
 	delete(
 		initialValue: TInitialData,
 		currentItem: TTask,
 		currentParent: TBoard | TTask
 	) {
-		const currentTask = initialValue.tasks[currentItem.id]
+		const currentTask = initialValue.tasks[currentItem.id];
 
 		currentTask.stepIds.forEach((stepId: string) => {
-			delete initialValue.steps[stepId]
-		})
+			delete initialValue.steps[stepId];
+		});
 
-		delete initialValue.tasks[currentItem.id]
+		delete initialValue.tasks[currentItem.id];
 
 		const currentBoardTaskIds = initialValue.boards[
 			currentParent.id
 		].taskIds.filter(function (id: string) {
-			return id !== currentItem.id
-		})
+			return id !== currentItem.id;
+		});
 
 		return {
 			...initialValue,
@@ -57,33 +57,41 @@ export const TaskEvents = {
 					taskIds: currentBoardTaskIds,
 				},
 			},
-		}
+		};
 	},
 	edit(newItemName: string, currentItem: TTask, initialValue: TInitialData) {
-		const currentTask = initialValue.tasks[currentItem.id]
+		const currentTask = initialValue.tasks[currentItem.id];
 
 		const newTask = {
 			...currentTask,
 			title: newItemName,
-		}
-		console.log('edit')
+		};
+		console.log('edit');
 		return {
 			...initialValue,
 			tasks: {
 				...initialValue.tasks,
 				[newTask.id]: newTask,
 			},
-		}
+		};
 	},
-	drag(currentBoard: TBoard, initialValue: TInitialData, source: DraggableLocation, destination: DraggableLocation, draggableId: string) {
-		const newTaskIds = Array.from(currentBoard.taskIds)
-		newTaskIds.splice(source.index, 1)
-		newTaskIds.splice(destination.index, 0, draggableId)
+	drag(data: {
+		initialValue: TInitialData;
+		source: DraggableLocation;
+		destination: DraggableLocation;
+		draggableId: string;
+		currentBoard: TBoard;
+	}) {
+		const { initialValue, source, destination, draggableId, currentBoard } =
+			data;
+		const newTaskIds = Array.from(currentBoard.taskIds);
+		newTaskIds.splice(source.index, 1);
+		newTaskIds.splice(destination.index, 0, draggableId);
 
 		const newBoard = {
 			...currentBoard,
 			taskIds: newTaskIds,
-		}
+		};
 
 		return {
 			...initialValue,
@@ -91,6 +99,6 @@ export const TaskEvents = {
 				...initialValue.boards,
 				[currentBoard.id]: newBoard,
 			},
-		}
+		};
 	},
-}
+};

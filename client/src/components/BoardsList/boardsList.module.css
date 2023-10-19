@@ -1,12 +1,12 @@
 .boardItemLink {
-  width: calc(100% - 40px);
-  text-align: center;
-  text-decoration: none;
-  color: rgba(0, 0, 0, 0.87);
-  font-weight: 500;
-  font-size: 1.2rem;
-  line-height: 1.75;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	width: calc(100% - 40px);
+	text-align: center;
+	text-decoration: none;
+	color: rgba(0, 0, 0, 0.87);
+	font-weight: 500;
+	font-size: 1.2rem;
+	line-height: 1.75;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

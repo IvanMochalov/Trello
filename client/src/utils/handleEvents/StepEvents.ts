@@ -1,5 +1,5 @@
-import { DraggableLocation } from 'react-beautiful-dnd'
-import { TBoard, TTask, TStep, TInitialData } from '../../type'
+import { DraggableLocation } from 'react-beautiful-dnd';
+import { TBoard, TTask, TStep, TInitialData } from '../../type';
 
 export const StepEvents = {
 	save(
@@ -12,7 +12,7 @@ export const StepEvents = {
 			id: newId,
 			title: itemName,
 			done: false,
-		}
+		};
 
 		return {
 			...initialValue,
@@ -27,20 +27,20 @@ export const StepEvents = {
 					stepIds: [newId, ...currentParent.stepIds],
 				},
 			},
-		}
+		};
 	},
 	delete(
 		initialValue: TInitialData,
 		currentItem: TStep,
 		currentParent: TBoard | TTask
 	) {
-		delete initialValue.steps[currentItem.id]
+		delete initialValue.steps[currentItem.id];
 
 		const currentTaskStepIds = initialValue.tasks[
 			currentParent.id
 		].stepIds.filter(function (id: string) {
-			return id !== currentItem.id
-		})
+			return id !== currentItem.id;
+		});
 
 		return {
 			...initialValue,
@@ -51,15 +51,15 @@ export const StepEvents = {
 					stepIds: currentTaskStepIds,
 				},
 			},
-		}
+		};
 	},
 	edit(newItemName: string, currentItem: TStep, initialValue: TInitialData) {
-		const currentStep = initialValue.steps[currentItem.id]
+		const currentStep = initialValue.steps[currentItem.id];
 
 		const newStep = {
 			...currentStep,
 			title: newItemName,
-		}
+		};
 
 		return {
 			...initialValue,
@@ -67,15 +67,15 @@ export const StepEvents = {
 				...initialValue.steps,
 				[newStep.id]: newStep,
 			},
-		}
+		};
 	},
 	toggleDone(currentItem: TStep, initialValue: TInitialData) {
-		const currentStep = initialValue.steps[currentItem.id]
+		const currentStep = initialValue.steps[currentItem.id];
 
 		const newStep = {
 			...currentStep,
 			done: !currentStep.done,
-		}
+		};
 
 		return {
 			...initialValue,
@@ -83,7 +83,7 @@ export const StepEvents = {
 				...initialValue.steps,
 				[newStep.id]: newStep,
 			},
-		}
+		};
 	},
 	sort(
 		ids: string[],
@@ -93,14 +93,14 @@ export const StepEvents = {
 	) {
 		const newStepIds = ids
 			.map(id => {
-				return initialValue.steps[id]
+				return initialValue.steps[id];
 			})
 			.sort((a, b) => {
 				return !direction
 					? a.title.localeCompare(b.title)
-					: b.title.localeCompare(a.title)
+					: b.title.localeCompare(a.title);
 			})
-			.map(step => step.id)
+			.map(step => step.id);
 
 		return {
 			...initialValue,
@@ -111,23 +111,24 @@ export const StepEvents = {
 					stepIds: newStepIds,
 				},
 			},
-		}
+		};
 	},
-	dragOnTask(
-		home: TTask,
-		initialValue: TInitialData,
-		source: DraggableLocation,
-		destination: DraggableLocation,
-		draggableId: string
-	) {
-		const newStepIds = Array.from(home.stepIds)
-		newStepIds.splice(source.index, 1)
-		newStepIds.splice(destination.index, 0, draggableId)
+	dragOnTask(data: {
+		initialValue: TInitialData;
+		source: DraggableLocation;
+		destination: DraggableLocation;
+		draggableId: string;
+		home: TTask;
+	}) {
+		const { initialValue, source, destination, draggableId, home } = data;
+		const newStepIds = Array.from(home.stepIds);
+		newStepIds.splice(source.index, 1);
+		newStepIds.splice(destination.index, 0, draggableId);
 
 		const newTask = {
 			...home,
 			stepIds: newStepIds,
-		}
+		};
 
 		return {
 			...initialValue,
@@ -135,29 +136,31 @@ export const StepEvents = {
 				...initialValue.tasks,
 				[newTask.id]: newTask,
 			},
-		}
+		};
 	},
-	dragBetweenTasks(
-		home: TTask,
-		foreign: TTask,
-		initialValue: TInitialData,
-		source: DraggableLocation,
-		destination: DraggableLocation,
-		draggableId: string
-	) {
-		const homeStepIds = Array.from(home.stepIds)
-		homeStepIds.splice(source.index, 1)
+	dragBetweenTasks(data: {
+		initialValue: TInitialData;
+		source: DraggableLocation;
+		destination: DraggableLocation;
+		draggableId: string;
+		home: TTask;
+		foreign: TTask;
+	}) {
+		const { initialValue, source, destination, draggableId, home, foreign } =
+			data;
+		const homeStepIds = Array.from(home.stepIds);
+		homeStepIds.splice(source.index, 1);
 		const newHome = {
 			...home,
 			stepIds: homeStepIds,
-		}
+		};
 
-		const foreignStepIds = Array.from(foreign.stepIds)
-		foreignStepIds.splice(destination.index, 0, draggableId)
+		const foreignStepIds = Array.from(foreign.stepIds);
+		foreignStepIds.splice(destination.index, 0, draggableId);
 		const newForeign = {
 			...foreign,
 			stepIds: foreignStepIds,
-		}
+		};
 
 		return {
 			...initialValue,
@@ -166,6 +169,6 @@ export const StepEvents = {
 				[newHome.id]: newHome,
 				[newForeign.id]: newForeign,
 			},
-		}
+		};
 	},
-}
+};

@@ -7,94 +7,96 @@ import { useOutletContext } from 'react-router-dom';
 import { DoneButton } from '../DoneButton';
 
 interface ITaskStepProps {
-  step: TStep
-  index: number
-  currParent: TTask
+	step: TStep;
+	index: number;
+	currParent: TTask;
 }
 
 interface IContainer {
-  isdragging?: boolean
-  isdragdisabled?: boolean
+	isdragging?: boolean;
+	isdragdisabled?: boolean;
 }
 
 interface ITitle {
-  done?: boolean
+	done?: boolean;
 }
 
 const Container = styled.li<IContainer>`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid;
-  border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
-  border-radius: 3px;
-  padding: 8px;
-  cursor: ${(props) => props.isdragdisabled ? 'not-allowed' : 'grab'};
-  background-color: ${(props) => 
-    props.isdragdisabled
-      ? 'lightgray'
-      : props.isdragging
-        ? 'lightgreen'
-        : 'white'};
-  transition: background-color .2s ease-in-out;
+	display: flex;
+	width: 100%;
+	align-items: center;
+	justify-content: space-between;
+	border: 1px solid;
+	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
+	border-radius: 3px;
+	padding: 8px;
+	cursor: ${props => (props.isdragdisabled ? 'not-allowed' : 'grab')};
+	background-color: ${props =>
+		props.isdragdisabled
+			? 'lightgray'
+			: props.isdragging
+			? 'lightgreen'
+			: 'white'};
+	transition: background-color 0.2s ease-in-out;
 
-  &:not(:last-child) {
-    margin-bottom: 5px;
-  }
+	&:not(:last-child) {
+		margin-bottom: 5px;
+	}
 
-  &:focus {
-    outline: none;
-  }
+	&:focus {
+		outline: none;
+	}
 
-  &:hover {
-    outline: none;
-    -webkit-text-decoration: none;
-    text-decoration: none;
-    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
-  }
+	&:hover {
+		outline: none;
+		-webkit-text-decoration: none;
+		text-decoration: none;
+		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+	}
 
-  &:focus-visible {
-    outline: none;
-    -webkit-text-decoration: none;
-    text-decoration: none;
-    box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12);
-  }
-`
+	&:focus-visible {
+		outline: none;
+		-webkit-text-decoration: none;
+		text-decoration: none;
+		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+	}
+`;
 
 const Title = styled.span<ITitle>`
-  width: 100%;
-  font-size: 0.8em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-decoration: ${(props) => props.done ? 'line-through' : 'none'};
-`
+	width: 100%;
+	font-size: 0.8em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-decoration: ${props => (props.done ? 'line-through' : 'none')};
+`;
 
 export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
-  const { handlers: { itemToggleDone } } = useOutletContext<TOutletContext>();
+	const {
+		handlers: { itemToggleDone },
+	} = useOutletContext<TOutletContext>();
 
-  return (
-    <Draggable
-      draggableId={step.id}
-      index={index}
-      isDragDisabled={step.done}
-    >
-      {(provided, snapshot) => (
-        <Container
-          ref={provided.innerRef}
-          isdragging={snapshot.isDragging}
-          isdragdisabled={step.done}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <DoneButton item={step} done={step.done} handleClick={itemToggleDone} />
-          <Title done={step.done}>
-            {step.title}
-          </Title>
-          <ItemActions type='шаг' item={step} currParent={currParent} />
-        </Container>
-      )}
-    </Draggable>
-  )
-}
+	return (
+		<Draggable draggableId={step.id} index={index} isDragDisabled={step.done}>
+			{(provided, snapshot) => (
+				<Container
+					ref={provided.innerRef}
+					isdragging={snapshot.isDragging}
+					isdragdisabled={step.done}
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+				>
+					<DoneButton
+						item={step}
+						done={step.done}
+						handleClick={itemToggleDone}
+					/>
+					<Title done={step.done}>{step.title}</Title>
+					<ItemActions type='шаг' item={step} currParent={currParent} />
+				</Container>
+			)}
+		</Draggable>
+	);
+};

@@ -11,9 +11,9 @@ const App: React.FC = () => {
 				<Route index element={<MainContent />} />
 				<Route path='/boards/:board_id' element={<BoardPage />} />
 			</Route>
-			<Route path='*' element={<NotFound />}/>
+			<Route path='*' element={<NotFound />} />
 		</Routes>
-	)
-}
+	);
+};
 
-export { App }
+export { App };

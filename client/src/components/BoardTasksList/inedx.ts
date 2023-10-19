@@ -1,1 +1,1 @@
-export * from './BoardTasksList'
+export * from './BoardTasksList';

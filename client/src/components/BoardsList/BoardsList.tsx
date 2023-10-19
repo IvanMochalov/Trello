@@ -12,7 +12,7 @@ const BoardsListWrapper = styled.ul`
 	justify-content: start;
 	width: 50%;
 	min-width: 288px;
-`
+`;
 
 const BoardWrapper = styled.li`
 	display: flex;
@@ -56,7 +56,7 @@ const BoardWrapper = styled.li`
 		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
 			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 	}
-`
+`;
 
 export const BoardsList = () => {
 	const { data } = useOutletContext<TOutletContext>();
@@ -65,29 +65,25 @@ export const BoardsList = () => {
 		<BoardsListWrapper>
 			{data.boardOrder &&
 				data.boardOrder.map((boardId: string) => {
-					const board = data.boards[boardId]
+					const board = data.boards[boardId];
 
 					return (
 						board && (
-							
-								<BoardWrapper tabIndex={0} key={board.id}>
-									<Tooltip
-										title={`Перейти к ${board.title}`}
-										placement='top-end'
+							<BoardWrapper tabIndex={0} key={board.id}>
+								<Tooltip title={`Перейти к ${board.title}`} placement='top-end'>
+									<Link
+										className={styles.boardItemLink}
+										to={`/boards/${board.id}`}
+										tabIndex={-1}
 									>
-										<Link
-											className={styles.boardItemLink}
-											to={`/boards/${board.id}`}
-											tabIndex={-1}
-										>
-											{board.title}
-										</Link>
-									</Tooltip>
-									<ItemActions type='доска' item={board} />
-								</BoardWrapper>
+										{board.title}
+									</Link>
+								</Tooltip>
+								<ItemActions type='доска' item={board} />
+							</BoardWrapper>
 						)
-					)
+					);
 				})}
 		</BoardsListWrapper>
-	)
-}
+	);
+};

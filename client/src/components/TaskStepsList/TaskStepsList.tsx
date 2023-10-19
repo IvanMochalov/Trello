@@ -9,18 +9,18 @@ import styled from 'styled-components';
 import { SortButton } from '../SortButton';
 
 interface ITasksListProps {
-	task: TTask
-	index: number
-	currParent: TBoard
+	task: TTask;
+	index: number;
+	currParent: TBoard;
 }
 
 interface IHeaderList {
-	isdragging?: boolean
+	isdragging?: boolean;
 }
 
 interface ITaskStepsListWrapper {
-	isdraggingover?: boolean
-	items: string[]
+	isdraggingover?: boolean;
+	items: string[];
 }
 
 const Container = styled.li<IHeaderList>`
@@ -33,13 +33,13 @@ const Container = styled.li<IHeaderList>`
 	background-color: white;
 	width: 200px;
 	margin: 4px;
-	border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
+	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
 
 	@media (min-width: 768px) {
 		width: 250px;
 		margin: 8px;
-	};
-`
+	}
+`;
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
 	width: 100%;
@@ -50,7 +50,7 @@ const HeaderList = styled.div<IHeaderList>`
 	cursor: grab;
 	border-bottom: 1px solid;
 	transition: background-color 0.2s ease-in-out;
-	border-color: ${(props) => props.isdragging ? 'green' : 'lightgray'};
+	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
 	background-color: ${props => (props.isdragging ? 'lightgreen' : 'white')};
 
 	&:focus {
@@ -72,41 +72,41 @@ const HeaderList = styled.div<IHeaderList>`
 		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
 			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 	}
-`
+`;
 
 const Title = styled.h3`
 	margin: 0;
 	font-size: 1em;
 	overflow: hidden;
-  text-overflow: ellipsis;
-`
+	text-overflow: ellipsis;
+`;
 
 const ActionsStepListWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	padding: 0 8px;
-`
+`;
 
 const TaskStepsListWrapper = styled.ul<ITaskStepsListWrapper>`
 	display: flex;
 	width: 100%;
 	flex-direction: column;
 	align-items: center;
-	padding: ${props => props.items.length === 0 ? '0px' : '8px'};
+	padding: ${props => (props.items.length === 0 ? '0px' : '8px')};
 	flex-grow: 1;
 	height: 100%;
 	transition: background-color 0.2s ease-in-out;
 	background-color: ${props => (props.isdraggingover ? 'lightblue' : 'white')};
-`
+`;
 
 export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
-	const { data, handlers: { itemSort } } = useOutletContext<TOutletContext>();
+	const {
+		data,
+		handlers: { itemSort },
+	} = useOutletContext<TOutletContext>();
 
 	return (
-		<Draggable
-			draggableId={task.id}
-			index={index}
-		>
+		<Draggable draggableId={task.id} index={index}>
 			{(provided, snapshot) => (
 				<Container
 					{...provided.draggableProps}
@@ -117,15 +117,17 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 						{...provided.dragHandleProps}
 						isdragging={snapshot.isDragging}
 					>
-						<Title>
-							{task.title}
-						</Title>
+						<Title>{task.title}</Title>
 						<ItemActions type='список' item={task} currParent={currParent} />
 					</HeaderList>
 					<NewStep currTask={task} />
 					{task.stepIds.length !== 0 ? (
-						<ActionsStepListWrapper >
-							<SortButton stepIds={task.stepIds} currTask={task} handleClick={itemSort}/>
+						<ActionsStepListWrapper>
+							<SortButton
+								stepIds={task.stepIds}
+								currTask={task}
+								handleClick={itemSort}
+							/>
 						</ActionsStepListWrapper>
 					) : null}
 					<StrictModeDroppable
@@ -141,7 +143,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 								isdraggingover={snapshot.isDraggingOver}
 							>
 								{task.stepIds.map((stepId: string, index) => {
-									const step = data.steps[stepId]
+									const step = data.steps[stepId];
 
 									return (
 										<TaskStep
@@ -150,7 +152,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 											index={index}
 											currParent={task}
 										/>
-									)
+									);
 								})}
 								{provided.placeholder}
 							</TaskStepsListWrapper>
@@ -159,5 +161,5 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 				</Container>
 			)}
 		</Draggable>
-	)
-}
+	);
+};
