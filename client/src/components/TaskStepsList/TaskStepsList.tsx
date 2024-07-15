@@ -36,7 +36,7 @@ const Container = styled.li<IHeaderList>`
 	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
 
 	@media (min-width: 768px) {
-		width: 250px;
+		width: 350px;
 		margin: 8px;
 	}
 `;
