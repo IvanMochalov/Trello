@@ -33,37 +33,39 @@ export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
 
 	return (
 		<div className={styles.contentWrapper}>
-			<DragDropContext
-				onDragEnd={(result: DropResult) => dragEnd(result)(board)}
-			>
-				<StrictModeDroppable
-					droppableId='all-tasks'
-					direction='horizontal'
-					type='task'
+			<div style={{width: 'fit-content'}}>
+				<DragDropContext
+					onDragEnd={(result: DropResult) => dragEnd(result)(board)}
 				>
-					{(provided, snapshot) => (
-						<Container
-							{...provided.droppableProps}
-							ref={provided.innerRef}
-							isdraggingover={snapshot.isDraggingOver}
-						>
-							{board.taskIds.map((taskId: string, index) => {
-								const task = data.tasks[taskId]
+					<StrictModeDroppable
+						droppableId='all-tasks'
+						direction='horizontal'
+						type='task'
+					>
+						{(provided, snapshot) => (
+							<Container
+								{...provided.droppableProps}
+								ref={provided.innerRef}
+								isdraggingover={snapshot.isDraggingOver}
+							>
+								{board.taskIds.map((taskId: string, index) => {
+									const task = data.tasks[taskId]
 
-								return (
-									<TaskStepsList
-										key={task.id}
-										task={task}
-										index={index}
-										currParent={board}
-									/>
-								)
-							})}
-							{provided.placeholder}
-						</Container>
-					)}
-				</StrictModeDroppable>
-			</DragDropContext>
+									return (
+										<TaskStepsList
+											key={task.id}
+											task={task}
+											index={index}
+											currParent={board}
+										/>
+									)
+								})}
+								{provided.placeholder}
+							</Container>
+						)}
+					</StrictModeDroppable>
+				</DragDropContext>
+			</div>
 		</div>
 	)
 }

@@ -1,26 +1,26 @@
-import { Draggable } from 'react-beautiful-dnd';
-import { useOutletContext } from 'react-router-dom';
-import { TBoard, TOutletContext, TTask } from '../../type';
-import { StrictModeDroppable } from '../../utils/StrictModeDroppable';
-import { NewStep } from '../NewStep';
-import { ItemActions } from '../ItemActions';
-import { TaskStep } from '../TaskStep';
-import styled from 'styled-components';
-import { SortButton } from '../SortButton';
+import { Draggable } from 'react-beautiful-dnd'
+import { useOutletContext } from 'react-router-dom'
+import { TBoard, TOutletContext, TTask } from '../../type'
+import { StrictModeDroppable } from '../../utils/StrictModeDroppable'
+import { NewStep } from '../NewStep'
+import { ItemActions } from '../ItemActions'
+import { TaskStep } from '../TaskStep'
+import styled from 'styled-components'
+import { SortButton } from '../SortButton'
 
 interface ITasksListProps {
-	task: TTask;
-	index: number;
-	currParent: TBoard;
+	task: TTask
+	index: number
+	currParent: TBoard
 }
 
 interface IHeaderList {
-	isdragging?: boolean;
+	isdragging?: boolean
 }
 
 interface ITaskStepsListWrapper {
-	isdraggingover?: boolean;
-	items: string[];
+	isdraggingover?: boolean
+	items: string[]
 }
 
 const Container = styled.li<IHeaderList>`
@@ -39,7 +39,7 @@ const Container = styled.li<IHeaderList>`
 		width: 350px;
 		margin: 8px;
 	}
-`;
+`
 const HeaderList = styled.div<IHeaderList>`
 	display: flex;
 	width: 100%;
@@ -72,22 +72,23 @@ const HeaderList = styled.div<IHeaderList>`
 		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
 			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 	}
-`;
+`
 
 const Title = styled.h3`
 	margin: 0;
 	font-size: 1em;
 	overflow: hidden;
 	text-overflow: ellipsis;
-`;
+`
 
 const ActionsStepListWrapper = styled.div`
 	width: 100%;
 	display: flex;
 	padding: 0 8px;
-`;
+`
 
 const TaskStepsListWrapper = styled.ul<ITaskStepsListWrapper>`
+	min-height: 0.1px;
 	display: flex;
 	width: 100%;
 	flex-direction: column;
@@ -97,13 +98,13 @@ const TaskStepsListWrapper = styled.ul<ITaskStepsListWrapper>`
 	height: 100%;
 	transition: background-color 0.2s ease-in-out;
 	background-color: ${props => (props.isdraggingover ? 'lightblue' : 'white')};
-`;
+`
 
 export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 	const {
 		data,
 		handlers: { itemSort },
-	} = useOutletContext<TOutletContext>();
+	} = useOutletContext<TOutletContext>()
 
 	return (
 		<Draggable draggableId={task.id} index={index}>
@@ -143,7 +144,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 								isdraggingover={snapshot.isDraggingOver}
 							>
 								{task.stepIds.map((stepId: string, index) => {
-									const step = data.steps[stepId];
+									const step = data.steps[stepId]
 
 									return (
 										<TaskStep
@@ -152,7 +153,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 											index={index}
 											currParent={task}
 										/>
-									);
+									)
 								})}
 								{provided.placeholder}
 							</TaskStepsListWrapper>
@@ -161,5 +162,5 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 				</Container>
 			)}
 		</Draggable>
-	);
-};
+	)
+}
