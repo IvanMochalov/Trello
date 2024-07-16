@@ -81,7 +81,7 @@ export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
 	} = useOutletContext<TOutletContext>()
 
 	return (
-		<Draggable draggableId={step.id} index={index}>
+		<Draggable draggableId={step.id} index={index}  isDragDisabled={step.done}>
 			{(provided, snapshot) => (
 				<Container
 					ref={provided.innerRef}
