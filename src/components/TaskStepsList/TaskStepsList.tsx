@@ -7,6 +7,7 @@ import { ItemActions } from '../ItemActions'
 import { TaskStep } from '../TaskStep'
 import styled from 'styled-components'
 import { SortButton } from '../SortButton'
+import { Tooltip } from '@mui/material'
 
 interface ITasksListProps {
 	task: TTask
@@ -114,13 +115,15 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 					ref={provided.innerRef}
 					isdragging={snapshot.isDragging}
 				>
-					<HeaderList
-						{...provided.dragHandleProps}
-						isdragging={snapshot.isDragging}
-					>
-						<Title>{task.title}</Title>
-						<ItemActions type='список' item={task} currParent={currParent} />
-					</HeaderList>
+					<Tooltip title={task.title} placement='top'>
+						<HeaderList
+							{...provided.dragHandleProps}
+							isdragging={snapshot.isDragging}
+						>
+							<Title>{task.title}</Title>
+							<ItemActions type='список' item={task} currParent={currParent} />
+						</HeaderList>
+					</Tooltip>
 					<NewStep currTask={task} />
 					{task.stepIds.length !== 0 ? (
 						<ActionsStepListWrapper>

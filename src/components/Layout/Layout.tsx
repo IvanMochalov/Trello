@@ -26,10 +26,7 @@ export const Layout = () => {
 	const location = useLocation()
 
 	React.useEffect(() => {
-		if (
-			location.pathname === `/boards/${board_id}` &&
-			currBoard === undefined
-		) {
+		if (location.pathname === `/${board_id}` && currBoard === undefined) {
 			setIsHappy(false)
 		} else {
 			setIsHappy(true)

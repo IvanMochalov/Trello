@@ -65,7 +65,7 @@ export const NewStep = ({ currTask }: INewStep) => {
 
 	return (
 		<Container>
-			<Tooltip title='Добавить шаг' placement='top'>
+			<Tooltip title='Добавить шаг' placement='bottom'>
 				<Form
 					id={formStepId}
 					noValidate
