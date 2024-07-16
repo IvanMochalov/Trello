@@ -12,9 +12,9 @@ const Container = styled.div`
 
 const ActionsWrapper = styled.div`
 	display: flex;
-	// align-items: center;
 	flex-direction: row;
 	margin-bottom: 20px;
+	// position: fixed;
 `;
 const Title = styled.h2`
 	font-size: 1rem;

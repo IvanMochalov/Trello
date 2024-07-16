@@ -1,27 +1,27 @@
-import React from 'react';
-import { IconButton, Menu } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { DeleteButton } from '../DeleteButton';
-import { TBoard, TStep, TTask } from '../../type';
-import { EditButton } from '../EditButton';
+import React from 'react'
+import { IconButton, Menu } from '@mui/material'
+import MoreVertIcon from '@mui/icons-material/MoreVert'
+import { DeleteButton } from '../DeleteButton'
+import { TBoard, TStep, TTask } from '../../type'
+import { EditButton } from '../EditButton'
 
 interface IItemActionsProps {
-	item: TBoard | TTask | TStep;
-	type: string;
-	currParent?: TBoard | TTask;
+	item: TBoard | TTask | TStep
+	type: string
+	currParent?: TBoard | TTask
 }
 
 export const ItemActions = ({ item, type, currParent }: IItemActionsProps) => {
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	const open = Boolean(anchorEl);
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+	const open = Boolean(anchorEl)
 
 	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
+		setAnchorEl(event.currentTarget)
+	}
 
 	const handleClose = () => {
-		setAnchorEl(null);
-	};
+		setAnchorEl(null)
+	}
 	return (
 		<>
 			<IconButton
@@ -52,5 +52,5 @@ export const ItemActions = ({ item, type, currParent }: IItemActionsProps) => {
 				/>
 			</Menu>
 		</>
-	);
-};
+	)
+}

@@ -1,9 +1,10 @@
-import { Tooltip } from '@mui/material';
-import { Link, useOutletContext } from 'react-router-dom';
-import { TOutletContext } from '../../type';
-import { ItemActions } from '../ItemActions';
-import styled from 'styled-components';
-import styles from './boardsList.module.css';
+import { Tooltip } from '@mui/material'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import { TOutletContext } from '../../type'
+import { ItemActions } from '../ItemActions'
+import styled from 'styled-components'
+import styles from './boardsList.module.css'
+import { Paths } from '../../utils/consts'
 
 const BoardsListWrapper = styled.ul`
 	display: flex;
@@ -12,7 +13,7 @@ const BoardsListWrapper = styled.ul`
 	justify-content: start;
 	width: 50%;
 	min-width: 288px;
-`;
+`
 
 const BoardWrapper = styled.li`
 	display: flex;
@@ -20,6 +21,7 @@ const BoardWrapper = styled.li`
 	align-items: center;
 	justify-content: start;
 	overflow: hidden;
+	cursor: pointer;
 	width: 100%;
 	overflow-wrap: break-word;
 	transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
@@ -56,34 +58,34 @@ const BoardWrapper = styled.li`
 		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
 			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 	}
-`;
+`
 
 export const BoardsList = () => {
-	const { data } = useOutletContext<TOutletContext>();
+	const { data } = useOutletContext<TOutletContext>()
+	const navigate = useNavigate()
 
 	return (
 		<BoardsListWrapper>
 			{data.boardOrder &&
 				data.boardOrder.map((boardId: string) => {
-					const board = data.boards[boardId];
+					const board = data.boards[boardId]
 
 					return (
 						board && (
-							<BoardWrapper tabIndex={0} key={board.id}>
-								<Tooltip title={`Перейти к ${board.title}`} placement='top-end'>
-									<Link
+							<Tooltip title={`Перейти к ${board.title}`} placement='top-end'>
+								<BoardWrapper tabIndex={0} key={board.id}>
+									<p
 										className={styles.boardItemLink}
-										to={`/boards/${board.id}`}
-										tabIndex={-1}
+										onClick={() => navigate(Paths.boardPageRoute(board.id))}
 									>
 										{board.title}
-									</Link>
-								</Tooltip>
-								<ItemActions type='доска' item={board} />
-							</BoardWrapper>
+									</p>
+									<ItemActions type='доска' item={board} />
+								</BoardWrapper>
+							</Tooltip>
 						)
-					);
+					)
 				})}
 		</BoardsListWrapper>
-	);
-};
+	)
+}
