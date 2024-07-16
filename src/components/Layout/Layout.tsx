@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/material'
+import { Box } from '@mui/material'
 import React from 'react'
 import { DropResult } from 'react-beautiful-dnd'
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
@@ -252,36 +252,34 @@ export const Layout = () => {
 	}
 
 	return (
-		<Container maxWidth='xl'>
-			<Box>
-				<div className={styles.smileWrapper}>
-					<Link
-						to={Paths.homePage}
-						tabIndex={-1}
-						style={{
-							textDecoration: 'none',
-							display: 'flex',
-							flexDirection: 'column',
-							alignItems: 'center',
-						}}
-					>
-						<Smile happy={isHappy} />
-					</Link>
-				</div>
-				<Outlet
-					context={{
-						data: initialValue,
-						handlers: {
-							dragEnd: handleDragEnd,
-							itemSave: handleSave,
-							itemDelete: handleDelete,
-							itemEdit: handleEdit,
-							itemSort: handleSort,
-							itemToggleDone: handleToggleDone,
-						},
+		<Box sx={{ padding: { xs: '0 20px', lg: '0 30px' } }}>
+			<div className={styles.smileWrapper}>
+				<Link
+					to={Paths.homePage}
+					tabIndex={-1}
+					style={{
+						textDecoration: 'none',
+						display: 'flex',
+						flexDirection: 'column',
+						alignItems: 'center',
 					}}
-				/>
-			</Box>
-		</Container>
+				>
+					<Smile happy={isHappy} />
+				</Link>
+			</div>
+			<Outlet
+				context={{
+					data: initialValue,
+					handlers: {
+						dragEnd: handleDragEnd,
+						itemSave: handleSave,
+						itemDelete: handleDelete,
+						itemEdit: handleEdit,
+						itemSort: handleSort,
+						itemToggleDone: handleToggleDone,
+					},
+				}}
+			/>
+		</Box>
 	)
 }

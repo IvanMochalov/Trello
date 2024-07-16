@@ -25,11 +25,10 @@ const Container = styled.ul<IContainer>`
 `
 const ContainerWrapper = styled.div<IContainer>`
 	overflow: auto;
-	margin: 0 -24px;
-	padding: 0 20px;
+	margin: 0 -30px;
+	padding: 0 26px;
 	@media (min-width: 768px) {
-		padding: 0 16px;
-
+		padding: 0 22px;
 	}
 `
 

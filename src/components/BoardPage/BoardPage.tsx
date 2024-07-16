@@ -14,7 +14,6 @@ const ActionsWrapper = styled.div`
 	display: flex;
 	flex-direction: row;
 	margin-bottom: 20px;
-	// position: fixed;
 `;
 const Title = styled.h2`
 	font-size: 1rem;
