@@ -1,0 +1,39 @@
+.contentWrapper {
+	overflow: auto;
+	margin: 0 -20px;
+	padding: 0 16px;
+}
+@media (min-width: 768px) {
+	.contentWrapper {
+		padding: 0 12px;
+	}
+}
+@media (min-width: 1200px) {
+	.contentWrapper {
+		margin: 0 -30px;
+		padding: 0 22px;
+	}
+}
+
+/* Scrollbar modification */
+.contentWrapper::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+/* Track */
+.contentWrapper::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+/* Handle */
+.contentWrapper::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	background-color: transparent;
+	padding: 0 4px;
+}
+.contentWrapper:hover::-webkit-scrollbar-thumb {
+	background-color: rgba(82, 94, 255, 0.2);
+}
+/* Handle on hover */
+.contentWrapper::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(82, 94, 255, 0.4);
+}

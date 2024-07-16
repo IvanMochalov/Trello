@@ -4,6 +4,7 @@ import { DragDropContext, DropResult } from 'react-beautiful-dnd'
 import { StrictModeDroppable } from '../../utils/StrictModeDroppable'
 import { useOutletContext } from 'react-router'
 import styled from 'styled-components'
+import styles from './boardTasksList.module.css'
 
 interface IBoardTasksListProps {
 	board: TBoard
@@ -23,14 +24,6 @@ const Container = styled.ul<IContainer>`
 	background-color: ${props =>
 		props.isdraggingover ? 'lightblue' : 'inherit'};
 `
-const ContainerWrapper = styled.div<IContainer>`
-	overflow: auto;
-	margin: 0 -30px;
-	padding: 0 26px;
-	@media (min-width: 768px) {
-		padding: 0 22px;
-	}
-`
 
 export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
 	const {
@@ -39,7 +32,7 @@ export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
 	} = useOutletContext<TOutletContext>()
 
 	return (
-		<ContainerWrapper>
+		<div className={styles.contentWrapper}>
 			<DragDropContext
 				onDragEnd={(result: DropResult) => dragEnd(result)(board)}
 			>
@@ -71,6 +64,6 @@ export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
 					)}
 				</StrictModeDroppable>
 			</DragDropContext>
-		</ContainerWrapper>
+		</div>
 	)
 }
