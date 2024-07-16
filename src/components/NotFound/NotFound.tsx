@@ -1,9 +1,8 @@
-import React from 'react';
-import { Box, Container } from '@mui/system';
-import { Link } from 'react-router-dom';
-import { Smile } from '../Smile';
-import styles from './notFound.module.css';
-import { Paths } from '../../utils/consts'
+import { Box, Container } from '@mui/system'
+import { Link } from 'react-router-dom'
+import { Paths } from '../../utils/constants'
+import { Smile } from '../Smile'
+import styles from './notFound.module.css'
 
 export const NotFound = () => {
 	return (
@@ -25,5 +24,5 @@ export const NotFound = () => {
 				</div>
 			</Box>
 		</Container>
-	);
-};
+	)
+}

@@ -4,23 +4,17 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import { App } from './App'
 import './main.global.css'
 import './normalize.css'
-import { createGlobalStyle } from 'styled-components'
-
-const GlobalStyle = createGlobalStyle`
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-`
+import { Paths } from './utils/constants'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-	<>
-		<GlobalStyle />
-		<App />
-	</>
+	<React.StrictMode>
+		<BrowserRouter basename={Paths.browserHomePage}>
+			<App />
+		</BrowserRouter>
+	</React.StrictMode>
 )

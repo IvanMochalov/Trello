@@ -1,9 +1,9 @@
 import { Tooltip } from '@mui/material'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { TOutletContext } from '../../type'
+import { Paths } from '../../utils/constants'
 import { ItemActions } from '../ItemActions'
 import styles from './boardsList.module.css'
-import { Paths } from '../../utils/consts'
 
 export const BoardsList = () => {
 	const { data } = useOutletContext<TOutletContext>()

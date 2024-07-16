@@ -4,15 +4,15 @@ import { DropResult } from 'react-beautiful-dnd'
 import { Link, Outlet, useLocation, useParams } from 'react-router-dom'
 import { useLocalStorage } from '../../hooks/useLocalStorage'
 import { TBoard, TInitialData, TStep, TTask } from '../../type'
+import { Paths } from '../../utils/constants'
 import { randomId } from '../../utils/getRandomId'
+import { BoardEvents } from '../../utils/handleEvents/BoardEvents'
+import { StepEvents } from '../../utils/handleEvents/StepEvents'
 import { TaskEvents } from '../../utils/handleEvents/TaskEvents'
 import { instanceOfTBoard } from '../../utils/instanceOfTBoard'
 import { instanceOfTTask } from '../../utils/instanceOfTTask'
 import { Smile } from '../Smile'
 import styles from './layout.module.css'
-import { BoardEvents } from '../../utils/handleEvents/BoardEvents'
-import { StepEvents } from '../../utils/handleEvents/StepEvents'
-import { Paths } from '../../utils/consts'
 
 export const Layout = () => {
 	const [initialValue, setInitialValue] = useLocalStorage<
