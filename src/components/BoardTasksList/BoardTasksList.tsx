@@ -11,7 +11,7 @@ interface IBoardTasksListProps {
 }
 
 interface IContainer {
-	isdraggingover?: boolean
+	isdraggingover?: string
 }
 
 const Container = styled.ul<IContainer>`
@@ -21,8 +21,8 @@ const Container = styled.ul<IContainer>`
 	min-width: 100%;
 	transition: background-color 0.2s ease-in-out;
 	border-radius: 10px;
-	background-color: ${props =>
-		props.isdraggingover ? 'lightblue' : 'inherit'};
+	background-color: ${({isdraggingover}) =>
+		isdraggingover === 'true' ? 'lightblue' : 'inherit'};
 `
 
 export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
@@ -33,7 +33,7 @@ export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
 
 	return (
 		<div className={styles.contentWrapper}>
-			<div style={{width: 'fit-content'}}>
+			<div style={{ width: 'fit-content' }}>
 				<DragDropContext
 					onDragEnd={(result: DropResult) => dragEnd(result)(board)}
 				>
@@ -46,7 +46,7 @@ export const BoardTasksList = ({ board }: IBoardTasksListProps) => {
 							<Container
 								{...provided.droppableProps}
 								ref={provided.innerRef}
-								isdraggingover={snapshot.isDraggingOver}
+								isdraggingover={`${snapshot.isDraggingOver}`}
 							>
 								{board.taskIds.map((taskId: string, index) => {
 									const task = data.tasks[taskId]

@@ -16,11 +16,11 @@ interface ITasksListProps {
 }
 
 interface IHeaderList {
-	isdragging?: boolean
+	isdragging?: string
 }
 
 interface ITaskStepsListWrapper {
-	isdraggingover?: boolean
+	isdraggingover?: string
 	items: string[]
 }
 
@@ -34,7 +34,8 @@ const Container = styled.li<IHeaderList>`
 	background-color: white;
 	width: 200px;
 	margin: 4px;
-	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
+	border-color: ${({ isdragging }) =>
+		isdragging === 'true' ? 'green' : 'lightgray'};
 
 	@media (min-width: 768px) {
 		width: 350px;
@@ -51,8 +52,10 @@ const HeaderList = styled.div<IHeaderList>`
 	cursor: grab;
 	border-bottom: 1px solid;
 	transition: background-color 0.2s ease-in-out;
-	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
-	background-color: ${props => (props.isdragging ? 'lightgreen' : 'white')};
+	border-color: ${({ isdragging }) =>
+		isdragging === 'true' ? 'green' : 'lightgray'};
+	background-color: ${({ isdragging }) =>
+		isdragging === 'true' ? 'lightgreen' : 'white'};
 
 	&:focus {
 		outline: none;
@@ -94,11 +97,12 @@ const TaskStepsListWrapper = styled.ul<ITaskStepsListWrapper>`
 	width: 100%;
 	flex-direction: column;
 	align-items: center;
-	padding: ${props => (props.items.length === 0 ? '0px' : '8px')};
+	padding: ${({ items }) => (items.length === 0 ? '0px' : '8px')};
 	flex-grow: 1;
 	height: 100%;
 	transition: background-color 0.2s ease-in-out;
-	background-color: ${props => (props.isdraggingover ? 'lightblue' : 'white')};
+	background-color: ${({ isdraggingover }) =>
+		isdraggingover === 'true' ? 'lightblue' : 'white'};
 `
 
 export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
@@ -113,12 +117,12 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 				<Container
 					{...provided.draggableProps}
 					ref={provided.innerRef}
-					isdragging={snapshot.isDragging}
+					isdragging={`${snapshot.isDragging}`}
 				>
 					<Tooltip title={task.title} placement='top'>
 						<HeaderList
 							{...provided.dragHandleProps}
-							isdragging={snapshot.isDragging}
+							isdragging={`${snapshot.isDragging}`}
 						>
 							<Title>{task.title}</Title>
 							<ItemActions type='список' item={task} currParent={currParent} />
@@ -144,7 +148,7 @@ export const TaskStepsList = ({ task, index, currParent }: ITasksListProps) => {
 								items={task.stepIds}
 								ref={provided.innerRef}
 								{...provided.droppableProps}
-								isdraggingover={snapshot.isDraggingOver}
+								isdraggingover={`${snapshot.isDraggingOver}`}
 							>
 								{task.stepIds.map((stepId: string, index) => {
 									const step = data.steps[stepId]

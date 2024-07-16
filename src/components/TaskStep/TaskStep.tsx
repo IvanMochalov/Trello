@@ -1,24 +1,24 @@
-import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { TOutletContext, TStep, TTask } from '../../type';
-import styled from 'styled-components';
-import { ItemActions } from '../ItemActions';
-import { useOutletContext } from 'react-router-dom';
-import { DoneButton } from '../DoneButton';
+import React from 'react'
+import { Draggable } from 'react-beautiful-dnd'
+import { TOutletContext, TStep, TTask } from '../../type'
+import styled from 'styled-components'
+import { ItemActions } from '../ItemActions'
+import { useOutletContext } from 'react-router-dom'
+import { DoneButton } from '../DoneButton'
 
 interface ITaskStepProps {
-	step: TStep;
-	index: number;
-	currParent: TTask;
+	step: TStep
+	index: number
+	currParent: TTask
 }
 
 interface IContainer {
-	isdragging?: boolean;
-	isdragdisabled?: boolean;
+	isdragging?: string
+	isdragdisabled?: string
 }
 
 interface ITitle {
-	done?: boolean;
+	done?: string
 }
 
 const Container = styled.li<IContainer>`
@@ -27,14 +27,16 @@ const Container = styled.li<IContainer>`
 	align-items: center;
 	justify-content: space-between;
 	border: 1px solid;
-	border-color: ${props => (props.isdragging ? 'green' : 'lightgray')};
+	border-color: ${({ isdragging }) =>
+		isdragging === 'true' ? 'green' : 'lightgray'};
 	border-radius: 3px;
 	padding: 8px;
-	cursor: ${props => (props.isdragdisabled ? 'not-allowed' : 'grab')};
-	background-color: ${props =>
-		props.isdragdisabled
+	cursor: ${({ isdragdisabled }) =>
+		isdragdisabled === 'true' ? 'not-allowed' : 'grab'};
+	background-color: ${({ isdragdisabled, isdragging }) =>
+		isdragdisabled === 'true'
 			? 'lightgray'
-			: props.isdragging
+			: isdragging === 'true'
 			? 'lightgreen'
 			: 'white'};
 	transition: background-color 0.2s ease-in-out;
@@ -62,7 +64,7 @@ const Container = styled.li<IContainer>`
 		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
 			0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 	}
-`;
+`
 
 const Title = styled.span<ITitle>`
 	width: 100%;
@@ -70,21 +72,21 @@ const Title = styled.span<ITitle>`
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	text-decoration: ${props => (props.done ? 'line-through' : 'none')};
-`;
+	text-decoration: ${({ done }) => (done === 'true' ? 'line-through' : 'none')};
+`
 
 export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
 	const {
 		handlers: { itemToggleDone },
-	} = useOutletContext<TOutletContext>();
+	} = useOutletContext<TOutletContext>()
 
 	return (
 		<Draggable draggableId={step.id} index={index}>
 			{(provided, snapshot) => (
 				<Container
 					ref={provided.innerRef}
-					isdragging={snapshot.isDragging}
-					isdragdisabled={step.done}
+					isdragging={`${snapshot.isDragging}`}
+					isdragdisabled={`${step.done}`}
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
 				>
@@ -93,10 +95,10 @@ export const TaskStep = ({ step, index, currParent }: ITaskStepProps) => {
 						done={step.done}
 						handleClick={itemToggleDone}
 					/>
-					<Title done={step.done}>{step.title}</Title>
+					<Title done={`${step.done}`}>{step.title}</Title>
 					<ItemActions type='шаг' item={step} currParent={currParent} />
 				</Container>
 			)}
 		</Draggable>
-	);
-};
+	)
+}

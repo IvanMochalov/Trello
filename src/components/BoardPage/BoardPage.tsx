@@ -1,50 +1,29 @@
-import { useOutletContext, useParams } from 'react-router-dom';
-import { TOutletContext } from '../../type';
-import { BoardTasksList } from '../BoardTasksList/BoardTasksList';
-import styles from './boardPage.module.css';
-import styled from 'styled-components';
-import { NewTask } from '../NewTask';
-
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-`;
-
-const ActionsWrapper = styled.div`
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 20px;
-`;
-const Title = styled.h2`
-	font-size: 1rem;
-	line-height: 1.5;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-`;
+import { useOutletContext, useParams } from 'react-router-dom'
+import { TOutletContext } from '../../type'
+import { BoardTasksList } from '../BoardTasksList/BoardTasksList'
+import styles from './boardPage.module.css'
+import { NewTask } from '../NewTask'
 
 export const BoardPage = () => {
-	const { data } = useOutletContext<TOutletContext>();
-
-	const { board_id } = useParams<{ board_id: string }>();
-
-	const currentBoard = data.boards[board_id || ''];
+	const { data } = useOutletContext<TOutletContext>()
+	const { board_id } = useParams<{ board_id: string }>()
+	const currentBoard = data.boards[board_id || '']
 
 	return (
-		<Container>
+		<div className={styles.container}>
 			{currentBoard && (
 				<>
-					<ActionsWrapper>
+					<div className={styles.actionsWrapper}>
 						<div className={styles.boardTitleBox}>
-							<Title>{currentBoard.title}</Title>
+							<h2 className={styles.title}>{currentBoard.title}</h2>
 						</div>
 						<div className={styles.buttonWrapper}>
 							<NewTask currBoard={currentBoard} />
 						</div>
-					</ActionsWrapper>
+					</div>
 					<BoardTasksList board={currentBoard} />
 				</>
 			)}
-		</Container>
-	);
-};
+		</div>
+	)
+}
