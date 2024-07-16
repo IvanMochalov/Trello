@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/trello.github.io/static/css/main.f86990a2.css",
-    "main.js": "/trello.github.io/static/js/main.2f8b708b.js",
+    "main.js": "/trello.github.io/static/js/main.8198c0be.js",
     "static/media/roboto-latin-500-normal.woff2": "/trello.github.io/static/media/roboto-latin-500-normal.f25d774ecfe0996f8eb5.woff2",
     "static/media/roboto-latin-700-normal.woff2": "/trello.github.io/static/media/roboto-latin-700-normal.227c93190fe7f82de3f8.woff2",
     "static/media/roboto-latin-400-normal.woff2": "/trello.github.io/static/media/roboto-latin-400-normal.b009a76ad6afe4ebd301.woff2",
@@ -60,10 +60,10 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/trello.github.io/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/trello.github.io/index.html",
     "main.f86990a2.css.map": "/trello.github.io/static/css/main.f86990a2.css.map",
-    "main.2f8b708b.js.map": "/trello.github.io/static/js/main.2f8b708b.js.map"
+    "main.8198c0be.js.map": "/trello.github.io/static/js/main.8198c0be.js.map"
   },
   "entrypoints": [
     "static/css/main.f86990a2.css",
-    "static/js/main.2f8b708b.js"
+    "static/js/main.8198c0be.js"
   ]
 }
