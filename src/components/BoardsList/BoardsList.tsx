@@ -17,8 +17,8 @@ export const BoardsList = () => {
 
 					return (
 						board && (
-							<Tooltip title={`Перейти к ${board.title}`} placement='top-end'>
-								<li className={styles.boardWrapper} tabIndex={0} key={board.id}>
+							<Tooltip title={`Перейти к ${board.title}`} placement='top-end' key={board.id}>
+								<li className={styles.boardWrapper} tabIndex={0}>
 									<p
 										className={styles.boardItemLink}
 										onClick={() => navigate(Paths.boardPageRoute(board.id))}
